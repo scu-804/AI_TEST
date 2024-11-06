@@ -1,0 +1,3 @@
+mission_id,test_model,test_weight,test_seed,test_method,timeout,mission_status
+123,Vgg16,weightA,seed1,FGSM,3600,1
+12,Vgg16,weightA,seed1,FGSM,3600,2
