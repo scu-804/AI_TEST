@@ -409,11 +409,11 @@ def adver_eval_get():
 def sec_enhance_post():
 	print_info()
 	param = request_params()
-	mission_id = param.get("mission_id")
+	enhance_id = param.get("enhance_id")
 	test_model = param.get("test_model")
-	adver_id = param.get("adver_id")
+	mission_id = param.get("mission_id")
 	# todo mock 数据
-	sec_id = f"sec_{mission_id}"
+	sec_id = f"sec_{enhance_id}"
 	ctx[sec_id] = (0, random.randint(1, 10), 2)  # (轮次， 权重数，状态【1:完成，2：进行中】)
 	# mock end
 	return {
@@ -431,9 +431,9 @@ def sec_enhance_post():
 def sec_enhance_get():
 	print_info()
 	param = request_params()
-	mission_id = param.get("mission_id")
+	enhance_id = param.get("enhance_id")
 	# todo mock 数据
-	sec_id = f"sec_{mission_id}"
+	sec_id = f"sec_{enhance_id}"
 	tota_eps = 2000
 	if sec_id in ctx:
 		epoch, num, status = ctx[sec_id]
@@ -466,9 +466,9 @@ def sec_enhance_get():
 def sec_enhance_stop():
 	print_info()
 	param = request_params()
-	mission_id = param.get("mission_id")
+	enhance_id = param.get("enhance_id")
 	# todo mock 数据
-	sec_id = f"sec_{mission_id}"
+	sec_id = f"sec_{enhance_id}"
 	ctx[sec_id] = (0, random.randint(1, 10), 1)  # (轮次， 权重数，状态【1:完成，2：进行中】)
 	# mock end
 	return {
@@ -486,7 +486,7 @@ def sec_enhance_stop():
 def sec_enhance_weight_download():
 	print_info()
 	param = request_params()
-	mission_id = param.get("mission_id")
+	enhance_id = param.get("enhance_id")
 	zip_path = "tmp.zip"
 	# todo mock 数据
 	folder_path = "./tmp"
