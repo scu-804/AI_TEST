@@ -44,10 +44,33 @@ def request_params():
 	return params
 
 
+def get_url():
+	return request.method, str(request.url_rule)
+
+
+def time_str(time=None, fmt="%Y-%m-%d %H:%M:%S") -> str:
+	"""
+		时间格式化
+		:param time: 要格式化的是俺
+		:param fmt: 格式化格式
+		:return: str 类型的格式时间
+	"""
+	import time as t
+	return t.strftime(fmt, t.localtime(time))
+
+
+def print_info():
+	ps = request_params()
+	method, url = get_url()
+	with open("./print_info", mode="a", encoding="utf-8") as f:
+		print(f"[{time_str()}]:{method}:{url}   params:{ps}", flush=True, file=f)
+
+
 #  1获取被测对象的数据源
 @cross_origin()
 @app.route('/test_model', methods=['GET'])
 def test_model():
+	print_info()
 	# todo mock 数据
 	return_data = {
 		"code": 200,
@@ -71,6 +94,7 @@ def test_model():
 @cross_origin()
 @app.route('/depn_lib', methods=['GET'])
 def dependent_on_lib():
+	print_info()
 	# todo mock 数据
 	return_data = {
 		"code": 200,
@@ -94,17 +118,16 @@ def dependent_on_lib():
 @cross_origin()
 @app.route('/weight_number', methods=['GET'])
 def weight_number():
+	print_info()
 	param = request_params()
 	test_model = param.get("test_model")
 	# todo mock 数据
 	return_data = {
 		"code": 200,
 		"message": "success",
-		"data": [
-			{
+		"data": {
 				"weightNum": random.randint(0, len(str(test_model)))
-			}
-		]
+		}
 	}
 	# mock end
 	return return_data
@@ -114,6 +137,7 @@ def weight_number():
 @cross_origin()
 @app.route('/weight_download', methods=['GET'])
 def weight_download():
+	print_info()
 	param = request_params()
 	test_model = param.get("test_model")
 	zip_path = "tmp.zip"
@@ -143,6 +167,7 @@ def weight_download():
 @cross_origin()
 @app.route('/check_model', methods=['GET'])
 def check_model():
+	print_info()
 	param = request_params()
 	test_model = param.get("test_model")
 	# todo mock 数据
@@ -171,7 +196,9 @@ def check_model():
 @cross_origin()
 @app.route('/adver_gen', methods=['POST'])
 def adver_gen_post():
+	print_info()
 	param = request_params()
+	get_url()
 	mission_id = param.get("mission_id")
 	test_model = param.get("test_model")
 	test_weight = param.get("test_weight")
@@ -179,7 +206,7 @@ def adver_gen_post():
 	timeout = param.get("timeout")  # unit is second
 	file_paths = []
 	# 保存上传的文件
-	if 'files' not in request.files:
+	if 'test_seed' not in request.files:
 		return {
 			"code": 200,
 			"message": "no file",
@@ -187,7 +214,7 @@ def adver_gen_post():
 				"status": 2
 			}
 		}
-	files = request.files.getlist('files')  # 获取多个文件
+	files = request.files.getlist('test_seed')  # 获取多个文件
 	for file in files:
 		if file.filename == '' or not str(file.filename).endswith(".zip"):
 			continue
@@ -201,7 +228,7 @@ def adver_gen_post():
 	# mock end
 	return {
 		"code": 200,
-		"message": "no file",
+		"message": "success",
 		"data": {
 			"status": 1
 		}
@@ -212,6 +239,7 @@ def adver_gen_post():
 @cross_origin()
 @app.route('/adver_gen', methods=['GET'])
 def adver_gen_get():
+	print_info()
 	param = request_params()
 	mission_id = param.get("mission_id")
 	# todo mock 数据
@@ -245,6 +273,7 @@ def adver_gen_get():
 @cross_origin()
 @app.route('/adver_gen_stop', methods=['POST'])
 def adver_gen_stop():
+	print_info()
 	param = request_params()
 	mission_id = param.get("mission_id")
 	# todo mock 数据
@@ -270,6 +299,7 @@ def adver_gen_stop():
 @cross_origin()
 @app.route('/adver_gen_download', methods=['GET'])
 def adver_gen_download():
+	print_info()
 	param = request_params()
 	mission_id = param.get("mission_id")
 	zip_path = "tmp.zip"
@@ -301,6 +331,7 @@ def adver_gen_download():
 @cross_origin()
 @app.route('/adver_metrics', methods=['GET'])
 def adver_metrics():
+	print_info()
 	param = request_params()
 	test_model = param.get("test_model")
 	# todo mock 数据
@@ -321,6 +352,7 @@ def adver_metrics():
 @cross_origin()
 @app.route('/adver_eval', methods=['POST'])
 def adver_eval_post():
+	print_info()
 	param = request_params()
 	mission_id = param.get("mission_id")
 	# todo mock 数据
@@ -340,6 +372,7 @@ def adver_eval_post():
 @cross_origin()
 @app.route('/adver_eval', methods=['GET'])
 def adver_eval_get():
+	print_info()
 	param = request_params()
 	mission_id = param.get("mission_id")
 	# todo mock 数据
@@ -374,6 +407,7 @@ def adver_eval_get():
 @cross_origin()
 @app.route('/sec_enhance', methods=['POST'])
 def sec_enhance_post():
+	print_info()
 	param = request_params()
 	mission_id = param.get("mission_id")
 	test_model = param.get("test_model")
@@ -395,6 +429,7 @@ def sec_enhance_post():
 @cross_origin()
 @app.route('/sec_enhance', methods=['GET'])
 def sec_enhance_get():
+	print_info()
 	param = request_params()
 	mission_id = param.get("mission_id")
 	# todo mock 数据
@@ -429,6 +464,7 @@ def sec_enhance_get():
 @cross_origin()
 @app.route('/sec_enhance_stop', methods=['POST'])
 def sec_enhance_stop():
+	print_info()
 	param = request_params()
 	mission_id = param.get("mission_id")
 	# todo mock 数据
@@ -448,6 +484,7 @@ def sec_enhance_stop():
 @cross_origin()
 @app.route('/sec_enhance_weight_download', methods=['GET'])
 def sec_enhance_weight_download():
+	print_info()
 	param = request_params()
 	mission_id = param.get("mission_id")
 	zip_path = "tmp.zip"
@@ -479,6 +516,7 @@ def sec_enhance_weight_download():
 @cross_origin()
 @app.route('/vul_dig', methods=['POST'])
 def vul_dig_post():
+	print_info()
 	param = request_params()
 	mission_id = param.get("mission_id")
 	lib_name = param.get("lib_name")
@@ -508,6 +546,7 @@ def vul_dig_post():
 @cross_origin()
 @app.route('/vul_dig', methods=['GET'])
 def vul_dig_get():
+	print_info()
 	param = request_params()
 	mission_id = param.get("mission_id")
 	# todo mock 数据
@@ -551,6 +590,7 @@ def vul_dig_get():
 @cross_origin()
 @app.route('/vul_dig_stop', methods=['POST'])
 def vul_dig_stop():
+	print_info()
 	param = request_params()
 	mission_id = param.get("mission_id")
 	# todo mock 数据
@@ -573,6 +613,7 @@ def vul_dig_stop():
 @cross_origin()
 @app.route('/vul_dig_crash_download', methods=['GET'])
 def vul_dig_crash_download():
+	print_info()
 	param = request_params()
 	mission_id = param.get("mission_id")
 	zip_path = "tmp.zip"
