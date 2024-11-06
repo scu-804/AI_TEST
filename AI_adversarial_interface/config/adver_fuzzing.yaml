@@ -1,0 +1,24 @@
+## Fill in data in the following format :
+#Vgg16:
+#  version:
+#  dependents:
+#    Pytorch: [1.1, 2.2, 3.3]
+#    Numpy: [1.1, 2.2]
+#    Opencv: [1.0]
+#  test_method: [FGSM, PGD, CW, DeepFool]
+#  download_addr: xxxx/path
+#  docker_container: xxx
+
+Vgg16:
+  version:
+  dependents:
+    Pytorch: 1.1
+    Numpy: 2.2
+    Opencv: 1.0
+  test_method: [fuzzing]
+  weight_number: 3
+  weight_name: [name4, name5, name6]
+  download_addr: xxxx/path2
+  docker_container: xxx
+  adver_metrics: ["ACC", "ACTC", "ASS"]
+
