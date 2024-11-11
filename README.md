@@ -153,4 +153,4 @@ curl -X POST http://127.0.0.1:5901/sec_enhance \
 weight_download_addr: 5334338a5dfe:/usr/weight.txt
 ```
 
-这里的5334338a5dfe就要改成自己docker环境的docker_id
+**注意这里的5334338a5dfe就要改成自己docker环境的docker_id**
