@@ -7,13 +7,64 @@ from Misson_class import *
 
 app = Flask(__name__)
 
+
+def request_params():
+	params = {}
+	try:
+		for k, v in request.args.items():
+			params[k] = v
+	except BaseException as e:
+		pass
+	try:
+		for k, v in request.values.items():
+			params[k] = v
+	except BaseException as e:
+		pass
+	try:
+		r_json = request.get_json()
+		if r_json and isinstance(r_json, dict):
+			for k, v in r_json.items():
+				params[k] = v
+	except BaseException as e:
+		pass
+	return params
+
+
+def get_url():
+	return request.method, str(request.url_rule)
+
+
+def time_str(time=None, fmt="%Y-%m-%d %H:%M:%S") -> str:
+	"""
+		时间格式化
+		:param time: 要格式化的是俺
+		:param fmt: 格式化格式
+		:return: str 类型的格式时间
+	"""
+	import time as t
+	return t.strftime(fmt, t.localtime(time))
+
+
+def print_info():
+	ps = request_params()
+	method, url = get_url()
+	with open("./print_info", mode="a", encoding="utf-8") as f:
+		print(f"[{time_str()}]:{method}:{url}   params:{ps}", flush=True, file=f)
+
+
+
 # ## there are several functions about interface POST(GET) key. Every key has a unique function
 
 
 ## mode16: 安全加固任务的模型权重文件zip包下载
+@cross_origin()
 @app.route('/sec_enhance_weight_download', methods=['GET'])
 def sec_enhance_weight_download():
-    enhance_id = request.args.get('enhance_id')
+
+    print_info()
+    param = request_params()
+
+    enhance_id = param.get("enhance_id")
 
     '''
            根据docker引擎实际情况修改run.sh
@@ -37,17 +88,22 @@ def sec_enhance_weight_download():
         #      "zipAddr": "xxxx",
         # })
     else :
-        return jsonify({
+        return {
             "code": 400,
-            "message": "任务ID未识别",
-            "zipAddr": {}
-        })
+            "message": "任务ID未识别"
+        }
 
 ## mode15: 停止安全加固任务
+@cross_origin()
 @app.route('/sec_enhance_stop', methods=['POST'])
 def sec_enhance_stop():
+
     print("Received POST request")
-    enhance_id = request.form.get('enhance_id', default=None, type=str)
+
+    print_info()
+    param = request_params()
+    enhance_id = param.get("enhance_id")
+
     enhance_manager = Enhance_MissionManager('Adver_gen_missions_DBSM.csv')   ###   这个csv用来记录对抗样本生成任务
 
     '''
@@ -57,11 +113,13 @@ def sec_enhance_stop():
         '''
 
     if enhance_id not in enhance_manager.enhance_mission_dict.keys():
-        return jsonify({
+        return {
             "code": 400,
             "message": "任务不存在，id有误",
-            "data": {"status": 2},
-        })
+            "data": {
+                "status": 2
+            }
+        }
     else:
         mission = enhance_manager.enhance_mission_dict[enhance_id]
         mission.update_status(1)
@@ -76,17 +134,23 @@ def sec_enhance_stop():
         shell_path = f"{container_id}:{shell_command}"
         exec_docker_container_shell(shell_path)
 
-        return jsonify({
+        return {
             "code": 200,
             "message": "任务已停止",
-            "data": {"status": 1},
-        })
+            "data": {
+                "status": 1
+            }
+        }
 
 
 ## mode14: 安全加固过程数据轮询
+@cross_origin()
 @app.route('/sec_enhance', methods=['GET'])
 def sec_enhance_query():
-    enhance_id = request.args.get('enhance_id')
+
+    print_info()
+    param = request_params()
+    enhance_id = param.get("enhance_id")
 
     enhance_manager = Enhance_MissionManager('Adver_gen_missions_DBSM.csv')
 
@@ -97,13 +161,13 @@ def sec_enhance_query():
     '''
 
     if enhance_id not in enhance_manager.enhance_mission_dict.keys():
-        return jsonify({
+        return {
             "code": 400,
             "message": "任务不存在，id有误",
             "data": {"status": 2},
-        })
+        }
     else:
-        return jsonify({
+        return {
             "code": 200,
             "message": "安全加固执行中",
             "data": {
@@ -112,15 +176,19 @@ def sec_enhance_query():
                 "loss": 3.4,
                 "weightNum": 5,
                 "status": 1},
-        })
+        }
 
 ## mode13: 启动安全加固任务
+@cross_origin()
 @app.route('/sec_enhance', methods=['POST'])
 def sec_enhance():
     print("Received POST request")
-    mission_id = request.form.get('mission_id', default=None, type=str)
-    test_model = request.form.get('test_model', default=None, type=str)
-    enhance_id = request.form.get('enhance_id', default=None, type=str)
+
+    print_info()
+    param = request_params()
+    enhance_id = param.get("enhance_id")
+    test_model = param.get("test_model")
+    mission_id = param.get("mission_id")
 
     enhance_manager = Enhance_MissionManager('Adver_gen_missions_DBSM.csv')
     # enhance_manager.update_enhance_mission_dict(mission_id, enhance_id)
@@ -129,11 +197,13 @@ def sec_enhance():
 
     print(mission_id, test_model, enhance_id)
     if enhance_id in enhance_manager.enhance_mission_dict.keys():   ###  if same mission id is executed twice, will report error
-        return jsonify({
+        return {
             "code": 400,
             "message": "该任务已存在",
-            "data": {"status": 2},
-        })
+            "data": {
+                "status": 2
+            }
+        }
 
     if all([mission_id, test_model, enhance_id]):
         mission_status = 2
@@ -157,22 +227,29 @@ def sec_enhance():
         shell_path = f"{container_id}:{shell_command}"
         exec_docker_container_shell(shell_path)
 
-        return jsonify({
+        return {
             "code": 200,
             "message": "安全加固已开始执行",
-            "data": {"status": 1},
-        })
+            "data": {
+                "status": 1
+            }
+        }
     else:
-        return jsonify({
+        return {
             "code": 400,
             "message": "POST参数有误",
-            "data": {"status": 2},
-        })
+            "data": {
+                "status": 2
+            }
+        }
 
 ## mode12: 评估过程中数据轮询
+@cross_origin()
 @app.route('/adver_eval', methods=['GET'])
 def adver_eval_query():
-    mission_id = request.args.get('mission_id')
+    print_info()
+    param = request_params()
+    mission_id = param.get("mission_id")
 
     mission_manager = MissionManager('Adver_gen_missions_DBSM.csv')
 
@@ -184,11 +261,13 @@ def adver_eval_query():
 
 
     if mission_id not in mission_manager.missions.keys():
-        return jsonify({
+        return {
             "code": 400,
             "message": "任务不存在，id有误",
-            "data": {"status": 2},
-        })
+            "data": {
+                "status": 2
+            }
+        }
     else:
         mission = mission_manager.missions[mission_id]
         model_dict = init_read_yaml_for_model_duplicate()
@@ -206,7 +285,7 @@ def adver_eval_query():
             for metric in adver_metrics:
                 if line.startswith(metric):
                     metrics.append({"name": metric, "score": float(line.split(":")[1].strip())})
-        return jsonify({
+        return {
             "code": 200,
             "message": "任务执行中",
             "data": {
@@ -216,13 +295,18 @@ def adver_eval_query():
                     #     {"name":"ACC", "score": 90},\
                     #     {"name":"ACTC", "score": 60},\
                     #     ],
-                "status": 1},
-        })
+                "status": 1
+            }
+        }
 
 ## mode11: 启动测试任务评估
+@cross_origin()
 @app.route('/adver_eval', methods=['POST'])
 def adver_eval():
-    mission_id = request.form.get('mission_id', default=None, type=str)
+    print_info()
+    param = request_params()
+    mission_id = param.get("mission_id")
+
     eval_metrics = request.form.getlist('eval_metric')
 
     mission_manager = MissionManager('Adver_gen_missions_DBSM.csv')
@@ -234,11 +318,11 @@ def adver_eval():
         '''
 
     if mission_id not in mission_manager.missions.keys():
-        return jsonify({
+        return {
             "code": 400,
             "message": "任务不存在，id有误",
             "data": {"status": 2},
-        })
+        }
     else:
         mission = mission_manager.missions[mission_id]
         model_dict = init_read_yaml_for_model_duplicate()
@@ -251,37 +335,48 @@ def adver_eval():
         shell_path = f"{container_id}:{shell_command}"
         res = exec_docker_container_shell(shell_path)
 
-        return jsonify({
+        return {
             "code": 200,
             "message": "评估已开始执行",
-            "data": {"status": 1},
-            "res": res
-        })
+            "data": {
+                "status": 1
+            }
+        }
 
 ## mode10: 获取不同被测对象下的评估配置指标
+@cross_origin()
 @app.route('/adver_metrics', methods=['GET'])
 def adver_metrics():
-    test_model = request.args.get('test_model')
+
+    print_info()
+    param = request_params()
+    test_model = param.get("test_model")
+
     model_dict = init_read_yaml_for_model()
 
     if "adver_metrics" in model_dict[test_model].keys():
-        return jsonify({
+        return {
             "code": 200,
             "message": "模型的评估指标",
             "data": model_dict[test_model]["adver_metrics"],
-        })
+        }
     else:
-        return jsonify({
+        return {
             "code": 400,
             "message": "模型不对",
             "data": {}
-        })
+        }
 
 
 ## mode9: 生成的对抗样本zip包下载
+@cross_origin()
 @app.route('/adver_gen_download', methods=['GET'])
 def adver_gen_download():
-    mission_id = request.args.get('mission_id')
+
+    print_info()
+    param = request_params()
+    mission_id = param.get("mission_id")
+
     mission_manager = MissionManager('Adver_gen_missions_DBSM.csv')
 
     '''
@@ -300,18 +395,22 @@ def adver_gen_download():
         zip_stream = download_zip_from_docker(zip_addr)
         return send_file(zip_stream, mimetype='application/zip', as_attachment=True, download_name=f"{mission_id}_result.zip")
     else :
-        return jsonify({
+        return {
             "code": 400,
-            "message": "任务ID未识别",
-            "zipAddr": {}
-        })
+            "message": "任务ID未识别"
+        }
 
 
 ## mode8: 停止对抗样本生成
+@cross_origin()
 @app.route('/adver_gen_stop', methods=['POST'])
 def adver_gen_stop():
     print("Received POST request")
-    mission_id = request.form.get('mission_id', default=None, type=str)
+
+    print_info()
+    param = request_params()
+    mission_id = param.get("mission_id")
+
     mission_manager = MissionManager('Adver_gen_missions_DBSM.csv')   ###   这个csv用来记录对抗样本生成任务
 
     '''
@@ -321,11 +420,13 @@ def adver_gen_stop():
         '''
 
     if mission_id not in mission_manager.missions.keys():
-        return jsonify({
+        return {
             "code": 400,
             "message": "任务不存在，id有误",
-            "data": {"status": 2},
-        })
+            "data": {
+                "status": 2
+            }
+        }
     else:
         mission = mission_manager.missions[mission_id]
         mission.update_status(1)
@@ -337,16 +438,22 @@ def adver_gen_stop():
         shell_path = f"{container_id}:{script_path}"
         exec_docker_container_shell(shell_path)
 
-        return jsonify({
+        return {
             "code": 200,
             "message": "任务已停止",
-            "data": {"status": 1},
-        })
+            "data": {
+                "status": 1
+            }
+        }
 
 ## mode7: 对抗样本生成过程中数据轮询
+@cross_origin()
 @app.route('/adver_gen', methods=['GET'])
 def adver_gen_get():
-    mission_id = request.args.get('mission_id')
+
+    print_info()
+    param = request_params()
+    mission_id = param.get("mission_id")
 
     '''
            根据docker引擎实际情况修改run.sh
@@ -355,11 +462,14 @@ def adver_gen_get():
         '''
     mission_manager = MissionManager('Adver_gen_missions_DBSM.csv')
     if mission_id not in mission_manager.missions.keys():
-        return jsonify({
+        return {
             "code": 400,
             "message": "任务不存在，id有误",
-            "data": {"status": 2},
-        })
+            "data": {
+                "dataNum": 0,
+                "status": 2
+            }
+        }
     else:
         model_dict = init_read_yaml_for_model_duplicate()
         docker_shell_run = model_dict[mission_manager.missions[mission_id].test_model].get('docker_container_run_query_shell')
@@ -367,25 +477,49 @@ def adver_gen_get():
         shell_path = f"{container_id}:{script_path}"
         data_num = exec_docker_container_shell(shell_path)
 
-        return jsonify({
+        return {
             "code": 200,
             "message": "任务执行中",
             "data": {
-                #"dataNum": 2000,
                 "dataNum": data_num,
                 "status": mission_manager.missions[mission_id].mission_status},
-        })
+        }
 
 ## mode6: 启动对抗样本生成
+@cross_origin()
 @app.route('/adver_gen', methods=['POST'])
 def adver_gen():
     print("Received POST request")
-    mission_id = request.form.get('mission_id', default=None, type=str)
-    test_model = request.form.get('test_model', default=None, type=str)
-    test_weight = request.form.get('test_weight', default=None, type=str)
-    test_seed = request.form.get('test_seed', default=None, type=str)
-    test_method = request.form.get('test_method', default=None, type=str)
-    timeout = request.form.get('timeout', default=None, type=int)
+
+    print_info()
+    param = request_params()
+    get_url()
+    mission_id = param.get("mission_id")
+    test_model = param.get("test_model")
+    test_weight = param.get("test_weight")
+    test_method = param.get("test_method")
+    timeout = int(param.get("timeout"))  # unit is second
+
+    file_paths = []
+
+    if 'test_seed' not in request.files:
+        return {
+            "code": 400,
+            "message": "POST参数有误",
+            "data": {
+                "status": 2
+            }
+        }
+    files = request.files.getlist('test_seed')  # 获取多个文件
+    for file in files:
+        if file.filename == '' or not str(file.filename).endswith(".zip"):
+            continue
+        filename = secure_filename(file.filename)  # 防止非法文件名
+        file_path = os.path.abspath(os.path.join("./upload", filename))
+        file.save(file_path)  # 保存文件
+        file_paths.append(file_path)
+
+    test_seed = ",".join(file_paths)
 
     mission_manager = MissionManager('Adver_gen_missions_DBSM.csv')
     '''
@@ -395,11 +529,13 @@ def adver_gen():
         '''
 
     if mission_id in mission_manager.missions.keys():   ###  if same mission id is executed twice, will report error
-        return jsonify({
+        return {
             "code": 400,
             "message": "该任务已存在",
-            "data": {"status": 2},
-        })
+            "data": {
+                "status": 2
+            }
+        }
 
     if all([mission_id, test_model, test_weight, test_seed, test_method, timeout]):
         mission_status = 2
@@ -422,44 +558,54 @@ def adver_gen():
 
         exec_docker_container_shell(shell_path)
 
-        return jsonify({
+        return {
             "code": 200,
             "message": "任务已开始执行",
-            "data": {"status": 1},
-        })
+            "data": {
+                "status": 1
+            }
+        }
     else:
-        return jsonify({
+        return {
             "code": 400,
             "message": "POST参数有误",
-            "data": {"status": 2},
-        })
+            "data": {
+                "status": 2
+            }
+        }
 
 ## mode5: 获取被测对象的模型权重文件列表、对抗方法列表的数据源
+@cross_origin()
 @app.route('/check_model', methods=['GET'])
 def check_model():
-    test_model = request.args.get('test_model')
+    print_info()
+    param = request_params()
+    test_model = param.get("test_model")
 
     model_dict = init_read_yaml_for_model_duplicate()
 
     if model_dict[test_model]['weight_download_addr']:
-        return jsonify({
+        return {
             "code": 200,
             "message": "模型权重文件、对抗方法列表",
              "weightList": model_dict[test_model]['weight_name'],
             "methodList": model_dict[test_model]['test_method']
-        })
+        }
     else :
-        return jsonify({
+        return {
             "code": 400,
             "message": "模型权重文件、对抗方法列表收集失败",
-            "weightList": {},
-            "methodList": {}
-        })
+            "weightList": [],
+            "methodList": []
+        }
 
 ## mode4: 被测对象的模型权重文件zip包下载
+@cross_origin()
 @app.route('/weight_download', methods=['GET'])
 def weight_download():
-    test_model = request.args.get('test_model')
+    print_info()
+    param = request_params()
+    test_model = param.get("test_model")
 
     model_dict = init_read_yaml_for_model_duplicate()
 
@@ -485,78 +631,73 @@ def weight_download():
         #      "weightDown": model_dict[test_model]['download_addr']
         # })
     else :
-        return jsonify({
+        return {
             "code": 400,
-            "message": "模型权重文件下载类型不对",
-            "weightDown": {}
-        })
+            "message": "模型权重文件下载类型不对"
+        }
 
 ## mode3: 被测对象的模型权重文件数量
+@cross_origin()
 @app.route('/weight_number', methods=['GET'])
 def weight_number():
-    test_model = request.args.get('test_model')
+
+    print_info()
+    param = request_params()
+    test_model = param.get("test_model")
 
     model_dict = init_read_yaml_for_model_duplicate()
 
     if isinstance(model_dict[test_model]['weight_number'], int):
-        return jsonify({
+        return {
             "code": 200,
             "message": "模型权重文件数量",
-             "weightNum": model_dict[test_model]['weight_number']
-        })
+            "data": {
+                "weightNum": model_dict[test_model]['weight_number']
+            }
+        }
 
-    elif isinstance(model_dict[test_model]['weight_number'], str):
-        return jsonify({
-            "code": 400,
-            "message": "请换个模型，这个没有权重",
-             "weightNum": model_dict[test_model]['weight_number']
-        })
-    else :
-        return jsonify({
-            "code": 400,
-            "message": "模型权重文件数量类型不是int, please check codes",
-            "weightNum": {}
-        })
+    return {
+        "code": 400,
+        "message": "请换个模型，这个没有权重",
+        "data": {
+            "weightNum": 0
+        }
+    }
 
 ## mode2: 获取内置依赖库及其版本的数据源
+@cross_origin()
 @app.route('/depn_lib', methods=['GET'])
 def depn_lib():
+
+    print_info()
+
     model_dict = init_read_yaml_for_model()
 
     data = [{"targetName": key, "versionList": \
         [f"{kk}-{str(vv)}" for kk, vv in model_dict[key]["dependents"].items()]} for key in model_dict.keys()]
 
-    if isinstance(data, list):
-        return jsonify({
-            "code": 200,
-            "message": "内置依赖库及其版本信息",
-            "data": data
-        })
-    else:
-        return jsonify({
-            "code": 400,
-            "message": "内置依赖库获取失败",
-            "data": {}
-        })
+    return {
+        "code": 200,
+        "message": "内置依赖库及其版本信息",
+        "data": data
+    }
 
 ##  mode1:获取被测对象的数据源
+@cross_origin()
 @app.route('/test_model', methods=['GET'])
 def test_model():
+
+    print_info()
+
     model_dict = init_read_yaml_for_model()
+
     data = list(model_dict.keys())
 
-    if isinstance(data, list):
-        return jsonify({
+    return {
         "code": 200,
         "message": "被测对象的详细信息",
         "data": data
-        })
-    else:
-        return jsonify({
-            "code": 400,
-            "message": "未能读取到模型列表",
-            "data": {}
-        })
+    }
 
 if __name__ == "__main__":
     app.run(debug=True)
