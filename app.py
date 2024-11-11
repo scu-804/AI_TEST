@@ -224,7 +224,7 @@ def adver_gen_post():
 	# todo mock 数据
 	# ........ 启动任务 todo
 	import time
-	ctx[f"task_{mission_id}"] = (time.time(), timeout, 0, 2)  # (开始时间，超时时间，生成数量，任务状态[进行中])
+	ctx[f"task_{mission_id}"] = (time.time(), int(timeout), 0, 2)  # (开始时间，超时时间，生成数量，任务状态[进行中])
 	# mock end
 	return {
 		"code": 200,
