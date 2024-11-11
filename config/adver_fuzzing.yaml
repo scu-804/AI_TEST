@@ -9,7 +9,7 @@
 #  download_addr: xxxx/path
 #  docker_container: xxx
 
-Vgg16:
+Vgg16_1:
   version:
   dependents:
     Pytorch: 1.1

@@ -1,0 +1,6 @@
+mission_id,test_model,test_weight,test_seed,test_method,timeout,mission_status
+123,VGG16,weightA,seed1,FGSM,3600,1
+12,Vgg16,weightA,seed1,FGSM,3600,2
+321,Vgg16,weightA,seed1,FGSM,3600,2
+1314,ResNet,resnet20_cifar.pt,cifar,FGSM,3600,2
+1344,ResNet,resnet20_cifar.pt,cifar,FGSM,3600,2
