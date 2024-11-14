@@ -438,7 +438,7 @@ def adver_gen_stop():
         model_dict = init_read_yaml_for_model_duplicate()
         docker_shell_run = model_dict[mission.test_model].get('docker_container_run_stop_shell')
         container_id, script_path = docker_shell_run.split(":", 1)
-        shell_path = f"{container_id}:{script_path}"
+        shell_path = f"{container_id}:{script_path} {mission_id}"
         exec_docker_container_shell(shell_path)
 
         return {
@@ -477,7 +477,7 @@ def adver_gen_get():
         model_dict = init_read_yaml_for_model_duplicate()
         docker_shell_run = model_dict[mission_manager.missions[mission_id].test_model].get('docker_container_run_query_shell')
         container_id, script_path = docker_shell_run.split(":", 1)
-        shell_path = f"{container_id}:{script_path}"
+        shell_path = f"{container_id}:{script_path} {mission_id}"
         data_num = exec_docker_container_shell(shell_path)
 
         return {
@@ -552,7 +552,7 @@ def adver_gen():
         container_id, script_path = docker_shell_run.split(":", 1)
         
         # 构建完整的命令：run.sh test_model test_weight test_seed test_method
-        shell_command = f"{script_path} {mission_id} {test_model} {test_weight} {test_seed} {test_method}"
+        shell_command = f"{script_path} {mission_id} {test_model} {test_weight} {test_seed} {test_method} {timeout}"
 
         # 拼接容器ID和命令
         shell_path = f"{container_id}:{shell_command}"
