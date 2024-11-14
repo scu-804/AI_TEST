@@ -550,7 +550,7 @@ def adver_gen():
         container_id, script_path = docker_shell_run.split(":", 1)
         
         # 构建完整的命令：run.sh test_model test_weight test_seed test_method
-        shell_command = f"{script_path} {mission_id} {test_model} {test_weight} {test_seed} {test_method}"
+        shell_command = f"{script_path} {mission_id} {test_model} {test_weight} {test_seed} {test_method} {timeout}"
 
         # 拼接容器ID和命令
         shell_path = f"{container_id}:{shell_command}"
