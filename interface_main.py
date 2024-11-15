@@ -77,7 +77,7 @@ def sec_enhance_weight_download():
         '''
         
     if enhance_id:
-        mission = enhance_manager.enhance_mission_dic[enhance_id]
+        mission = enhance_manager.enhance_mission_dict[enhance_id]
 
         model_dict = init_read_yaml_for_model_duplicate()
         zip_addr = model_dict[mission.test_model].get('enhance_download_addr')
