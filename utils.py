@@ -7,6 +7,7 @@ from functools import wraps
 import yaml
 
 import docker
+import subprocess
 
 def return_0_1(code: int =200 , message: str = "done", data: dict = {"v":"k"}):
     #  this code for returning response of POST(GET) with json format
@@ -94,6 +95,17 @@ def update_yaml():
     ## do we need this funcion?  To be added
     return 0
 
+def translate_test_method(method):
+    translations = {
+        "FGSM": "快速梯度符号法",
+        "PGD": "投影梯度下降",
+        "CW": "CW攻击",
+        "CW2": "CW2攻击",
+        "DeepFool": "深度愚弄法",
+        "fuzzing": "模糊测试"
+    }
+    return translations.get(method, method)
+
 def exec_docker_container_shell(shell_path:str) -> str:
     client = docker.from_env()
 
@@ -162,6 +174,31 @@ def multi_file_download_from_docker(file_paths:list) -> io.BytesIO:
     file_sream.seek(0)
 
     return file_sream
+
+def upload_files_to_docker(file_paths, container_id, target_path="/root/file"):
+
+    try:
+        subprocess.run(["docker", "exec", container_id, "mkdir", "-p", target_path], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to create directory in container: {e}")
+        return
+
+    # 拷贝文件到容器
+    for file_path in file_paths:
+        if not os.path.isfile(file_path):
+            print(f"File {file_path} does not exist or is not a file. Skipping...")
+            continue
+
+        try:
+            # 使用 docker cp 进行拷贝
+            subprocess.run(
+                ["docker", "cp", file_path, f"{container_id}:{target_path}"],
+                check=True
+            )
+            print(f"Uploaded {file_path} to container {container_id}:{target_path}")
+        except subprocess.CalledProcessError as e:
+            print(f"Failed to copy {file_path} to container: {e}")
+
 
 if __name__ == "__main__":
     data_dict = init_read_yaml_for_model()

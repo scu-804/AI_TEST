@@ -9,16 +9,48 @@
 #  download_addr: xxxx/path
 #  docker_container: xxx
 
-Vgg16_1:
+Vgg16_fuzz:
   version:
   dependents:
-    Pytorch: 1.1
-    Numpy: 2.2
-    Opencv: 1.0
+    tensorflow: 2.18.0
+    torch: 2.5.1
+    torchvision: 0.20.1
   test_method: [fuzzing]
-  weight_number: 3
-  weight_name: [name4, name5, name6]
-  download_addr: xxxx/path2
-  docker_container: xxx
-  adver_metrics: ["ACC", "ACTC", "ASS"]
+  weight_number: 1
+  weight_name: [model.pth]
+  #docker_container: XXXXX
+  weight_download_addr: ["761b46823a1b:/root/AItest/model/1/model.pth"]
+  result_download_addr: 761b46823a1b:/root/adv_sample/
+  enhance_download_addr: 761b46823a1b:/root/enhance/
+  docker_container_run_shell: 761b46823a1b:/root/bash/run.sh
+  docker_container_run_query_shell: 761b46823a1b:/root/bash/run_poll.sh
+  docker_container_run_stop_shell: 761b46823a1b:/root/bash/run_kill.sh
+  docker_container_evaluate_shell: 761b46823a1b:/root/bash/evaluation.sh
+  docker_container_evaluate_query_shell: 761b46823a1b:/root/bash/evaluation_poll.sh
+  docker_container_enchance_shell: 761b46823a1b:/root/bash/enchance.sh
+  docker_container_enchance_query_shell: 761b46823a1b:/root/bash/enchance_query.sh
+  docker_container_enchance_stop_shell: 761b46823a1b:/root/bash/enchance_stop.sh
+  adver_metrics: ["ACC"]
 
+DeepFace:
+  version:
+  dependents:
+    tensorflow: 2.18.0
+    torch: 2.5.1
+    torchvision: 0.20.1
+  test_method: [fuzzing]
+  weight_number: 1
+  weight_name: [model.h5]
+  #docker_container: XXXXX
+  weight_download_addr: ["761b46823a1b:/root/AItest/model/2/model.h5"]
+  result_download_addr: 761b46823a1b:/root/adv_sample/
+  enhance_download_addr: 761b46823a1b:/root/enhance/
+  docker_container_run_shell: 761b46823a1b:/root/bash/run.sh
+  docker_container_run_query_shell: 761b46823a1b:/root/bash/run_poll.sh
+  docker_container_run_stop_shell: 761b46823a1b:/root/bash/run_kill.sh
+  docker_container_evaluate_shell: 761b46823a1b:/root/bash/evaluation.sh
+  docker_container_evaluate_query_shell: 761b46823a1b:/root/bash/evaluation_poll.sh
+  docker_container_enchance_shell: 761b46823a1b:/root/bash/enchance.sh
+  docker_container_enchance_query_shell: 761b46823a1b:/root/bash/enchance_query.sh
+  docker_container_enchance_stop_shell: 761b46823a1b:/root/bash/enchance_stop.sh
+  adver_metrics: ["ACC"]

@@ -26,14 +26,12 @@
     docker_container_run_stop_shell: 4fedc50f276b:/root/run_kill.sh
     docker_container_evaluate_shell: 4fedc50f276b:/root/evaluation.sh
     docker_container_evaluate_query_shell: 4fedc50f276b:/root/evaluation_poll.sh
-    #docker_container_evaluate_query_shell: 4fedc50f276b:/root/eval1.sh
-    #docker_container_evaluate_query_shell: 4fedc50f276b:/roo0t/eval_kill.sh
-    #docker_container_enchance_shell: 5334338a5dfe:/root/enchance.sh
-    #docker_container_enchance_query_shell: 5334338a5dfe:/root/enchance_query.sh
-    #docker_container_enchance_stop_shell: 5334338a5dfe:/root/enchance_stop.sh
+    docker_container_enchance_shell: 4fedc50f276b:/root/enhance.sh
+    docker_container_enchance_query_shell: 4fedc50f276b:/root/enhance_poll.sh
+    docker_container_enchance_stop_shell: 4fedc50f276b:/root/enhance_kill.sh
     adver_metrics: ["ACC", "ACTC", "ASS", "ACAC", "ALDp", "PSD", "NTE"]
-  
-  VGG19:
+
+  Vgg19:
     version:
     dependents:
       torch: 1.6.0
@@ -44,19 +42,19 @@
     weight_name: [vgg19.pth]
     weight_download_addr: ["4fedc50f276b:/root/AISafety/Models/weights/vgg19.pth"]
     result_download_addr: 4fedc50f276b:/root/adv_sample/
-    #enhance_download_addr: xxxx:path3/
+    enhance_download_addr: 4fedc50f276b:root/retrain
     docker_container_run_shell: 4fedc50f276b:/root/run.sh
     docker_container_run_query_shell: 4fedc50f276b:/root/run_poll.sh
     docker_container_run_stop_shell: 4fedc50f276b:/root/run_kill.sh
     docker_container_evaluate_shell: 4fedc50f276b:/root/evaluation.sh
     docker_container_evaluate_query_shell: 4fedc50f276b:/root/evaluation_poll.sh
     #docker_container_evaluate_query_shell: 4fedc50f276b:/root/eval_kill.sh
-    #docker_container_enchance_shell: 5334338a5dfe:/root/enchance.sh
-    #docker_container_enchance_query_shell: 5334338a5dfe:/root/enchance_query.sh
-    #docker_container_enchance_stop_shell: 5334338a5dfe:/root/enchance_stop.sh
+    docker_container_enchance_shell: 4fedc50f276b:/root/enhance.sh
+    docker_container_enchance_query_shell: 4fedc50f276b:/root/enhance_poll.sh
+    docker_container_enchance_stop_shell: 4fedc50f276b:/root/enhance_kill.sh
     adver_metrics: ["ACC", "ACTC", "ASS", "ACAC", "ALDp", "PSD", "NTE"]
 
-  VGG16:
+  Vgg16:
     version:
     dependents:
       torch: 1.6.0
@@ -67,17 +65,14 @@
     weight_name: [vgg16.pth]
     weight_download_addr: ["4fedc50f276b:/root/AISafety/Models/weights/vgg16.pth"]
     result_download_addr: 4fedc50f276b:/root/adv_sample/
-    #enhance_download_addr: xxxx:path3/
+    enhance_download_addr: 4fedc50f276b:root/retrain
     docker_container_run_shell: 4fedc50f276b:/root/run.sh
     docker_container_run_query_shell: 4fedc50f276b:/root/run_poll.sh
     docker_container_run_stop_shell: 4fedc50f276b:/root/run_kill.sh
     docker_container_evaluate_shell: 4fedc50f276b:/root/evaluation.sh
     docker_container_evaluate_query_shell: 4fedc50f276b:/root/evaluation_poll.sh
     #docker_container_evaluate_query_shell: 5334338a5dfe:/root/evaluation_kill.sh
-    #docker_container_enchance_shell: 5334338a5dfe:/root/enchance.sh
-    #docker_container_enchance_query_shell: 5334338a5dfe:/root/enchance_query.sh
-    #docker_container_enchance_stop_shell: 5334338a5dfe:/root/enchance_stop.sh
+    docker_container_enchance_shell: 4fedc50f276b:/root/enhance.sh
+    docker_container_enchance_query_shell: 4fedc50f276b:/root/enhance_poll.sh
+    docker_container_enchance_stop_shell: 4fedc50f276b:/root/enhance_kill.sh
     adver_metrics: ["ACC", "ACTC", "ASS", "ACAC", "ALDp", "PSD", "NTE"]
-  
-  
- 
