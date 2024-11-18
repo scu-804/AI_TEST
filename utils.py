@@ -115,6 +115,7 @@ def exec_docker_container_shell(shell_path:str) -> str:
     #script_path = parts[1] + ' status'    ##  option: {start|stop|status|restart}
 
     script_path = parts[1]
+    cmd = f"bash -c '{script_path} &"
 
     # print("容器 ID:", container_id)
     # print("脚本路径:", script_path)
@@ -122,13 +123,13 @@ def exec_docker_container_shell(shell_path:str) -> str:
     os.system("docker start %s" % (container_id))
 
     container = client.containers.get(container_id)
-    exec_result = container.exec_run(cmd=script_path)
+    exec_result = container.exec_run(cmd=cmd, detach=True)
 
 
     if exec_result.exit_code == 0:
         # 将输出从bytes解码为字符串
         try:
-            # 尝试解码输出为 UTF-8 字符串，忽略解码错误
+            # 尝试解码输出为 UTF-8 字符串，忽略解码错误，若仍出现解码错误请直接返回原始字节数据
             output = exec_result.output.decode('utf-8', errors='ignore')
             print("Script output:", output)
             return output

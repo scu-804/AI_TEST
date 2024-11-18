@@ -556,7 +556,7 @@ def adver_gen():
             }
         }
 '''
-    test_seed = "1111"  # 还未约定好文件传输格式，暂且给个确定值，方便后面测试
+    test_seed = "FGSM"  # 还未约定好文件传输格式，暂且给个确定值，方便后面测试
     if all([mission_id, test_model, test_weight, test_seed, test_method, timeout]):
         mission_status = 2
         mission = Mission(mission_id, test_model, test_weight, test_seed, test_method, timeout, mission_status)
