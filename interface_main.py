@@ -75,7 +75,7 @@ def sec_enhance_weight_download():
 
         exec_docker_container_shell("xxxxx:/some/path/your_run1.sh")
         '''
-        
+
     if enhance_id:
         mission = enhance_manager.enhance_mission_dict[enhance_id]
 
@@ -227,7 +227,7 @@ def sec_enhance():
         mission_status = 2
         enhance_manager.update_enhance_mission_dict(mission_id, enhance_id)
         enhance_manager.save_missions_to_csv()
-        
+
 
         '''
                    根据docker引擎实际情况修改run.sh
@@ -556,7 +556,17 @@ def adver_gen():
             }
         }
 '''
-    test_seed = "FGSM"  # 还未约定好文件传输格式，暂且给个确定值，方便后面测试
+
+    if mission_id in mission_manager.missions.keys() and mission_manager.missions[mission_id].mission_status == 2:   
+        return {
+            "code": 400,
+            "message": "该任务运行中",
+            "data": {
+                 "status": 2
+            }
+       }
+
+    test_seed = "FGSM"  # TODO 还未约定好文件传输格式，暂且给个确定值，方便后面测试
     if all([mission_id, test_model, test_weight, test_seed, test_method, timeout]):
         mission_status = 2
         mission = Mission(mission_id, test_model, test_weight, test_seed, test_method, timeout, mission_status)
@@ -567,7 +577,7 @@ def adver_gen():
         docker_shell_run = model_dict[test_model].get('docker_container_run_shell')
 
         container_id, script_path = docker_shell_run.split(":", 1)
-        
+
         # 构建完整的命令：run.sh test_model test_weight test_seed test_method
         shell_command = f"{script_path} {mission_id} {test_model} {test_weight} {test_seed} {test_method} {timeout}"
 

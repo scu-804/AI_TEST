@@ -2,11 +2,14 @@ import csv
 from flask import request
 import uuid
 
-## 用一个类来保存任务。用一个csv文件充当数据库，来记录所有出现过的任务。
-## !!!!!!!  这里有一个隐患：任务的更新和记录是通过读取csv, 覆盖重写csv实现的。 !!!!!!!!
-## !!!!!!!  如果超过1个进程执行这个文件中的类管理函数，读写csv，可能会出现一些难以预料的错误。  !!!!!!!!
+
+# 用一个类来保存任务。用一个csv文件充当数据库，来记录所有出现过的任务。
+# !!!!!!!  这里有一个隐患：任务的更新和记录是通过读取csv, 覆盖重写csv实现的。 !!!!!!!!
+# !!!!!!!  如果超过1个进程执行这个文件中的类管理函数，读写csv，可能会出现一些难以预料的错误。  !!!!!!!!
+
 
 class Mission:
+
     def __init__(self, mission_id, test_model, test_weight, test_seed, test_method, timeout, mission_status):
         self.mission_id = mission_id
         self.test_model = test_model
@@ -22,7 +25,9 @@ class Mission:
         else:
             print('Mission is over!!  This status could not be changed !!')
 
+
 class MissionManager:
+
     def __init__(self, csv_file):
         self.missions = {}
         self.csv_file = csv_file
@@ -44,6 +49,8 @@ class MissionManager:
                     )
         except FileNotFoundError:
             pass  # CSV文件不存在则忽略
+        except BaseException as e:
+            pass  # 忽略错误
 
     def save_missions_to_csv(self):
         with open(self.csv_file, mode='w', newline='') as file:
@@ -65,6 +72,7 @@ class MissionManager:
     def add_or_update_mission(self, mission):
         self.missions[mission.mission_id] = mission
         self.save_missions_to_csv()
+
 
 def print_missions(csv_file='Adver_gen_missions_DBSM.csv'):
     try:
@@ -97,6 +105,7 @@ def print_enhance_missions(csv_file='Enhance_missions_DBSM.csv'):
 
 
 class Enhance_Mission(Mission):
+
     def __init__(self, mission_id, test_model, test_weight, test_seed, test_method, timeout, mission_status, enhance_id=None):
         super().__init__(mission_id, test_model, test_weight, test_seed, test_method, timeout, mission_status)
         self.enhance_id = enhance_id if enhance_id else None
@@ -162,7 +171,6 @@ class Enhance_MissionManager(MissionManager):
                     'enhance_id': mission.enhance_id
                 }
                 writer.writerow(row)
-
 
 
 if __name__ == "__main__":
