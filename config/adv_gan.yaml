@@ -1,0 +1,57 @@
+## Fill in data in the following format :
+#Vgg16:
+#  version:
+#  dependents:
+#    Pytorch: [1.1, 2.2, 3.3]
+#    Numpy: [1.1, 2.2]
+#    Opencv: [1.0]
+#  test_method: [FGSM, PGD, CW, DeepFool]
+#  download_addr: xxxx/path
+#  docker_container: xxx
+
+  alexnet:
+    version:
+    dependents:
+      torch: 1.6.0
+      Numpy: 1.19.2
+      pencv-contrib-python: 4.6.0.66
+    test_method: [GAN]
+    weight_number: 1
+    weight_name: [alexnet-owt-4df8aa71.pth]
+    weight_download_addr: ["710399fb0980:/root/.cache/torch/hub/checkpoints/alexnet-owt-4df8aa71.pth"]
+    result_download_addr: 710399fb0980:/home/necronone/GAN/advGAN_pytorch/output
+    #enhance_download_addr: xxxx:path3/
+    docker_container_run_shell: 710399fb0980:/home/necronone/GAN/advGAN_pytorch/run.sh
+    docker_container_run_query_shell: 710399fb0980:/home/necronone/GAN/advGAN_pytorch/run_poll.sh
+    docker_container_run_stop_shell: 710399fb0980:/home/necronone/GAN/advGAN_pytorch/run_kill.sh
+    docker_container_evaluate_shell: 710399fb0980:/home/necronone/GAN/advGAN_pytorch/eval.sh
+    docker_container_evaluate_query_shell: 710399fb0980:/home/necronone/GAN/advGAN_pytorch/eval_poll.sh
+    #docker_container_evaluate_query_shell: 4fedc50f276b:/root/eval1.sh
+    #docker_container_evaluate_query_shell: 4fedc50f276b:/roo0t/eval_kill.sh
+    #docker_container_enchance_shell: 5334338a5dfe:/root/enchance.sh
+    #docker_container_enchance_query_shell: 5334338a5dfe:/root/enchance_query.sh
+    #docker_container_enchance_stop_shell: 5334338a5dfe:/root/enchance_stop.sh
+    adver_metrics: ["ACC"]
+
+  facenet:
+    version:
+    dependents:
+      torch: 1.6.0
+      Numpy: 1.19.2
+      pencv-contrib-python: 4.6.0.66
+    test_method: [GAN]
+    weight_number: 1
+    weight_name: [20180402-114759-vggface2.pt]
+    weight_download_addr: ["710399fb0980:/root/.cache/torch/checkpoints/20180402-114759-vggface2.pt"]
+    result_download_addr: 710399fb0980:/home/necronone/GAN/advGAN_pytorch/output
+    #enhance_download_addr: xxxx:path3/
+    docker_container_run_shell: 710399fb0980:/home/necronone/GAN/advGAN_pytorch/run.sh
+    docker_container_run_query_shell: 710399fb0980:/home/necronone/GAN/advGAN_pytorch/run_poll.sh
+    docker_container_run_stop_shell: 710399fb0980:/home/necronone/GAN/advGAN_pytorch/run_kill.sh
+    docker_container_evaluate_shell: 710399fb0980:/home/necronone/GAN/advGAN_pytorch/eval.sh
+    docker_container_evaluate_query_shell: 710399fb0980:/home/necronone/GAN/advGAN_pytorch/eval_poll.sh
+    #docker_container_evaluate_query_shell: 4fedc50f276b:/root/eval_kill.sh
+    #docker_container_enchance_shell: 5334338a5dfe:/root/enchance.sh
+    #docker_container_enchance_query_shell: 5334338a5dfe:/root/enchance_query.sh
+    #docker_container_enchance_stop_shell: 5334338a5dfe:/root/enchance_stop.sh
+    adver_metrics: ["ACC"]

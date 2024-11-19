@@ -243,7 +243,7 @@ def sec_enhance():
         shell_command = f"{script_path} {mission_id} {test_model} {enhance_id}"
         #shell_command = f"{script_path}"
         shell_path = f"{container_id}:{shell_command}"
-        exec_docker_container_shell(shell_path)
+        exec_docker_container_shell_detach(shell_path)
 
         return {
             "code": 200,
@@ -303,6 +303,8 @@ def adver_eval_query():
             for metric in adver_metrics:
                 if line.startswith(metric):
                     metrics.append({"name": metric, "score": float(line.split(":")[1].strip())})
+                if line.startswith("status"):
+                    status = int(line.split(":")[1].strip())
         return {
             "code": 200,
             "message": "任务执行中",
@@ -313,7 +315,7 @@ def adver_eval_query():
                     #     {"name":"ACC", "score": 90},\
                     #     {"name":"ACTC", "score": 60},\
                     #     ],
-                "status": 1
+                "status": status
             }
         }
 
@@ -351,7 +353,7 @@ def adver_eval():
         container_id, script_path = dcoker_shell_run.split(":", 1)
         shell_command = f"{script_path} {mission_id}"
         shell_path = f"{container_id}:{shell_command}"
-        res = exec_docker_container_shell(shell_path)
+        res = exec_docker_container_shell_detach(shell_path)
 
         return {
             "code": 200,
@@ -588,7 +590,7 @@ def adver_gen():
 
         upload_files_to_docker(file_paths, container_id)
 
-        exec_docker_container_shell(shell_path)
+        exec_docker_container_shell_detach(shell_path)
 
         return {
             "code": 200,
