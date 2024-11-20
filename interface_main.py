@@ -633,16 +633,20 @@ def check_model():
         return {
             "code": 200,
             "message": "模型权重文件、对抗方法列表",
-            "weightList": model_dict[test_model]['weight_name'],
-            #"methodList": model_dict[test_model]['test_method']
-            "methodList": test_method_list
+            "data": {
+                "weightList": model_dict[test_model]['weight_name'],
+                #"methodList": model_dict[test_model]['test_method']
+                "methodList": test_method_list
+            }
         }
     else :
         return {
             "code": 400,
             "message": "模型权重文件、对抗方法列表收集失败",
-            "weightList": [],
-            "methodList": []
+            "data": {
+                "weightList": [],
+                "methodList": []
+            }
         }
 
 ## mode4: 被测对象的模型权重文件zip包下载
