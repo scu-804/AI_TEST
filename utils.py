@@ -8,6 +8,8 @@ import yaml
 
 import docker
 import subprocess
+import threading
+import time
 
 
 def return_0_1(code: int =200 , message: str = "done", data: dict = {"v":"k"}):
@@ -73,6 +75,7 @@ def init_read_yaml_for_model():
                 update_dict_1_level(data_dict, new_data)
 
     # print(data_dict)
+    data_dict = replace_param(data_dict)
     return data_dict
 
 
@@ -92,6 +95,7 @@ def init_read_yaml_for_model_duplicate():
                 update_dict_2_level(data_dict, new_data)
 
     # print(data_dict)
+    data_dict = replace_param(data_dict)
     return data_dict
 
 
@@ -112,11 +116,30 @@ def translate_test_method(method):
     return translations.get(method, method)
 
 
-def exec_docker_container_shell_detach(shell_path:str) -> str:
+def get_container_id(container_name, client=None):
+    if client is None:
+        client = docker.from_env()
+    name_id = {}
+    # 列出所有运行中的容器
+    containers = client.containers.list(all=True)
+    for container in containers:
+        # print(container.id, container.image, container.status, container.name)
+        name_id[container.name] = container.id
+    # print(name_id)
+    if container_name in name_id:
+        return name_id[container_name]
+    raise BaseException(f"Not found container whit name {container_name}")
+
+
+def exec_docker_container_shell_detach(shell_path: str) -> str:
     client = docker.from_env()
 
     parts = shell_path.split(":")
-    container_id = parts[0]
+    container_name = parts[0]
+
+    container_id = get_container_id(container_name, client)
+
+    print(f"container_name: {container_name}, container_id: {container_id}")
 
     script_path = parts[1]
     cmd = f"bash -c '{script_path} &'"
@@ -124,12 +147,18 @@ def exec_docker_container_shell_detach(shell_path:str) -> str:
     os.system("docker start %s" % (container_id))
 
     container = client.containers.get(container_id)
+
+    print(f"script_path: {cmd}")
+
     exec_result = container.exec_run(cmd=cmd, detach=True)
 
     if exec_result.exit_code == 0:
         # 将输出从bytes解码为字符串
         try:
             # 尝试解码输出为 UTF-8 字符串，忽略解码错误，若仍出现解码错误请直接返回原始字节数据
+            if isinstance(exec_result.output, str):
+                print(exec_result.output)
+                return exec_result.output
             output = exec_result.output.decode('utf-8', errors='ignore')
             print("Script output:", output)
             return output
@@ -143,22 +172,89 @@ def exec_docker_container_shell_detach(shell_path:str) -> str:
         error_message = f"Script execution failed with exit code: {exec_result.exit_code}\nError output: {exec_result.output}"
         return error_message
 
-def exec_docker_container_shell(shell_path:str) -> str:
+
+def container_run_cmd(res: list, cmd, ctn):
+    exec_result = ctn.exec_run(cmd=cmd)
+    if exec_result.exit_code == 0:
+        # 将输出从bytes解码为字符串
+        try:
+            if isinstance(exec_result.output, str):
+                print(exec_result.output)
+                return exec_result.output
+            # 尝试解码输出为 UTF-8 字符串，忽略解码错误
+            output = exec_result.output.decode('utf-8', errors='ignore')
+            print("Script output:", output)
+            res.append(output)
+            return output
+        except UnicodeDecodeError:
+            # 如果解码失败，返回原始字节数据
+            print("Received non-UTF-8 output")
+            res.append(exec_result.output)
+            return exec_result.output
+    else:
+        print("Script execution failed with exit code:", exec_result.exit_code)
+        print("Error output:", exec_result.output.decode('utf-8'))
+        error_message = f"Script execution failed with exit code: {exec_result.exit_code}\nError output: {exec_result.output.decode('utf-8')}"
+        res.append(error_message)
+        return error_message
+
+
+def exec_docker_container_shell_detach_v2(shell_path: str) -> str:
     client = docker.from_env()
 
     parts = shell_path.split(":")
-    container_id = parts[0]
+
+    container_name = parts[0]
+
+    container_id = get_container_id(container_name, client)
+
+    script_path = parts[1]
+
+    # 启动docker
+    os.system(f"docker start {container_id}")
+
+    print(f"docker:{container_id} run cmd: {script_path}")
+
+    container = client.containers.get(container_id)
+
+    wait_time = 5  # 等待5秒
+    result = []
+    threading.Thread(target=container_run_cmd, args=(result, script_path, container)).start()
+
+    time0 = time.time()
+
+    while time.time() - time0 < wait_time:
+        if len(result) > 0:
+            return result[0]
+        time.sleep(0.2)
+    return "process is  running"
+
+
+def exec_docker_container_shell(shell_path: str) -> str:
+    client = docker.from_env()
+
+    parts = shell_path.split(":")
+
+    container_name = parts[0]
+
+    container_id = get_container_id(container_name, client)
 
     script_path = parts[1]
 
     os.system("docker start %s" % (container_id))
 
     container = client.containers.get(container_id)
+
+    print(f"script_path: {script_path}")
+
     exec_result = container.exec_run(cmd=script_path)
 
     if exec_result.exit_code == 0:
         # 将输出从bytes解码为字符串
         try:
+            if isinstance(exec_result.output, str):
+                print(exec_result.output)
+                return exec_result.output
             # 尝试解码输出为 UTF-8 字符串，忽略解码错误
             output = exec_result.output.decode('utf-8', errors='ignore')
             print("Script output:", output)
@@ -173,7 +269,8 @@ def exec_docker_container_shell(shell_path:str) -> str:
         error_message = f"Script execution failed with exit code: {exec_result.exit_code}\nError output: {exec_result.output.decode('utf-8')}"
         return error_message
 
-def download_zip_from_docker(download_addr:str) -> io.BytesIO:
+
+def download_zip_from_docker(download_addr: str) -> io.BytesIO:
     container_id, zip_path = download_addr.split(":")
 
     client = docker.from_env()
@@ -188,7 +285,7 @@ def download_zip_from_docker(download_addr:str) -> io.BytesIO:
     return file_stream
 
 
-def multi_file_download_from_docker(file_paths:list) -> io.BytesIO:
+def multi_file_download_from_docker(file_paths: list) -> io.BytesIO:
     client = docker.from_env()
     container_id = file_paths[0].split(":")[0]
     container = client.containers.get(container_id)
@@ -233,8 +330,39 @@ def upload_files_to_docker(file_paths, container_id, target_path="/root/file"):
             print(f"Failed to copy {file_path} to container: {e}")
 
 
+def replace_param(data_dict: dict, search_pool=None):
+    """
+    替换${}占位符参数
+    :param data_dict:
+    :return:
+    """
+    if search_pool is None:
+        search_pool = data_dict
+    ks = data_dict.keys()
+    for k in ks:
+        v = data_dict.get(k)
+        if isinstance(v, str):
+            while 0 <= v.find("${") < v.find("}"):
+                start = v.find("${")
+                end = v.find("}")
+                rk = v[start+2:end]
+                rv = search_pool
+                for it in rk.split("."):
+                    rv = rv.get(it)
+                rk = "${" + rk + "}"
+                nv = v.replace(rk, rv)
+                data_dict[k] = nv
+                v = data_dict.get(k)
+        elif isinstance(v, dict):
+            replace_param(v, search_pool)
+    return data_dict
+
+
 if __name__ == "__main__":
     data_dict = init_read_yaml_for_model()
+    replace_param(data_dict)
+    print(data_dict["ResNet"])
+    print()
 
-    print(data_dict["Vgg16"]["docker_container"])
-    exec_docker_container_shell(data_dict["Vgg16"]["docker_container"])
+    # print(data_dict["Vgg16"]["docker_container"])
+    # exec_docker_container_shell(data_dict["Vgg16"]["docker_container"])

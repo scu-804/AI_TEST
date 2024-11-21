@@ -243,7 +243,7 @@ def sec_enhance():
         shell_command = f"{script_path} {mission_id} {test_model} {enhance_id}"
         #shell_command = f"{script_path}"
         shell_path = f"{container_id}:{shell_command}"
-        exec_docker_container_shell_detach(shell_path)
+        exec_docker_container_shell_detach_v2(shell_path)
 
         return {
             "code": 200,
@@ -353,7 +353,7 @@ def adver_eval():
         container_id, script_path = dcoker_shell_run.split(":", 1)
         shell_command = f"{script_path} {mission_id}"
         shell_path = f"{container_id}:{shell_command}"
-        res = exec_docker_container_shell_detach(shell_path)
+        exec_docker_container_shell_detach_v2(shell_path)
 
         return {
             "code": 200,
@@ -497,13 +497,38 @@ def adver_gen_get():
         shell_path = f"{container_id}:{script_path} {mission_id}"
         data_num = exec_docker_container_shell(shell_path)
 
+        print(f"shell result: {data_num}")
+
+        # 尝试解析data_num
+        r_data_num = 0
+        r_status = mission_manager.missions[mission_id].mission_status
+        flag = True
+        if flag:
+            try:
+                r_data_num = int(data_num)
+                flag = False
+            except BaseException as e:
+                pass
+        if flag:
+            try:
+                if str(data_num).find("No running process found for mission_id") >= 0:
+                    r_status = 1
+                    r_data_num = None
+                else:
+                    r_data_num = int(str(data_num).split("\n")[0].replace("Datanum:", "").strip())
+                    r_status = int(str(data_num).split("\n")[1].replace("status:", "").strip())
+            except BaseException as e:
+                pass
+
         return {
             "code": 200,
             "message": "任务执行中",
             "data": {
-                "dataNum": data_num,
-                "status": mission_manager.missions[mission_id].mission_status},
+                "dataNum": r_data_num,
+                "status": r_status
+            }
         }
+
 
 ## mode6: 启动对抗样本生成
 @cross_origin()
@@ -590,7 +615,7 @@ def adver_gen():
 
         upload_files_to_docker(file_paths, container_id)
 
-        exec_docker_container_shell_detach(shell_path)
+        exec_docker_container_shell_detach_v2(shell_path)
 
         return {
             "code": 200,
@@ -749,6 +774,7 @@ def test_model():
         "data": data
     }
 
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False, host="0.0.0.0", port=8080)
 
