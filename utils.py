@@ -217,7 +217,7 @@ def exec_docker_container_shell_detach_v2(shell_path: str) -> str:
 
     container = client.containers.get(container_id)
 
-    wait_time = 5  # 等待5秒
+    wait_time = 2  # 等待2秒
     result = []
     threading.Thread(target=container_run_cmd, args=(result, script_path, container)).start()
 
