@@ -14,11 +14,10 @@ Pytorch:
     Pillow:  2.2
     Numpy: 1.1
     Opencv: 1.0
-  weight_number: 'This is a vulnerabilty dig mission, there is no weight_number!'
-  weight_name: 'This is a vulnerabilty dig mission, there is no weight_number!'
+  docker_container: "e79e933124e0"
+  shell_command: "./run_fuzz.sh"
   test_method: fuzz
   download_addr: xxxx/path
-  docker_container: xxx
 
 Tensorflow:
   version: 2.1
@@ -26,8 +25,73 @@ Tensorflow:
     Pillow: 2.2
     Numpy: 1.1
     Opencv: 1.0
-  weight_number: 'This is a vulnerabilty dig mission, there is no weight_number!'
-  weight_name: 'This is a vulnerabilty dig mission, there is no weight_number!'
+  docker_container: "62e559a6721b"
+  shell_command: "python fuzz_tensorflow.py"
   test_method: fuzz
   download_addr: xxxx/path
-  docker_container: xxx
+
+keras:
+  version: 2.1
+  dependents:
+    Pillow: 2.2
+    Numpy: 1.1
+    Opencv: 1.0
+  docker_container: "314ea4f77ed8"
+  shell_command: "python fuzz_keras.py"
+  test_method: fuzz
+  download_addr: xxxx/path
+
+numpy:
+  version: 2.1
+  dependents:
+    Pillow: 2.2
+    Numpy: 1.1
+    Opencv: 1.0
+  docker_container: "2074dcdc580e"
+  shell_command: "python3 fuzz_numpy.py"
+  test_method: fuzz
+  download_addr: xxxx/path
+
+opencv:
+  version: 2.1
+  dependents:
+    Pillow: 2.2
+    Numpy: 1.1
+    Opencv: 1.0
+  docker_container: "4a1f3ae9aeb6"
+  shell_command: "./generateusergallerycollage_fuzzer"
+  test_method: fuzz
+  download_addr: xxxx/path
+
+pandas:
+  version: 2.1
+  dependents:
+    Pillow: 2.2
+    Numpy: 1.1
+    Opencv: 1.0
+  docker_container: "1c0cf3ac9b49"
+  shell_command: "python3 fuzz_pandas.py"
+  test_method: fuzz
+  download_addr: xxxx/path
+
+  pillow:
+  version: 2.1
+  dependents:
+    Pillow: 2.2
+    Numpy: 1.1
+    Opencv: 1.0
+  docker_container: "721dbb429554"
+  shell_command: "./run_fuzz.sh"
+  test_method: fuzz
+  download_addr: xxxx/path
+
+  scipy:
+  version: 2.1
+  dependents:
+    Pillow: 2.2
+    Numpy: 1.1
+    Opencv: 1.0
+  docker_container: "e80bbf54414c"
+  shell_command: "python3 fuzz_scipy.py"
+  test_method: fuzz
+  download_addr: xxxx/path

@@ -58,8 +58,8 @@ def print_info():
 
 
 # ## there are several functions about interface POST(GET) key. Every key has a unique function
-## model19: 框架漏挖启动
-@app.route('/vul_dig', methhods=['POST'])
+## model17: 框架漏挖启动
+@app.route('/vul_dig', methods=['POST'])
 @vulndig_start_decorator(init_yaml_read_for_vulndig)
 def vuln_dig_start():
      mission_id = request.form.get('mission_id')
