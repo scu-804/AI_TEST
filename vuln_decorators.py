@@ -1,7 +1,6 @@
 from functools import wraps
 from flask import request,jsonify
 from vuln_service.start import start
-from vuln_service.info_read import info_read_json
 import logging
 
 logger = logging.getLogger(__name__)
@@ -45,33 +44,6 @@ def vulndig_start_decorator(yaml_reader):
             start(docker_container, shell_command)
 
             # 执行被装饰的接口逻辑
-            return func(*args, **kwargs)
-        return wrapper
-    return decorator
-
-def info_read_decorator():
-    def decorator(func):
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            # 从 kwargs 中获取 docker_container
-            docker_container = kwargs.get('docker_container')
-            if not docker_container:
-                return jsonify({
-                    "code": 400,
-                    "message": "docker_container 参数缺失",
-                    "data": {"status": 2},
-                })
-            try:
-                container_info = info_read_json(docker_container)
-            except Exception as e:
-                return jsonify({
-                    "code": 400,
-                    "message": f"获取容器信息失败: {str(e)}",
-                    "data": {"status": 2},
-                })
-
-            kwargs['container_info'] = container_info
-
             return func(*args, **kwargs)
         return wrapper
     return decorator

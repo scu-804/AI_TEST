@@ -8,6 +8,7 @@ from Misson_class import *
 from werkzeug.utils import secure_filename
 from vuln_decorators import *
 from vuln_service.info_read import info_read_json
+from vuln_service.__init__ import stop
 
 
 app = Flask(__name__)
@@ -59,6 +60,32 @@ def print_info():
 
 
 # ## there are several functions about interface POST(GET) key. Every key has a unique function
+## model19: 框架漏挖停止
+@app.route('/vul_dig_stop', methods=['POST'])
+def vuln_dig_stop():
+     mission_id = request.form.get('mission_id')
+     mission_manager = VulnDigMissionManager('Vuln_dig_missions_DBSM.csv')
+     if mission_id not in mission_manager.missions.keys():
+            return jsonify({
+            "code": 400,
+            "message": "任务不存在，id有误",
+            "data": {"status": 2},
+        })
+     mission = mission_manager.missions[mission_id]
+
+     docker_container = mission_manager.missions[mission_id].container_id
+     stop(docker_container)
+
+     mission.update_status(1)
+     mission_manager.save_missions_to_csv()
+
+     return jsonify({
+          "code": 200,
+          "message": "任务已停止",
+          "data": {"status": 1}
+     })
+
+
 ## model18: 框架漏挖过程数据轮询
 @app.route('/vul_dig', methods=['GET'])
 #@info_read_decorator()
@@ -74,7 +101,7 @@ def vuln_dig_query():
         })
      mission = mission_manager.missions[mission_id]
 
-     docker_container = mission_manager.missions[mission_id].docker_container
+     docker_container = mission_manager.missions[mission_id].container_id
      container_info = info_read_json(docker_container)
 
      mission_status = container_info["status"]
