@@ -1,0 +1,81 @@
+## Fill in data in the following format :
+#Vgg16:
+#  version:
+#  dependents:
+#    Pytorch: [1.1, 2.2, 3.3]
+#    Numpy: [1.1, 2.2]
+#    Opencv: [1.0]
+#  test_method: [FGSM, PGD, CW, DeepFool]
+#  download_addr: xxxx/path
+#  docker_container: xxx
+
+  ResNet:
+    docker_container_name: white_box_image
+    version:
+    dependents:
+      torch: 1.6.0
+      Numpy: 1.19.2
+      pencv-contrib-python: 4.6.0.66
+    test_method: [FGSM, PGD, CW2, DeepFool]
+    weight_number: 3
+    weight_name: [resnet20_cifar.pt,CIFAR10_PAT_enhanced.pt, CIFAR10_RAND_enhanced.pt]
+    weight_download_addr: ["${ResNet.docker_container_name}:/root/AISafety/Models/weights/resnet20_cifar.pt", "${ResNet.docker_container_name}:/root/AISafety/Models/weights/CIFAR10_PAT_enhanced.pt", "${ResNet.docker_container_name}:/root/AISafety/Models/weights/CIFAR10_PAT_enhanced.pt"]
+    result_download_addr: ${ResNet.docker_container_name}:/root/adv_sample/
+    #enhance_download_addr: xxxx:path3/
+    docker_container_run_shell: ${ResNet.docker_container_name}:/root/run.sh
+    docker_container_run_query_shell: ${ResNet.docker_container_name}:/root/run_poll.sh
+    docker_container_run_stop_shell: ${ResNet.docker_container_name}:/root/run_kill.sh
+    docker_container_evaluate_shell: ${ResNet.docker_container_name}:/root/evaluation.sh
+    docker_container_evaluate_query_shell: ${ResNet.docker_container_name}:/root/evaluation_poll.sh
+    docker_container_enchance_shell: ${ResNet.docker_container_name}:/root/enhance.sh
+    docker_container_enchance_query_shell: ${ResNet.docker_container_name}:/root/enhance_poll.sh
+    docker_container_enchance_stop_shell: ${ResNet.docker_container_name}:/root/enhance_kill.sh
+    adver_metrics: ["ACC", "ACTC", "ASS", "ACAC", "ALDp", "PSD", "NTE"]
+
+  Vgg19:
+    docker_container_name: white_box_image
+    version:
+    dependents:
+      torch: 1.6.0
+      Numpy: 1.19.2
+      pencv-contrib-python: 4.6.0.66
+    test_method: [FGSM, PGD, CW2, DeepFool]
+    weight_number: 1
+    weight_name: [vgg19.pth]
+    weight_download_addr: ["${Vgg19.docker_container_name}:/root/AISafety/Models/weights/vgg19.pth"]
+    result_download_addr: ${Vgg19.docker_container_name}:/root/adv_sample/
+    enhance_download_addr: ${Vgg19.docker_container_name}:root/retrain
+    docker_container_run_shell: ${Vgg19.docker_container_name}:/root/run.sh
+    docker_container_run_query_shell: ${Vgg19.docker_container_name}:/root/run_poll.sh
+    docker_container_run_stop_shell: ${Vgg19.docker_container_name}:/root/run_kill.sh
+    docker_container_evaluate_shell: ${Vgg19.docker_container_name}:/root/evaluation.sh
+    docker_container_evaluate_query_shell: ${Vgg19.docker_container_name}:/root/evaluation_poll.sh
+    #docker_container_evaluate_query_shell: ${Vgg19.docker_container_name}:/root/eval_kill.sh
+    docker_container_enchance_shell: ${Vgg19.docker_container_name}:/root/enhance.sh
+    docker_container_enchance_query_shell: ${Vgg19.docker_container_name}:/root/enhance_poll.sh
+    docker_container_enchance_stop_shell: ${Vgg19.docker_container_name}:/root/enhance_kill.sh
+    adver_metrics: ["ACC", "ACTC", "ASS", "ACAC", "ALDp", "PSD", "NTE"]
+
+  Vgg16:
+    docker_container_name: white_box_image
+    version:
+    dependents:
+      torch: 1.6.0
+      Numpy: 1.19.2
+      pencv-contrib-python: 4.6.0.66
+    test_method: [FGSM, PGD, CW2, DeepFool]
+    weight_number: 1
+    weight_name: [vgg16.pth]
+    weight_download_addr: ["${Vgg16.docker_container_name}:/root/AISafety/Models/weights/vgg16.pth"]
+    result_download_addr: ${Vgg16.docker_container_name}:/root/adv_sample/
+    enhance_download_addr: ${Vgg16.docker_container_name}:root/retrain
+    docker_container_run_shell: ${Vgg16.docker_container_name}:/root/run.sh
+    docker_container_run_query_shell: ${Vgg16.docker_container_name}:/root/run_poll.sh
+    docker_container_run_stop_shell: ${Vgg16.docker_container_name}:/root/run_kill.sh
+    docker_container_evaluate_shell: ${Vgg16.docker_container_name}:/root/evaluation.sh
+    docker_container_evaluate_query_shell: ${Vgg16.docker_container_name}:/root/evaluation_poll.sh
+    #docker_container_evaluate_query_shell: ${Vgg16.docker_container_name}:/root/evaluation_kill.sh
+    docker_container_enchance_shell: ${Vgg16.docker_container_name}:/root/enhance.sh
+    docker_container_enchance_query_shell: ${Vgg16.docker_container_name}:/root/enhance_poll.sh
+    docker_container_enchance_stop_shell: ${Vgg16.docker_container_name}:/root/enhance_kill.sh
+    adver_metrics: ["ACC", "ACTC", "ASS", "ACAC", "ALDp", "PSD", "NTE"]

@@ -1,0 +1,21 @@
+Alexnet:
+  version:
+  dependents:
+    tensorflow: 2.4.1
+    Numpy: 1.22.3
+    pencv-contrib-python: 4.2.0
+  test_method: [genetic_algorithm]
+  weight_number: 1
+  weight_name: [saved_model.pb]
+  weight_download_addr: ["f4b846b38ccb:/root/adversial_attack/weights/classifier/saved_model.pb"]
+  result_download_addr: f4b846b38ccb:/root/adversial_attack/adversarial_samples/
+  enhance_download_addr: f4b846b38ccb:/root/adversial_attack/enhance_models/
+  docker_container_run_shell: f4b846b38ccb:/root/adversial_attack/run.sh
+  docker_container_run_query_shell: f4b846b38ccb:/root/adversial_attack/run_poll.sh
+  docker_container_run_stop_shell: f4b846b38ccb:/root/adversial_attack/run_kill.sh
+  docker_container_evaluate_shell: f4b846b38ccb:/root/adversial_attack/evaluation.sh
+  docker_container_evaluate_query_shell: f4b846b38ccb:/root/adversial_attack/evaluation_poll.sh
+  docker_container_enchance_shell: f4b846b38ccb:/root/adversial_attack/enhance.sh
+  docker_container_enchance_query_shell: f4b846b38ccb:/root/adversial_attack/enhance_poll.sh
+  docker_container_enchance_stop_shell: f4b846b38ccb:/root/adversial_attack/enhance_kill.sh
+  adver_metrics: ["ACC"]

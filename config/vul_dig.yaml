@@ -1,0 +1,33 @@
+## Fill in data in the following format :
+#Pytorch:
+#  version: 2.1
+#  dependents:
+#    Pillow: [1.1, 2.2, 3.3]
+#    Numpy: [1.1, 2.2]
+#    Opencv: [1.0]
+#  test_method: fuzz
+#  docker_container: xxx
+
+Pytorch:
+  version: 2.1
+  dependents:
+    Pillow:  2.2
+    Numpy: 1.1
+    Opencv: 1.0
+  weight_number: 'This is a vulnerabilty dig mission, there is no weight_number!'
+  weight_name: 'This is a vulnerabilty dig mission, there is no weight_number!'
+  test_method: fuzz
+  download_addr: xxxx/path
+  docker_container: xxx
+
+Tensorflow:
+  version: 2.1
+  dependents:
+    Pillow: 2.2
+    Numpy: 1.1
+    Opencv: 1.0
+  weight_number: 'This is a vulnerabilty dig mission, there is no weight_number!'
+  weight_name: 'This is a vulnerabilty dig mission, there is no weight_number!'
+  test_method: fuzz
+  download_addr: xxxx/path
+  docker_container: xxx

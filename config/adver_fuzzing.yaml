@@ -1,0 +1,58 @@
+## Fill in data in the following format :
+#Vgg16:
+#  version:
+#  dependents:
+#    Pytorch: [1.1, 2.2, 3.3]
+#    Numpy: [1.1, 2.2]
+#    Opencv: [1.0]
+#  test_method: [FGSM, PGD, CW, DeepFool]
+#  download_addr: xxxx/path
+#  docker_container: xxx
+
+Vgg16_fuzz:
+  docker_container_name: fuzzing_test
+  version:
+  dependents:
+    tensorflow: 2.18.0
+    torch: 2.5.1
+    torchvision: 0.20.1
+  test_method: [fuzzing]
+  weight_number: 1
+  weight_name: [model.pth]
+  #docker_container: XXXXX
+  weight_download_addr: ["${Vgg16_fuzz.docker_container_name}:/root/AItest/model/1/model.pth"]
+  result_download_addr: ${Vgg16_fuzz.docker_container_name}:/root/adv_sample/
+  enhance_download_addr: ${Vgg16_fuzz.docker_container_name}:/root/enhance/
+  docker_container_run_shell: ${Vgg16_fuzz.docker_container_name}:/root/bash/run.sh
+  docker_container_run_query_shell: ${Vgg16_fuzz.docker_container_name}:/root/bash/run_poll.sh
+  docker_container_run_stop_shell: ${Vgg16_fuzz.docker_container_name}:/root/bash/run_kill.sh
+  docker_container_evaluate_shell: ${Vgg16_fuzz.docker_container_name}:/root/bash/evaluation.sh
+  docker_container_evaluate_query_shell: ${Vgg16_fuzz.docker_container_name}:/root/bash/evaluation_poll.sh
+  docker_container_enchance_shell: ${Vgg16_fuzz.docker_container_name}:/root/bash/enchance.sh
+  docker_container_enchance_query_shell: ${Vgg16_fuzz.docker_container_name}:/root/bash/enchance_query.sh
+  docker_container_enchance_stop_shell: ${Vgg16_fuzz.docker_container_name}:/root/bash/enchance_stop.sh
+  adver_metrics: ["ACC"]
+
+DeepFace:
+  docker_container_name: fuzzing_test
+  version:
+  dependents:
+    tensorflow: 2.18.0
+    torch: 2.5.1
+    torchvision: 0.20.1
+  test_method: [fuzzing]
+  weight_number: 1
+  weight_name: [model.h5]
+  #docker_container: XXXXX
+  weight_download_addr: ["${DeepFace.docker_container_name}:/root/AItest/model/2/model.h5"]
+  result_download_addr: ${DeepFace.docker_container_name}:/root/adv_sample/
+  enhance_download_addr: ${DeepFace.docker_container_name}:/root/enhance/
+  docker_container_run_shell: ${DeepFace.docker_container_name}:/root/bash/run.sh
+  docker_container_run_query_shell: ${DeepFace.docker_container_name}:/root/bash/run_poll.sh
+  docker_container_run_stop_shell: ${DeepFace.docker_container_name}:/root/bash/run_kill.sh
+  docker_container_evaluate_shell: ${DeepFace.docker_container_name}:/root/bash/evaluation.sh
+  docker_container_evaluate_query_shell: ${DeepFace.docker_container_name}:/root/bash/evaluation_poll.sh
+  docker_container_enchance_shell: ${DeepFace.docker_container_name}:/root/bash/enchance.sh
+  docker_container_enchance_query_shell: ${DeepFace.docker_container_name}:/root/bash/enchance_query.sh
+  docker_container_enchance_stop_shell: ${DeepFace.docker_container_name}:/root/bash/enchance_stop.sh
+  adver_metrics: ["ACC"]
