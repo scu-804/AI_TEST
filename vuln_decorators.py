@@ -1,6 +1,7 @@
 from functools import wraps
 from flask import request,jsonify
-from vuln_service.start import start, info_read_json
+from vuln_service.start import start
+from vuln_service.info_read import info_read_json
 import logging
 
 logger = logging.getLogger(__name__)

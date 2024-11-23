@@ -7,6 +7,7 @@ from utils import *
 from Misson_class import *
 from werkzeug.utils import secure_filename
 from vuln_decorators import *
+from vuln_service.info_read import info_read_json
 
 
 app = Flask(__name__)
@@ -60,8 +61,8 @@ def print_info():
 # ## there are several functions about interface POST(GET) key. Every key has a unique function
 ## model18: 框架漏挖过程数据轮询
 @app.route('/vul_dig', methods=['GET'])
-@info_read_decorator()
-def vuln_dig_query(**kwargs):
+#@info_read_decorator()
+def vuln_dig_query():
      mission_id = request.args.get('mission_id')
      
      mission_manager = VulnDigMissionManager('Vuln_dig_missions_DBSM.csv')
@@ -74,9 +75,8 @@ def vuln_dig_query(**kwargs):
      mission = mission_manager.missions[mission_id]
 
      docker_container = mission_manager.missions[mission_id].docker_container
-     kwargs['docker_container'] = docker_container
+     container_info = info_read_json(docker_container)
 
-     container_info = kwargs.get('container_info')
      mission_status = container_info["status"]
      mission.update_status(mission_status)
 
