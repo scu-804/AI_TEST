@@ -172,6 +172,60 @@ class Enhance_MissionManager(MissionManager):
                 }
                 writer.writerow(row)
 
+class VulnDigMission:
+    def __init__(self, mission_id, container_id, lib_name, lib_version,status):
+        self.mission_id = mission_id
+        self.container_id = container_id
+        self.status = status
+        self.lib_name = lib_name
+        self.lib_version = lib_version
+
+    def update_status(self, new_status):
+        if int(self.status) != 1:  # 1 表示任务完成，状态无法更改
+            self.status = new_status
+        else:
+            print('Mission is over!! This status cannot be changed!!')
+
+class VulnDigMissionManager:
+    def __init__(self, csv_file):
+        self.missions = {}
+        self.csv_file = csv_file
+        self.load_missions_from_csv()
+
+    def load_missions_from_csv(self):
+        try:
+            with open(self.csv_file, mode='r', newline='') as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    self.missions[row['mission_id']] = VulnDigMission(
+                        row['mission_id'],
+                        row['container_id'],
+                        row['lib_name'],
+                        row['lib_version'],
+                        int(row['status'])
+                    )
+        except FileNotFoundError:
+            pass  # 如果CSV文件不存在，忽略错误
+
+    def save_missions_to_csv(self):
+        with open(self.csv_file, mode='w', newline='') as file:
+            fieldnames = ['mission_id', 'container_id', 'status']
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+            writer.writeheader()
+            for mission in self.missions.values():
+                row = {
+                    'mission_id': mission.mission_id,
+                    'container_id': mission.container_id,
+                    'lib_name': mission.lib_name,
+                    'lib_version': mission.lib_version,
+                    'status': str(mission.status)
+                }
+                writer.writerow(row)
+
+    def add_or_update_mission(self, mission):
+        self.missions[mission.mission_id] = mission
+        self.save_missions_to_csv()
+
 
 if __name__ == "__main__":
     enhance_manager = Enhance_MissionManager('Adver_gen_missions_DBSM.csv')

@@ -6,6 +6,7 @@ import os
 from utils import *
 from Misson_class import *
 from werkzeug.utils import secure_filename
+from vuln_decorators import vulndig_start_decorator
 
 
 app = Flask(__name__)
@@ -57,6 +58,30 @@ def print_info():
 
 
 # ## there are several functions about interface POST(GET) key. Every key has a unique function
+## model19: 框架漏挖启动
+@app.route('/vul_dig', methhods=['POST'])
+@vulndig_start_decorator(init_yaml_read_for_vulndig)
+def vuln_dig_start():
+     mission_id = request.form.get('mission_id')
+     lib_name = request.form.get('lib_name')
+     lib_version = request.form.get('lib_version')
+
+    #  vuln_dict = init_yaml_read_for_vulndig()
+    #  docker_container = vuln_dict[lib_name].get('docker_container')
+    #  shell_command = vuln_dict[lib_name].get('shell_command')
+
+     mission_manager = VulnDigMissionManager('Vuln_dig_missions_DBSM.csv')
+     mission_status = 2
+     mission = VulnDigMission(mission_id, lib_name, lib_version, mission_status)
+     mission_manager.add_or_update_mission(mission)
+
+     return jsonify({
+            "code": 200,
+            "message": "任务已开始执行",
+            "data": {
+                "status": 1
+            }
+        })
 
 
 ## mode16: 安全加固任务的模型权重文件zip包下载
