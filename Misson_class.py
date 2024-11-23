@@ -173,10 +173,10 @@ class Enhance_MissionManager(MissionManager):
                 writer.writerow(row)
 
 class VulnDigMission:
-    def __init__(self, mission_id, container_id, lib_name, lib_version,status):
+    def __init__(self, mission_id, container_id, lib_name, lib_version,mission_status):
         self.mission_id = mission_id
         self.container_id = container_id
-        self.status = status
+        self.status = mission_status
         self.lib_name = lib_name
         self.lib_version = lib_version
 
@@ -209,7 +209,7 @@ class VulnDigMissionManager:
 
     def save_missions_to_csv(self):
         with open(self.csv_file, mode='w', newline='') as file:
-            fieldnames = ['mission_id', 'container_id', 'status']
+            fieldnames = ['mission_id', 'container_id', 'lib_name', 'lib_version','status']
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
             for mission in self.missions.values():

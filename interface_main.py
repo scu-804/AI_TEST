@@ -6,7 +6,7 @@ import os
 from utils import *
 from Misson_class import *
 from werkzeug.utils import secure_filename
-from vuln_decorators import vulndig_start_decorator
+from vuln_decorators import *
 
 
 app = Flask(__name__)
@@ -58,6 +58,37 @@ def print_info():
 
 
 # ## there are several functions about interface POST(GET) key. Every key has a unique function
+## model18: 框架漏挖过程数据轮询
+@app.route('/vul_dig', methods=['GET'])
+@info_read_decorator()
+def vuln_dig_query(**kwargs):
+     mission_id = request.args.get('mission_id')
+     
+     mission_manager = VulnDigMissionManager('Vuln_dig_missions_DBSM.csv')
+     if mission_id not in mission_manager.missions.keys():
+            return jsonify({
+            "code": 400,
+            "message": "任务不存在，id有误",
+            "data": {"status": 2},
+        })
+     mission = mission_manager.missions[mission_id]
+
+     docker_container = mission_manager.missions[mission_id].docker_container
+     kwargs['docker_container'] = docker_container
+
+     container_info = kwargs.get('container_info')
+     mission_status = container_info["status"]
+     mission.update_status(mission_status)
+
+     mission_manager.save_missions_to_csv()
+
+     return jsonify({
+          "code": 200,
+          "message": "框架漏挖执行中",
+          "data": container_info
+     })
+
+
 ## model17: 框架漏挖启动
 @app.route('/vul_dig', methods=['POST'])
 @vulndig_start_decorator(init_yaml_read_for_vulndig)
@@ -66,13 +97,13 @@ def vuln_dig_start():
      lib_name = request.form.get('lib_name')
      lib_version = request.form.get('lib_version')
 
-    #  vuln_dict = init_yaml_read_for_vulndig()
-    #  docker_container = vuln_dict[lib_name].get('docker_container')
+     vuln_dict = init_yaml_read_for_vulndig()
+     docker_container = vuln_dict[lib_name].get('docker_container')
     #  shell_command = vuln_dict[lib_name].get('shell_command')
 
      mission_manager = VulnDigMissionManager('Vuln_dig_missions_DBSM.csv')
      mission_status = 2
-     mission = VulnDigMission(mission_id, lib_name, lib_version, mission_status)
+     mission = VulnDigMission(mission_id, docker_container,lib_name, lib_version, mission_status)
      mission_manager.add_or_update_mission(mission)
 
      return jsonify({
