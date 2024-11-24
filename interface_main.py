@@ -829,7 +829,7 @@ def depn_lib():
 
     print_info()
 
-    model_dict = init_read_yaml_for_model()
+    model_dict = init_yaml_read_for_vulndig()
 
     data = [{"targetName": key, "versionList": \
         [f"{kk}-{str(vv)}" for kk, vv in model_dict[key]["dependents"].items()]} for key in model_dict.keys()]
