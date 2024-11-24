@@ -9,7 +9,7 @@
 #  download_addr: xxxx/path
 #  docker_container: xxx
 
-  alexnet:
+  Alexnet_GAN:
     docker_container_name: gan_test
     version:
     dependents:
@@ -34,7 +34,7 @@
     #docker_container_enchance_stop_shell: 5334338a5dfe:/root/enchance_stop.sh
     adver_metrics: ["ACC"]
 
-  facenet:
+  Facenet:
     docker_container_name: gan_test
     version:
     dependents:

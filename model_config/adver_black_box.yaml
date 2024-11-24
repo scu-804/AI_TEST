@@ -1,4 +1,4 @@
-Alexnet:
+Alexnet_black_box:
   version:
   dependents:
     tensorflow: 2.4.1
