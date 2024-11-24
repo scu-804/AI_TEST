@@ -74,7 +74,7 @@ def init_read_yaml_for_model():
                 new_data = yaml.safe_load(yaml_file)
                 update_dict_1_level(data_dict, new_data)
 
-    # print(data_dict)
+    print(data_dict)
     data_dict = replace_param(data_dict)
     return data_dict
 
@@ -376,10 +376,12 @@ def replace_param(data_dict: dict, search_pool=None):
 
 
 if __name__ == "__main__":
-    dict = init_yaml_read_for_vulndig()
-    print(dict)
-    print(dict["Pytorch"].get('docker_container'))
-    print(dict["Pytorch"]['docker_container'])
+    data_dict = init_read_yaml_for_model()
+    print(data_dict)
+    # dict = init_yaml_read_for_vulndig()
+    # print(dict)
+    # print(dict["Pytorch"].get('docker_container'))
+    # print(dict["Pytorch"]['docker_container'])
 
     # print(data_dict["Vgg16"]["docker_container"])
     # exec_docker_container_shell(data_dict["Vgg16"]["docker_container"])
