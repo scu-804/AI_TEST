@@ -59,38 +59,38 @@ def update_dict_2_level(original, new):
 
 
 def init_read_yaml_for_model():
-    yaml_file_path = './config/adver_white_box.yaml'
+    yaml_file_path = './model_config/adver_white_box.yaml'
 
     with open(yaml_file_path, 'r') as yaml_file:
         data_dict = yaml.safe_load(yaml_file)
 
     # print(data_dict)
 
-    new_data_dict = os.listdir("./config")
+    new_data_dict = os.listdir("./model_config")
     for item in new_data_dict:
         if item != 'adver_white_box.yaml':
             # print(item)
-            with open(os.path.join("./config", item)) as yaml_file:
+            with open(os.path.join("./model_config", item)) as yaml_file:
                 new_data = yaml.safe_load(yaml_file)
                 update_dict_1_level(data_dict, new_data)
 
-    # print(data_dict)
+    print(data_dict)
     data_dict = replace_param(data_dict)
     return data_dict
 
 
 def init_read_yaml_for_model_duplicate():
-    yaml_file_path = './config/adver_white_box.yaml'
+    yaml_file_path = './model_config/adver_white_box.yaml'
 
     with open(yaml_file_path, 'r') as yaml_file:
         data_dict = yaml.safe_load(yaml_file)
 
     # print(data_dict)
 
-    new_data_dict = os.listdir("./config")
+    new_data_dict = os.listdir("./model_config")
     for item in new_data_dict:
         if item != 'adver_white_box.yaml':
-            with open(os.path.join("./config", item)) as yaml_file:
+            with open(os.path.join("./model_config", item)) as yaml_file:
                 new_data = yaml.safe_load(yaml_file)
                 update_dict_2_level(data_dict, new_data)
 
@@ -99,9 +99,26 @@ def init_read_yaml_for_model_duplicate():
     return data_dict
 
 
-def update_yaml():
-    ## do we need this funcion?  To be added
-    return 0
+def init_yaml_read_for_vulndig():
+    yaml_file_path = './vuln_config/vul_dig.yaml'
+
+    with open(yaml_file_path, 'r') as yaml_file:
+        data_dict = yaml.safe_load(yaml_file)
+
+    parsed_data = {}
+    for key, value in data_dict.items():
+        if isinstance(value, dict):
+            parsed_data[key] = {
+                'version': value.get('version'),
+                'dependents': value.get('dependents', {}),  # 原始嵌套结构
+                'docker_container': value.get('docker_container'),
+                'shell_command': value.get('shell_command'),
+                'test_method': value.get('test_method'),
+                'download_addr': value.get('download_addr')
+            }
+
+    return parsed_data
+
 
 
 def translate_test_method(method):
@@ -360,9 +377,11 @@ def replace_param(data_dict: dict, search_pool=None):
 
 if __name__ == "__main__":
     data_dict = init_read_yaml_for_model()
-    replace_param(data_dict)
-    print(data_dict["ResNet"])
-    print()
+    print(data_dict)
+    # dict = init_yaml_read_for_vulndig()
+    # print(dict)
+    # print(dict["Pytorch"].get('docker_container'))
+    # print(dict["Pytorch"]['docker_container'])
 
     # print(data_dict["Vgg16"]["docker_container"])
     # exec_docker_container_shell(data_dict["Vgg16"]["docker_container"])
