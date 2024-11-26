@@ -1,0 +1,14 @@
+##  这个文件用来统计目前项目支持的方法和测试模型，提供给有些函数进行查询。
+
+model:
+  image_cls: [Alexnet_black_box, Alexnet_GAN,Vgg16, Vgg16_fuzz,Vgg19, Resnet]
+  face_dect: [Facenet, Deepface, InceptionResne]
+  obj_dect: [Yolo3]
+  audio: [Librispeech, Wav2vec2]
+  rein_learn: [DQN]
+
+method:
+  white_box: [FGSM, PGD, CW2, DeepFool]
+  black_box: [genetic_algorithm]
+  gan: [gan]
+  fuzz: [fuzz]
