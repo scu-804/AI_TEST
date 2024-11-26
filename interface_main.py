@@ -66,11 +66,13 @@ def vuln_dig_stop():
      mission_id = request.form.get('mission_id')
      mission_manager = VulnDigMissionManager('Vuln_dig_missions_DBSM.csv')
      if mission_id not in mission_manager.missions.keys():
-            return jsonify({
-            "code": 400,
-            "message": "任务不存在，id有误",
-            "data": {"status": 2},
-        })
+            return {
+                "code": 400,
+                "message": "任务不存在，id有误",
+                "data": {
+                    "status": 2
+                }
+            }
      mission = mission_manager.missions[mission_id]
 
      docker_container = mission_manager.missions[mission_id].container_id
@@ -79,11 +81,13 @@ def vuln_dig_stop():
      mission.update_status(1)
      mission_manager.save_missions_to_csv()
 
-     return jsonify({
+     return {
           "code": 200,
           "message": "任务已停止",
-          "data": {"status": 1}
-     })
+          "data": {
+              "status": 1
+          }
+     }
 
 
 ## model18: 框架漏挖过程数据轮询
@@ -94,11 +98,13 @@ def vuln_dig_query():
      
      mission_manager = VulnDigMissionManager('Vuln_dig_missions_DBSM.csv')
      if mission_id not in mission_manager.missions.keys():
-            return jsonify({
-            "code": 400,
-            "message": "任务不存在，id有误",
-            "data": {"status": 2},
-        })
+            return {
+                "code": 400,
+                "message": "任务不存在，id有误",
+                "data": {
+                    "status": 2
+                }
+            }
      mission = mission_manager.missions[mission_id]
 
      docker_container = mission_manager.missions[mission_id].container_id
@@ -109,11 +115,11 @@ def vuln_dig_query():
 
      mission_manager.save_missions_to_csv()
 
-     return jsonify({
+     return {
           "code": 200,
           "message": "框架漏挖执行中",
           "data": container_info
-     })
+     }
 
 
 ## model17: 框架漏挖启动
@@ -133,13 +139,13 @@ def vuln_dig_start():
      mission = VulnDigMission(mission_id, docker_container,lib_name, lib_version, mission_status)
      mission_manager.add_or_update_mission(mission)
 
-     return jsonify({
+     return {
             "code": 200,
             "message": "任务已开始执行",
             "data": {
                 "status": 1
             }
-        })
+     }
 
 
 ## mode16: 安全加固任务的模型权重文件zip包下载
@@ -396,10 +402,6 @@ def adver_eval_query():
             "data": {
                 "process": process,   ## 0-100的进度值，平台拼接%(实现方式有待商榷)
                 "metricsScores": metrics,
-                    # [\
-                    #     {"name":"ACC", "score": 90},\
-                    #     {"name":"ACTC", "score": 60},\
-                    #     ],
                 "status": status
             }
         }
@@ -632,7 +634,7 @@ def adver_gen():
 
     file_paths = []
 
-    if(verify_parall(test_model, test_method) == False):
+    if verify_parall(test_model, test_method) == False :
          return {
               "code": 400,
               "message": "该类型下的方法任务已存在",
@@ -678,7 +680,7 @@ def adver_gen():
         }
 '''
 
-    if mission_id in mission_manager.missions.keys() and mission_manager.missions[mission_id].mission_status == 2:   
+    if mission_id in mission_manager.missions.keys() and mission_manager.missions[mission_id].mission_status == 2:
         return {
             "code": 400,
             "message": "该任务运行中",
