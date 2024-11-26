@@ -308,9 +308,11 @@ def exec_docker_container_shell(shell_path: str) -> str:
 
 
 def download_zip_from_docker(download_addr: str) -> io.BytesIO:
-    container_id, zip_path = download_addr.split(":")
-
     client = docker.from_env()
+
+    container_name, zip_path = download_addr.split(":")
+    container_id = get_container_id(container_name, client)
+
     container = client.containers.get(container_id)
     bits,stat = container.get_archive(zip_path)
 
@@ -367,6 +369,32 @@ def upload_files_to_docker(file_paths, container_id, target_path="/root/file"):
             print(f"Failed to copy {file_path} to container: {e}")
 
 
+def replace_str(v: str, search_pool):
+    while 0 <= v.find("${") < v.find("}"):
+        start = v.find("${")
+        end = v.find("}")
+        rk = v[start + 2:end]
+        rv = search_pool
+        for it in rk.split("."):
+            rv = rv.get(it)
+        rk = "${" + rk + "}"
+        nv = v.replace(rk, rv)
+        v = nv
+    return v
+
+
+def replace_list(v: list, search_pool):
+    for index in range(len(v)):
+        iv = v[index]
+        if isinstance(iv, str):
+            v[index] = replace_str(iv, search_pool)
+        if isinstance(iv, list):
+            v[index] = replace_list(iv, search_pool)
+        if isinstance(iv, dict):
+            v[index] = replace_param(iv, search_pool)
+    return v
+
+
 def replace_param(data_dict: dict, search_pool=None):
     """
     替换${}占位符参数
@@ -379,20 +407,27 @@ def replace_param(data_dict: dict, search_pool=None):
     for k in ks:
         v = data_dict.get(k)
         if isinstance(v, str):
-            while 0 <= v.find("${") < v.find("}"):
-                start = v.find("${")
-                end = v.find("}")
-                rk = v[start+2:end]
-                rv = search_pool
-                for it in rk.split("."):
-                    rv = rv.get(it)
-                rk = "${" + rk + "}"
-                nv = v.replace(rk, rv)
-                data_dict[k] = nv
-                v = data_dict.get(k)
+            data_dict[k] = replace_str(v, search_pool)
+            # while 0 <= v.find("${") < v.find("}"):
+            #     start = v.find("${")
+            #     end = v.find("}")
+            #     rk = v[start+2:end]
+            #     rv = search_pool
+            #     for it in rk.split("."):
+            #         rv = rv.get(it)
+            #     rk = "${" + rk + "}"
+            #     nv = v.replace(rk, rv)
+            #     data_dict[k] = nv
+            #     v = data_dict.get(k)
+        elif isinstance(v, list):
+            data_dict[k] = replace_list(v, search_pool)
+
         elif isinstance(v, dict):
             replace_param(v, search_pool)
     return data_dict
+
+
+
 
 def verify_parall(test_model:str, test_method:str) -> bool:
     """
