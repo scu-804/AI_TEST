@@ -136,10 +136,10 @@ def model_classify(data):
         for key, keywords in categories.items():
             if any(keyword.lower() in model.lower() for keyword in keywords):
                 catrgory = key
+                classified_data.append({"name": model, "type": catrgory})
                 break
-        classified_data.append({model: catrgory})
-
     return classified_data
+
 
 def translate_test_method(method):
     translations = {
