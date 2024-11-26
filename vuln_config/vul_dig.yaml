@@ -74,7 +74,7 @@ pandas:
   test_method: fuzz
   download_addr: xxxx/path
 
-  pillow:
+pillow:
   version: 2.1
   dependents:
     Pillow: 2.2
@@ -85,7 +85,7 @@ pandas:
   test_method: fuzz
   download_addr: xxxx/path
 
-  scipy:
+scipy:
   version: 2.1
   dependents:
     Pillow: 2.2
