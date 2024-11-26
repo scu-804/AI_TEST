@@ -66,13 +66,11 @@ def vuln_dig_stop():
      mission_id = request.form.get('mission_id')
      mission_manager = VulnDigMissionManager('Vuln_dig_missions_DBSM.csv')
      if mission_id not in mission_manager.missions.keys():
-            return {
-                "code": 400,
-                "message": "任务不存在，id有误",
-                "data": {
-                    "status": 2
-                }
-            }
+            return jsonify({
+            "code": 400,
+            "message": "任务不存在，id有误",
+            "data": {"status": 2},
+        })
      mission = mission_manager.missions[mission_id]
 
      docker_container = mission_manager.missions[mission_id].container_id
@@ -81,11 +79,11 @@ def vuln_dig_stop():
      mission.update_status(1)
      mission_manager.save_missions_to_csv()
 
-     return {
+     return jsonify({
           "code": 200,
           "message": "任务已停止",
           "data": {"status": 1}
-     }
+     })
 
 
 ## model18: 框架漏挖过程数据轮询
@@ -93,14 +91,14 @@ def vuln_dig_stop():
 #@info_read_decorator()
 def vuln_dig_query():
      mission_id = request.args.get('mission_id')
-
+     
      mission_manager = VulnDigMissionManager('Vuln_dig_missions_DBSM.csv')
      if mission_id not in mission_manager.missions.keys():
-            return {
+            return jsonify({
             "code": 400,
             "message": "任务不存在，id有误",
             "data": {"status": 2},
-        }
+        })
      mission = mission_manager.missions[mission_id]
 
      docker_container = mission_manager.missions[mission_id].container_id
@@ -111,11 +109,11 @@ def vuln_dig_query():
 
      mission_manager.save_missions_to_csv()
 
-     return {
+     return jsonify({
           "code": 200,
           "message": "框架漏挖执行中",
           "data": container_info
-     }
+     })
 
 
 ## model17: 框架漏挖启动
@@ -135,13 +133,13 @@ def vuln_dig_start():
      mission = VulnDigMission(mission_id, docker_container,lib_name, lib_version, mission_status)
      mission_manager.add_or_update_mission(mission)
 
-     return {
+     return jsonify({
             "code": 200,
             "message": "任务已开始执行",
             "data": {
                 "status": 1
             }
-        }
+        })
 
 
 ## mode16: 安全加固任务的模型权重文件zip包下载
@@ -390,11 +388,13 @@ def adver_eval_query():
                     metrics.append({"name": metric, "score": float(line.split(":")[1].strip())})
             if line.startswith("status"):
                     status = int(line.split(":")[1].strip())
+            if line.startswith("process"):
+                    process = float(line.split(":")[1].strip())
         return {
             "code": 200,
             "message": "任务执行中",
             "data": {
-                "process": 67.1,   ## 0-100的进度值，平台拼接%(实现方式有待商榷)
+                "process": process,   ## 0-100的进度值，平台拼接%(实现方式有待商榷)
                 "metricsScores": metrics,
                     # [\
                     #     {"name":"ACC", "score": 90},\
@@ -632,6 +632,15 @@ def adver_gen():
 
     file_paths = []
 
+    if(verify_parall(test_model, test_method) == False):
+         return {
+              "code": 400,
+              "message": "该类型下的方法任务已存在",
+              "data": {
+                    "status": 2
+              }
+         }
+
     if 'test_seed' not in request.files:
         return {
             "code": 400,
@@ -669,7 +678,7 @@ def adver_gen():
         }
 '''
 
-    if mission_id in mission_manager.missions.keys() and mission_manager.missions[mission_id].mission_status == 2:
+    if mission_id in mission_manager.missions.keys() and mission_manager.missions[mission_id].mission_status == 2:   
         return {
             "code": 400,
             "message": "该任务运行中",
@@ -853,10 +862,12 @@ def test_model():
 
     data = list(model_dict.keys())
 
+    classified_data = model_classify(data)
+
     return {
         "code": 200,
         "message": "被测对象的详细信息",
-        "data": data
+        "data": classified_data
     }
 
 

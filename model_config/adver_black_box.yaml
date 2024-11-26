@@ -1,5 +1,4 @@
 Alexnet_black_box:
-  docker_container_name: black_test
   version:
   dependents:
     tensorflow: 2.4.1
@@ -8,15 +7,15 @@ Alexnet_black_box:
   test_method: [genetic_algorithm]
   weight_number: 1
   weight_name: [saved_model.pb]
-  weight_download_addr: ["${Alexnet_black_box.docker_container_name}:/root/adversial_attack/weights/classifier/saved_model.pb"]
-  result_download_addr: ${Alexnet_black_box.docker_container_name}:/root/adversial_attack/adversarial_samples/
-  enhance_download_addr: ${Alexnet_black_box.docker_container_name}:/root/adversial_attack/enhance_models/
-  docker_container_run_shell: ${Alexnet_black_box.docker_container_name}:/root/adversial_attack/run.sh
-  docker_container_run_query_shell: ${Alexnet_black_box.docker_container_name}:/root/adversial_attack/run_poll.sh
-  docker_container_run_stop_shell: ${Alexnet_black_box.docker_container_name}:/root/adversial_attack/run_kill.sh
-  docker_container_evaluate_shell: ${Alexnet_black_box.docker_container_name}:/root/adversial_attack/evaluation.sh
-  docker_container_evaluate_query_shell: ${Alexnet_black_box.docker_container_name}:/root/adversial_attack/evaluation_poll.sh
-  docker_container_enchance_shell: ${Alexnet_black_box.docker_container_name}:/root/adversial_attack/enhance.sh
-  docker_container_enchance_query_shell: ${Alexnet_black_box.docker_container_name}:/root/adversial_attack/enhance_poll.sh
-  docker_container_enchance_stop_shell: ${Alexnet_black_box.docker_container_name}:/root/adversial_attack/enhance_kill.sh
+  weight_download_addr: ["f4b846b38ccb:/root/adversial_attack/weights/classifier/saved_model.pb"]
+  result_download_addr: f4b846b38ccb:/root/adversial_attack/adversarial_samples/
+  enhance_download_addr: f4b846b38ccb:/root/adversial_attack/enhance_models/
+  docker_container_run_shell: f4b846b38ccb:/root/adversial_attack/run.sh
+  docker_container_run_query_shell: f4b846b38ccb:/root/adversial_attack/run_poll.sh
+  docker_container_run_stop_shell: f4b846b38ccb:/root/adversial_attack/run_kill.sh
+  docker_container_evaluate_shell: f4b846b38ccb:/root/adversial_attack/evaluation.sh
+  docker_container_evaluate_query_shell: f4b846b38ccb:/root/adversial_attack/evaluation_poll.sh
+  docker_container_enchance_shell: f4b846b38ccb:/root/adversial_attack/enhance.sh
+  docker_container_enchance_query_shell: f4b846b38ccb:/root/adversial_attack/enhance_poll.sh
+  docker_container_enchance_stop_shell: f4b846b38ccb:/root/adversial_attack/enhance_kill.sh
   adver_metrics: ["ACC"]

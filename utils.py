@@ -1,6 +1,7 @@
 import os
 import io
 import zipfile
+import csv
 
 from flask import Flask, request, jsonify
 from functools import wraps
@@ -74,7 +75,7 @@ def init_read_yaml_for_model():
                 new_data = yaml.safe_load(yaml_file)
                 update_dict_1_level(data_dict, new_data)
 
-    print(data_dict)
+    #print(data_dict)
     data_dict = replace_param(data_dict)
     return data_dict
 
@@ -120,6 +121,25 @@ def init_yaml_read_for_vulndig():
     return parsed_data
 
 
+def model_classify(data):
+    categories = {
+        "Image_class": ["Alexnet_black_box", "Alexnet_GAN", "Vgg16", "Vgg16_fuzz", "Vgg19", "Resnet"],
+        "Face_detect": ["Facenet", "Deepface", "InceptionResne"],
+        "Obj_detect": ["Yolo3"],
+        "Audio": ["Librispeech", "Wav2vec2"],
+        "Reinforce": ["DQN"]
+    }
+
+    classified_data = []
+
+    for model in data:
+        for key, keywords in categories.items():
+            if any(keyword.lower() in model.lower() for keyword in keywords):
+                catrgory = key
+                break
+        classified_data.append({model: catrgory})
+
+    return classified_data
 
 def translate_test_method(method):
     translations = {
@@ -374,6 +394,58 @@ def replace_param(data_dict: dict, search_pool=None):
             replace_param(v, search_pool)
     return data_dict
 
+def verify_parall(test_model:str, test_method:str) -> bool:
+    """
+    这个函数用来校验新发送的任务是否能够执行。因为同一种任务类型同一种方法不支持多个进程同时运行。
+    因此在收到任务请求后，提取请求中的test_method,test_model，和csv中记录任务状态进行对比。
+    若有同类型任务在执行，则返回False，意味当前任务不能执行。若返回True，则说明当前任务能执行
+    """
+
+    # 获取各种模型各种方法的字典
+    yaml_file_path = './model_config/type_status.yaml'
+
+    with open(yaml_file_path, 'r') as yaml_file:
+        all_type_dict = yaml.safe_load(yaml_file)
+
+    for item in all_type_dict['model']:
+        all_type_dict['model'][item] = [s.lower() for s in all_type_dict['model'][item]]
+    for item in all_type_dict['method']:
+        all_type_dict['method'][item] = [s.lower() for s in all_type_dict['method'][item]]
+
+    print(all_type_dict)
+
+    # 获取现有任务的信息,并进行校验.具体的逻辑是，有3个button,同时满足则不能开始此任务,此函数return false.
+    # 三个button，分别为model,method,执行状态的判断,任务状态中1代表over
+    csv_file = 'Adver_gen_missions_DBSM.csv'
+    with open(csv_file, mode='r', newline='') as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            button_1 = 0
+            button_2 = 0
+
+            exist_test_model = row['test_model'].lower()
+            exist_test_method = row['test_method'].lower()
+
+            print(row['mission_id'], row['test_model'], row['test_method'], row['mission_status'])
+            # 校验当前行是否状态为1，为1则已经结束，跳转下一行
+            button_3 = int(row['mission_status'])
+            if button_3 == 1: continue
+
+            ## 校验新任务是否和现有任务面向同一种模型
+            for item in all_type_dict['model']:
+                if (test_model.lower() in all_type_dict['model'][item]) and (exist_test_model in all_type_dict['model'][item]):
+                    button_1 = 1
+
+            ## 校验新任务是否和现有任务使用同一类方法
+            for item in all_type_dict['method']:
+                if (test_method.lower() in all_type_dict['method'][item]) and (exist_test_method in all_type_dict['method'][item]):
+                    button_2 = 1
+            # print(row['mission_id'], row['test_model'], row['test_method'], row['mission_status'], button_1, button_2, button_3)
+            if bool(button_1 and button_2 and button_3):
+                return False
+
+        return True
 
 if __name__ == "__main__":
     data_dict = init_read_yaml_for_model()
