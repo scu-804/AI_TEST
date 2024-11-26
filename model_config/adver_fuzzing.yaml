@@ -10,7 +10,7 @@
 #  docker_container: xxx
 
 Vgg16_fuzz:
-  docker_container_name: fuzzing_test
+  docker_container_name: 761b46823a1b
   version:
   dependents:
     tensorflow: 2.18.0
@@ -34,7 +34,7 @@ Vgg16_fuzz:
   adver_metrics: ["ACC"]
 
 DeepFace:
-  docker_container_name: fuzzing_test
+  docker_container_name: 761b46823a1b
   version:
   dependents:
     tensorflow: 2.18.0

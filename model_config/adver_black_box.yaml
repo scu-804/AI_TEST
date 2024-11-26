@@ -1,5 +1,5 @@
 Alexnet_black_box:
-  docker_container_name: black_test
+  docker_container_name: f4b846b38ccb
   version:
   dependents:
     tensorflow: 2.4.1
