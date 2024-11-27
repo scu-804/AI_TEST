@@ -1,19 +1,17 @@
 import os
-from .utils import container_run_script, FUZZ_DIR, FUZZ_LOG
+from .utils import add_container_cwd, container_run_script, FUZZ_DIR, FUZZ_LOG
 from .utils import logger
 
 # params needed: fuzz_dir, fuzz_cmd, fuzz_log
 start_script_template = """ 
-#!/usr/bin/env bash
-
 fuzz_dir='{fuzz_dir}'
 if [[ ! -d "$fuzz_dir" ]]; then
   mkdir "$fuzz_dir"
 fi
 
-echo "$HOME"
-source "$HOME"/.bashrc
+source /root/.bashrc
 {fuzz_cmd} 2>"$fuzz_dir"/{fuzz_log} &
+pwd
 """
 
 
@@ -24,8 +22,14 @@ def get_start_script(fuzz_cmd: str) -> str:
 
 
 def exec_service(container: str, fuzz_cmd: str) -> None:
+    """
+    return cwd of fuzzing process
+    """
     script = get_start_script(fuzz_cmd)
-    container_run_script(container, script, False)
+    proc = container_run_script(container, script, True)
+    cwd = proc.stdout.decode().strip()
+    logger.debug(f"cwd: {cwd}")
+    add_container_cwd(container, cwd)
 
 
 def start(container: str, fuzz_cmd: str) -> None:
