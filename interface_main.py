@@ -664,21 +664,6 @@ def adver_gen():
     seed_list = ",".join(file_paths)
 
     mission_manager = MissionManager('Adver_gen_missions_DBSM.csv')
-    '''
-           根据docker引擎实际情况修改run.sh
-
-        exec_docker_container_shell("xxxxx:/some/path/your_run1.sh")
-        '''
-    '''
-    if mission_id in mission_manager.missions.keys():   ###  if same mission id is executed twice, will report error
-        return {
-            "code": 400,
-            "message": "该任务已存在",
-            "data": {
-                "status": 2
-            }
-        }
-'''
 
     if mission_id in mission_manager.missions.keys() and mission_manager.missions[mission_id].mission_status == 2:
         return {
@@ -688,6 +673,7 @@ def adver_gen():
                  "status": 2
             }
        }
+    
 
     test_seed = "FGSM"  # TODO 还未约定好文件传输格式，暂且给个确定值，方便后面测试
     if all([mission_id, test_model, test_weight, test_seed, test_method, timeout]):
