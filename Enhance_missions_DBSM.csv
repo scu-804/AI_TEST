@@ -3,3 +3,4 @@ mission_id,test_model,test_weight,test_seed,test_method,timeout,mission_status,e
 123,Vgg16,weightA,seed1,FGSM,3600,1,777
 12,Vgg16,weightA,seed1,FGSM,3600,2,7799
 123,Vgg16,weightA,seed1,FGSM,3600,1,321
+12345,Vgg16,vgg16.pth,FGSM,FGSM,60,1,1133

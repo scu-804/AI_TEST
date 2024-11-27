@@ -14,3 +14,65 @@
 [2024-11-24 19:47:59]:GET:/test_model   params:{}
 [2024-11-24 19:55:49]:GET:/depn_lib   params:{}
 [2024-11-24 19:57:19]:GET:/weight_number   params:{'test_model': 'Vgg16'}
+[2024-11-26 18:54:24]:GET:/test_model   params:{}
+[2024-11-26 18:54:39]:GET:/depn_lib   params:{}
+[2024-11-26 18:54:54]:GET:/weight_number   params:{'test_model': 'Vgg16'}
+[2024-11-26 18:55:11]:GET:/weight_download   params:{'test_model': 'Vgg16'}
+[2024-11-26 18:57:55]:GET:/weight_download   params:{'test_model': 'Vgg16'}
+[2024-11-26 19:00:05]:GET:/check_model   params:{'test_model': 'Vgg16'}
+[2024-11-26 19:01:09]:POST:/adver_gen   params:{'mission_id': '1333', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_seed': 'imagenet', 'test_method': 'FGSM', 'timeout': '3600'}
+[2024-11-26 19:02:02]:POST:/adver_gen   params:{'mission_id': '1333', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_seed': 'imagenet', 'test_method': 'FGSM', 'timeout': '3600'}
+[2024-11-26 19:02:25]:POST:/adver_gen   params:{'mission_id': '1333', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_seed': 'imagenet', 'test_method': 'FGSM', 'timeout': '3600'}
+[2024-11-26 19:02:49]:POST:/adver_gen   params:{'mission_id': '1333', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_seed': 'imagenet', 'test_method': 'FGSM', 'timeout': '3600'}
+[2024-11-26 19:04:22]:POST:/adver_gen   params:{'mission_id': '1333', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_seed': 'imagenet', 'test_method': 'FGSM', 'timeout': '3600'}
+[2024-11-26 19:27:55]:POST:/adver_gen   params:{'mission_id': '12345', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '60'}
+[2024-11-26 19:29:11]:POST:/adver_gen   params:{'mission_id': '12345', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '60'}
+[2024-11-26 19:33:20]:POST:/adver_gen   params:{'mission_id': '12345', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '60'}
+[2024-11-26 19:34:14]:POST:/adver_gen   params:{'mission_id': '12345', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '60'}
+[2024-11-26 19:35:34]:POST:/adver_gen   params:{'mission_id': '12345', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '60'}
+[2024-11-26 19:35:52]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-26 19:35:59]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-26 19:36:07]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-26 19:36:13]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-26 19:36:27]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-26 19:36:35]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-26 19:36:51]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-26 19:37:16]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-26 19:37:34]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-26 19:38:06]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-26 19:39:23]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-26 19:39:42]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-26 19:39:59]:POST:/adver_gen_stop   params:{'mission_id': '12345'}
+[2024-11-26 19:40:30]:GET:/adver_gen_download   params:{'mission_id': '12345'}
+[2024-11-26 19:40:48]:POST:/adver_eval   params:{'mission_id': '12345'}
+[2024-11-26 19:40:56]:GET:/adver_eval   params:{'mission_id': '12345'}
+[2024-11-26 19:41:44]:POST:/sec_enhance   params:{'enhance_id': '1133', 'test_model': 'Vgg16', 'mission_id': '12345'}
+[2024-11-26 19:42:06]:GET:/sec_enhance   params:{'enhance_id': '1133'}
+[2024-11-26 19:42:22]:GET:/sec_enhance   params:{'enhance_id': '1133'}
+[2024-11-26 19:42:28]:GET:/sec_enhance   params:{'enhance_id': '1133'}
+[2024-11-26 19:44:34]:GET:/sec_enhance   params:{'enhance_id': '1133'}
+[2024-11-26 19:44:40]:GET:/sec_enhance   params:{'enhance_id': '1133'}
+[2024-11-26 19:45:31]:GET:/sec_enhance   params:{'enhance_id': '1133'}
+[2024-11-26 19:45:39]:POST:/sec_enhance_stop   params:{'enhance_id': '1133'}
+[2024-11-26 19:46:56]:GET:/sec_enhance_weight_download   params:{'enhance_id': '1133'}
+[2024-11-26 20:07:25]:GET:/test_model   params:{}
+[2024-11-26 20:09:17]:GET:/test_model   params:{}
+[2024-11-26 20:13:12]:GET:/depn_lib   params:{}
+[2024-11-26 20:22:50]:POST:/adver_gen   params:{'mission_id': '12345', 'test_model': 'Vgg19', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '60'}
+[2024-11-26 20:23:14]:POST:/adver_gen   params:{'mission_id': '12345', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '60'}
+[2024-11-26 20:24:00]:POST:/adver_gen   params:{'mission_id': '12345', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '60'}
+[2024-11-26 20:26:14]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-26 20:26:49]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-26 20:27:16]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-26 20:28:51]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-26 20:29:38]:POST:/adver_gen_stop   params:{'mission_id': '12345'}
+[2024-11-26 20:30:21]:GET:/adver_gen_download   params:{'mission_id': '12345'}
+[2024-11-26 20:31:40]:GET:/adver_gen_download   params:{'mission_id': '12345'}
+[2024-11-26 20:32:45]:POST:/adver_eval   params:{'mission_id': '12345'}
+[2024-11-26 20:33:09]:GET:/adver_eval   params:{'mission_id': '12345'}
+[2024-11-26 20:33:40]:POST:/sec_enhance   params:{'enhance_id': '1133', 'test_model': 'Vgg16', 'mission_id': '12345'}
+[2024-11-26 20:34:03]:POST:/sec_enhance   params:{'enhance_id': '1133', 'test_model': 'Vgg16', 'mission_id': '12345'}
+[2024-11-26 20:35:03]:GET:/sec_enhance   params:{'enhance_id': '1133'}
+[2024-11-26 20:36:08]:GET:/sec_enhance   params:{'enhance_id': '1133'}
+[2024-11-26 20:38:30]:GET:/sec_enhance   params:{'enhance_id': '1133'}
+[2024-11-26 20:39:01]:POST:/sec_enhance_stop   params:{'enhance_id': '1133'}
