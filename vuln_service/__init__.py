@@ -1,5 +1,6 @@
 # vulnerability mining service module
-from .utils import get_container_cwd
+from .utils import get_container_cwd, output_container_cwd
+from .stop import stop
 import time
 import os
 
@@ -57,13 +58,10 @@ def setup_zip() -> None:
     logger.error(f"error containers : {','.join(err_containers)}")
 
 
-def stop(container: str) -> None:
-    logger.info("stoping docker container...")
-    os.system(f"docker stop {container}")
-
-
 def test_one(entry: VulnEngineEntry, tts: int, read_loop: int) -> None:
+
     start(entry.container, entry.fuzz_cmd)
+
     # for _ in range(read_loop):
     #     time.sleep(tts)
     #     fuzz_info = info_read_json(entry.container)
@@ -79,6 +77,8 @@ def test_one(entry: VulnEngineEntry, tts: int, read_loop: int) -> None:
     else:
         logger.info("zip success")
     stop(entry.container)
+    logger.info(f"test for {entry.container} ended...\n\n")
+
     # logger.info(
     #     "*" * 10 + f" conatiner {entry.container} passed the test " + "*" * 10 + "\n"
     # )
@@ -87,6 +87,8 @@ def test_one(entry: VulnEngineEntry, tts: int, read_loop: int) -> None:
 def test_all() -> None:
     for entry in vuln_engine_entry_list:
         test_one(entry, 5, 3)
+
+    # output_container_cwd()
 
 
 if __name__ == "__main__":

@@ -9,7 +9,7 @@ from Misson_class import *
 from werkzeug.utils import secure_filename
 from vuln_decorators import *
 from vuln_service.info_read import info_read_json
-from vuln_service.__init__ import stop
+from vuln_service.stop import stop
 from vuln_service.collect_crashes import collect_crashes
 
 
@@ -63,7 +63,7 @@ def print_info():
 
 # ## there are several functions about interface POST(GET) key. Every key has a unique function
 ## model20: 框架漏挖任务的Crash文件zip包下载
-@app.route('vul_dig_crash_download', methods=['GET'])
+@app.route('/vul_dig_crash_download', methods=['GET'])
 def vuln_dig_download():
      mission_id = request.args.get('mission_id')
      mission_manager = VulnDigMissionManager('Vuln_dig_missions_DBSM.csv')
@@ -85,9 +85,7 @@ def vuln_dig_download():
           "path": download_path    
      }
      
-     return send_file(zip_stream, mimetype='application/zip', as_attachment=True, download_name=f"{mission_id}_vuln_dig_crash.zip")
-
-
+     return send_file(zip_stream, mimetype='application/zip', as_attachment=True, download_name=f"{mission_id}_vuln_dig_crashes.zip")
 
 ## model19: 框架漏挖停止
 @app.route('/vul_dig_stop', methods=['POST'])

@@ -13,19 +13,34 @@ FUZZ_LOG = "fuzz_log"
 LOGGER_NAME = "vuln_service"
 # BASE_DIR = sys.path[0]
 
-container_cwd: dict[str, str] = {}
+container_cwd: dict[str, str] = {
+    "yqy_atheris_pt": "/root/pytorch",
+    "yqy_atheris_tf": "/root",
+    "yqy_atheris_keras": "/root/fuzz",
+    "yqy_atheris_np": "/root",
+    "yqy_fuzz_opencv": "/out",
+    "yqy_atheris_pandas": "/root",
+    "yqy_atheris_pillow": "/root/Pillow",
+    "yqy_atheris_scipy": "/root",
+}
+
+
+def output_container_cwd() -> None:
+    logger.info("printing container_cwd...")
+    for key, val in container_cwd.items():
+        print(f'"{key}": "{val}",')
 
 
 def get_container_cwd(container: str) -> str | None:
     return container_cwd.get(container)
 
 
-def add_container_cwd(container: str, cwd: str) -> bool:
-    if container in container_cwd:
-        return False
-
-    container_cwd[container] = cwd
-    return True
+# def add_container_cwd(container: str, cwd: str) -> bool:
+#     if container in container_cwd:
+#         return False
+#
+#     container_cwd[container] = cwd
+#     return True
 
 
 def path_formalize(*paths) -> str:
