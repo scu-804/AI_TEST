@@ -2,7 +2,7 @@
 
 model:
   image_cls: [Alexnet_black_box, Alexnet_GAN,Vgg16, Vgg16_fuzz,Vgg19, Resnet]
-  face_dect: [Facenet, Deepface, InceptionResne]
+  face_dect: [Facenet, Deepface, InceptionResnet]
   obj_dect: [Yolo3]
   audio: [Librispeech, Wav2vec2]
   rein_learn: [DQN]
