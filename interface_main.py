@@ -79,13 +79,18 @@ def vuln_dig_download():
      docker_container = mission_manager.missions[mission_id].container_id
 
      download_path = collect_crashes(docker_container)
-     #zip_stream = download_zip_from_docker(download_path)
-
-     return {
-          "path": download_path    
-     }
+     if download_path is None:
+          return{
+               "code": 200,
+               "message": "未产生crash文件",
+               "data": {
+                    "path": download_path
+               }
+          }
      
-     return send_file(zip_stream, mimetype='application/zip', as_attachment=True, download_name=f"{mission_id}_vuln_dig_crashes.zip")
+     else:
+          zip_stream = download_zip_from_docker(download_path)
+          return send_file(zip_stream, mimetype='application/zip', as_attachment=True, download_name=f"{mission_id}_vuln_dig_crashes.zip")
 
 ## model19: 框架漏挖停止
 @app.route('/vul_dig_stop', methods=['POST'])
