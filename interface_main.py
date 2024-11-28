@@ -3,12 +3,14 @@
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS, cross_origin
 import os
+import re
 from utils import *
 from Misson_class import *
 from werkzeug.utils import secure_filename
 from vuln_decorators import *
 from vuln_service.info_read import info_read_json
-from vuln_service.__init__ import stop
+from vuln_service.stop import stop
+from vuln_service.collect_crashes import collect_crashes
 
 
 app = Flask(__name__)
@@ -60,6 +62,36 @@ def print_info():
 
 
 # ## there are several functions about interface POST(GET) key. Every key has a unique function
+## model20: 框架漏挖任务的Crash文件zip包下载
+@app.route('/vul_dig_crash_download', methods=['GET'])
+def vuln_dig_download():
+     mission_id = request.args.get('mission_id')
+     mission_manager = VulnDigMissionManager('Vuln_dig_missions_DBSM.csv')
+     if mission_id not in mission_manager.missions.keys():
+            return {
+                "code": 400,
+                "message": "任务不存在，id有误",
+                "data": {
+                    "status": 2
+                }
+            }
+     
+     docker_container = mission_manager.missions[mission_id].container_id
+
+     download_path = collect_crashes(docker_container)
+     if download_path is None:
+          return{
+               "code": 200,
+               "message": "未产生crash文件",
+               "data": {
+                    "path": download_path
+               }
+          }
+     
+     else:
+          zip_stream = download_zip_from_docker(download_path)
+          return send_file(zip_stream, mimetype='application/zip', as_attachment=True, download_name=f"{mission_id}_vuln_dig_crashes.zip")
+
 ## model19: 框架漏挖停止
 @app.route('/vul_dig_stop', methods=['POST'])
 def vuln_dig_stop():
@@ -261,6 +293,7 @@ def sec_enhance_query():
         }
     else:
         enhance_mission = enhance_manager.enhance_mission_dict[enhance_id]
+        mission = enhance_manager.enhance_mission_dict[enhance_id]
         model_dict = init_read_yaml_for_model_duplicate()
 
         docker_shell_run = model_dict[enhance_mission.test_model].get('docker_container_enchance_query_shell')
@@ -268,6 +301,11 @@ def sec_enhance_query():
         shell_command = f"{script_path} {enhance_id}"
         shell_path = f"{container_id}:{shell_command}"
         exec_result = exec_docker_container_shell(shell_path)
+
+        match = re.search(r'status:\s*(\d+)', exec_result, re.DOTALL)
+        status = int(match.group(1))
+        mission.update_status(status)
+        enhance_manager.save_missions_to_csv()
 
         return jsonify({
             "code": 200,
@@ -314,9 +352,8 @@ def sec_enhance():
 
     if all([mission_id, test_model, enhance_id]):
         mission_status = 2
-        enhance_manager.update_enhance_mission_dict(mission_id, enhance_id)
+        enhance_manager.update_enhance_mission_dict(mission_id, enhance_id, mission_status)
         enhance_manager.save_missions_to_csv()
-
 
         '''
                    根据docker引擎实际情况修改run.sh
@@ -578,6 +615,7 @@ def adver_gen_get():
             }
         }
     else:
+        mission = mission_manager.missions[mission_id]
         model_dict = init_read_yaml_for_model_duplicate()
         docker_shell_run = model_dict[mission_manager.missions[mission_id].test_model].get('docker_container_run_query_shell')
         container_id, script_path = docker_shell_run.split(":", 1)
@@ -604,9 +642,12 @@ def adver_gen_get():
                 else:
                     r_data_num = int(str(data_num).split("\n")[0].replace("Datanum:", "").strip())
                     r_status = int(str(data_num).split("\n")[1].replace("status:", "").strip())
+
+                    mission.update_status(int(r_status))
+                    mission_manager.add_or_update_mission(mission)
             except BaseException as e:
                 pass
-
+        
         return {
             "code": 200,
             "message": "任务执行中",
@@ -664,21 +705,6 @@ def adver_gen():
     seed_list = ",".join(file_paths)
 
     mission_manager = MissionManager('Adver_gen_missions_DBSM.csv')
-    '''
-           根据docker引擎实际情况修改run.sh
-
-        exec_docker_container_shell("xxxxx:/some/path/your_run1.sh")
-        '''
-    '''
-    if mission_id in mission_manager.missions.keys():   ###  if same mission id is executed twice, will report error
-        return {
-            "code": 400,
-            "message": "该任务已存在",
-            "data": {
-                "status": 2
-            }
-        }
-'''
 
     if mission_id in mission_manager.missions.keys() and mission_manager.missions[mission_id].mission_status == 2:
         return {
@@ -688,6 +714,7 @@ def adver_gen():
                  "status": 2
             }
        }
+    
 
     test_seed = "FGSM"  # TODO 还未约定好文件传输格式，暂且给个确定值，方便后面测试
     if all([mission_id, test_model, test_weight, test_seed, test_method, timeout]):
