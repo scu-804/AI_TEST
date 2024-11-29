@@ -436,7 +436,7 @@ def adver_eval_query():
         
         mission.update_status(status)
         mission_manager.save_eval_missions_to_csv()
-        
+
         return {
             "code": 200,
             "message": "任务执行中",
@@ -473,7 +473,7 @@ def adver_eval():
         }
     else:
         mission_status = 2
-        mission = mission_manager.missions[mission_id]
+        mission = mission_manager.eval_missions[mission_id]
         model_dict = init_read_yaml_for_model_duplicate()
         mission.update_status(mission_status)
         mission_manager.save_eval_missions_to_csv()
