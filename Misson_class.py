@@ -140,7 +140,7 @@ class Enhance_MissionManager(MissionManager):
         except FileNotFoundError:
             pass  # CSV文件不存在则忽略
 
-    def update_enhance_mission_dict(self, mission_id, enhance_id):
+    def update_enhance_mission_dict(self, mission_id, enhance_id, mission_status):
         mission_id = str(mission_id)
         enhance_id = str(enhance_id)
         if enhance_id not in self.enhance_mission_dict.keys() and mission_id in self.missions.keys():
@@ -151,7 +151,7 @@ class Enhance_MissionManager(MissionManager):
                         self.missions[mission_id].test_seed,
                         self.missions[mission_id].test_method,
                         int(self.missions[mission_id].timeout),
-                        int(self.missions[mission_id].mission_status),
+                        int(mission_status),
                         enhance_id)
 
     def save_missions_to_csv(self):

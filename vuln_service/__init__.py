@@ -1,9 +1,14 @@
 # vulnerability mining service module
+from .utils import get_container_cwd, output_container_cwd
+from .stop import stop
 import time
 import os
 
 
 from dataclasses import dataclass
+
+from .collect_crashes import collect_crashes
+from vuln_service.collect_crashes import collect_crashes
 
 from .info_read import info_read_json
 
@@ -40,29 +45,50 @@ vuln_engine_entry_list = [
 #     "yqy_atheris_pillow",
 #     "yqy_atheris_scipy",
 # ]
+#
 
 
-def stop(container: str) -> None:
-    logger.info("stoping docker container...")
-    os.system(f"docker stop {container}")
+def setup_zip() -> None:
+    err_containers = []
+    for entry in vuln_engine_entry_list:
+        os.system(f"docker start {entry.container}")
+        ret = os.system(f"docker exec {entry.container} bash -c 'apt install -y zip'")
+        if ret != 0:
+            err_containers.append(entry.container)
+    logger.error(f"error containers : {','.join(err_containers)}")
 
 
 def test_one(entry: VulnEngineEntry, tts: int, read_loop: int) -> None:
-    start(entry.container, entry.fuzz_cmd)
-    for _ in range(read_loop):
-        time.sleep(tts)
-        fuzz_info = info_read_json(entry.container)
-        logger.debug(f"Fuzz Info: {fuzz_info}")
 
+    start(entry.container, entry.fuzz_cmd)
+
+    # for _ in range(read_loop):
+    #     time.sleep(tts)
+    #     fuzz_info = info_read_json(entry.container)
+    #     logger.debug(f"Fuzz Info: {fuzz_info}")
+
+    # create crash manually
+    # cwd = get_container_cwd(entry.container)
+    # os.system(f"docker exec {entry.container} bash -c 'touch {cwd}/crash-111'")
+
+    zip_path = collect_crashes(entry.container)
+    if zip_path is None:
+        logger.error("Failed to collect crashes zip file")
+    else:
+        logger.info("zip success")
     stop(entry.container)
-    logger.info(
-        "*" * 10 + f" conatiner {entry.container} passed the test " + "*" * 10 + "\n"
-    )
+    logger.info(f"test for {entry.container} ended...\n\n")
+
+    # logger.info(
+    #     "*" * 10 + f" conatiner {entry.container} passed the test " + "*" * 10 + "\n"
+    # )
 
 
 def test_all() -> None:
     for entry in vuln_engine_entry_list:
         test_one(entry, 5, 3)
+
+    # output_container_cwd()
 
 
 if __name__ == "__main__":
