@@ -269,21 +269,18 @@ def sec_enhance_query():
         shell_path = f"{container_id}:{shell_command}"
         exec_result = exec_docker_container_shell(shell_path)
 
+        import json
+
+        try:
+            exec_result = json.loads(exec_result.strip().replace(" ", "").replace(" ", "").replace("'", '"').strip())
+        except BaseException as e:
+            pass
+
         return jsonify({
             "code": 200,
             "message": "安全加固执行中",
             "data": exec_result,
         })
-        # return {
-        #     "code": 200,
-        #     "message": "安全加固执行中",
-        #     "data": {
-        #         "epoch": 32,  ## 0-100的进度值，平台拼接%
-        #         "acc" : 66.6,
-        #         "loss": 3.4,
-        #         "weightNum": 5,
-        #         "status": 1},
-        # }
 
 ## mode13: 启动安全加固任务
 @cross_origin()
@@ -303,7 +300,8 @@ def sec_enhance():
 
 
     print(mission_id, test_model, enhance_id)
-    if enhance_id in enhance_manager.enhance_mission_dict.keys():   ###  if same mission id is executed twice, will report error
+
+    if enhance_id in enhance_manager.enhance_mission_dict.keys() and enhance_manager.enhance_mission_dict[enhance_id].mission_status == 2 :   ###  if same mission id is executed twice, will report error
         return {
             "code": 400,
             "message": "该任务已存在",
