@@ -340,6 +340,14 @@ def sec_enhance():
     # enhance_manager.update_enhance_mission_dict(mission_id, enhance_id)
     # enhance_manager.save_missions_to_csv()
 
+    if enhance_verify_parall(enhance_manager.missions[mission_id].test_model, enhance_manager.missions[mission_id].test_method) == False :
+            return {
+                "code": 400,
+                "message": "该类型下的方法有对抗样本生成或评估任务正在进行",
+                "data": {
+                        "status": 2
+                }
+            }
 
     print(mission_id, test_model, enhance_id)
 
@@ -462,6 +470,14 @@ def adver_eval():
 
         exec_docker_container_shell("xxxxx:/some/path/your_run1.sh")
         '''
+    if eval_verify_parall(mission_manager.eval_missions[mission_id].test_model, mission_manager.eval_missions[mission_id].test_method) == False :
+        return {
+            "code": 400,
+            "message": "该类型下的方法任务对抗样本生成或评估任务正在进行",
+            "data": {
+                "status": 2
+            }
+        }
 
     if mission_id not in mission_manager.missions.keys():
         return {
@@ -677,7 +693,7 @@ def adver_gen():
 
     file_paths = []
 
-    if verify_parall(test_model, test_method) == False :
+    if adver_verify_parall(test_model, test_method) == False :
          return {
               "code": 400,
               "message": "该类型下的方法任务已存在",
