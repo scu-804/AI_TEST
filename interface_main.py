@@ -17,47 +17,47 @@ app = Flask(__name__)
 
 
 def request_params():
-	params = {}
-	try:
-		for k, v in request.args.items():
-			params[k] = v
-	except BaseException as e:
-		pass
-	try:
-		for k, v in request.values.items():
-			params[k] = v
-	except BaseException as e:
-		pass
-	try:
-		r_json = request.get_json()
-		if r_json and isinstance(r_json, dict):
-			for k, v in r_json.items():
-				params[k] = v
-	except BaseException as e:
-		pass
-	return params
+    params = {}
+    try:
+        for k, v in request.args.items():
+            params[k] = v
+    except BaseException as e:
+        pass
+    try:
+        for k, v in request.values.items():
+            params[k] = v
+    except BaseException as e:
+        pass
+    try:
+        r_json = request.get_json()
+        if r_json and isinstance(r_json, dict):
+            for k, v in r_json.items():
+                params[k] = v
+    except BaseException as e:
+        pass
+    return params
 
 
 def get_url():
-	return request.method, str(request.url_rule)
+    return request.method, str(request.url_rule)
 
 
 def time_str(time=None, fmt="%Y-%m-%d %H:%M:%S") -> str:
-	"""
-		时间格式化
-		:param time: 要格式化的是俺
-		:param fmt: 格式化格式
-		:return: str 类型的格式时间
-	"""
-	import time as t
-	return t.strftime(fmt, t.localtime(time))
+    """
+        时间格式化
+        :param time: 要格式化的是俺
+        :param fmt: 格式化格式
+        :return: str 类型的格式时间
+    """
+    import time as t
+    return t.strftime(fmt, t.localtime(time))
 
 
 def print_info():
-	ps = request_params()
-	method, url = get_url()
-	with open("./print_info", mode="a", encoding="utf-8") as f:
-		print(f"[{time_str()}]:{method}:{url}   params:{ps}", flush=True, file=f)
+    ps = request_params()
+    method, url = get_url()
+    with open("./print_info", mode="a", encoding="utf-8") as f:
+        print(f"[{time_str()}]:{method}:{url}   params:{ps}", flush=True, file=f)
 
 
 
@@ -302,26 +302,27 @@ def sec_enhance_query():
         shell_path = f"{container_id}:{shell_command}"
         exec_result = exec_docker_container_shell(shell_path)
 
-        match = re.search(r'status:\s*(\d+)', exec_result, re.DOTALL)
-        status = int(match.group(1))
+        import json
+
+        try:
+            exec_result = json.loads(exec_result.strip().replace(" ", "").replace(" ", "").replace("'", '"').strip())
+        except BaseException as e:
+            pass
+
+        if isinstance(exec_result, dict):
+            status = exec_result['status']
+        else:
+            match = re.search(r'status:\s*(\d+)', exec_result, re.DOTALL)
+            status = int(match.group(1))
         mission.update_status(status)
         enhance_manager.save_missions_to_csv()
 
-        return jsonify({
+        return {
             "code": 200,
             "message": "安全加固执行中",
             "data": exec_result,
-        })
-        # return {
-        #     "code": 200,
-        #     "message": "安全加固执行中",
-        #     "data": {
-        #         "epoch": 32,  ## 0-100的进度值，平台拼接%
-        #         "acc" : 66.6,
-        #         "loss": 3.4,
-        #         "weightNum": 5,
-        #         "status": 1},
-        # }
+        }
+
 
 ## mode13: 启动安全加固任务
 @cross_origin()
@@ -338,6 +339,7 @@ def sec_enhance():
     enhance_manager = Enhance_MissionManager('Adver_gen_missions_DBSM.csv')
     # enhance_manager.update_enhance_mission_dict(mission_id, enhance_id)
     # enhance_manager.save_missions_to_csv()
+
     if enhance_verify_parall(enhance_manager.missions[mission_id].test_model, enhance_manager.missions[mission_id].test_method) == False :
             return {
                 "code": 400,
@@ -348,7 +350,8 @@ def sec_enhance():
             }
 
     print(mission_id, test_model, enhance_id)
-    if enhance_id in enhance_manager.enhance_mission_dict.keys():   ###  if same mission id is executed twice, will report error
+
+    if enhance_id in enhance_manager.enhance_mission_dict.keys() and enhance_manager.enhance_mission_dict[enhance_id].mission_status == 2 :   ###  if same mission id is executed twice, will report error
         return {
             "code": 400,
             "message": "该任务已存在",
@@ -402,7 +405,7 @@ def adver_eval_query():
     param = request_params()
     mission_id = param.get("mission_id")
 
-    mission_manager = Eval_MissionManager('Adver_gen_missions_DBSM.csv')
+    mission_manager = MissionManager('Adver_gen_missions_DBSM.csv')
 
     '''
        根据docker引擎实际情况修改run.sh
@@ -440,10 +443,6 @@ def adver_eval_query():
                     status = int(line.split(":")[1].strip())
             if line.startswith("process"):
                     process = float(line.split(":")[1].strip())
-        
-        mission.update_status(status)
-        mission_manager.save_eval_missions_to_csv()
-
         return {
             "code": 200,
             "message": "任务执行中",
@@ -464,14 +463,13 @@ def adver_eval():
 
     #eval_metrics = request.form.getlist('eval_metric')
 
-    mission_manager = Eval_MissionManager('Adver_gen_missions_DBSM.csv')
+    mission_manager = MissionManager('Adver_gen_missions_DBSM.csv')
 
     '''
            根据docker引擎实际情况修改run.sh
 
         exec_docker_container_shell("xxxxx:/some/path/your_run1.sh")
         '''
-
     if eval_verify_parall(mission_manager.eval_missions[mission_id].test_model, mission_manager.eval_missions[mission_id].test_method) == False :
         return {
             "code": 400,
@@ -488,11 +486,8 @@ def adver_eval():
             "data": {"status": 2},
         }
     else:
-        mission_status = 2
-        mission = mission_manager.eval_missions[mission_id]
+        mission = mission_manager.missions[mission_id]
         model_dict = init_read_yaml_for_model_duplicate()
-        mission.update_status(mission_status)
-        mission_manager.save_eval_missions_to_csv()
 
         #metrics = ' '.join(eval_metrics)
 
@@ -628,16 +623,6 @@ def adver_gen_get():
         exec_docker_container_shell("xxxxx:/some/path/your_run1.sh")
         '''
     mission_manager = MissionManager('Adver_gen_missions_DBSM.csv')
-
-    if eval_verify_parall(mission_manager.missions[mission_id].test_model, mission_manager.missions[mission_id].test_method) == False :
-        return {
-            "code": 400,
-            "message": "该类型下的方法任务对抗样本生成或评估任务正在进行",
-            "data": {
-                "status": 2
-            }
-        }
-
     if mission_id not in mission_manager.missions.keys():
         return {
             "code": 400,
@@ -711,7 +696,7 @@ def adver_gen():
     if adver_verify_parall(test_model, test_method) == False :
          return {
               "code": 400,
-              "message": "该类型下的方法任务已存在,或其有加固或评估任务正在进行",
+              "message": "该类型下的方法任务已存在",
               "data": {
                     "status": 2
               }
