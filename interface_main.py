@@ -395,7 +395,7 @@ def adver_eval_query():
     param = request_params()
     mission_id = param.get("mission_id")
 
-    mission_manager = MissionManager('Adver_gen_missions_DBSM.csv')
+    mission_manager = Eval_MissionManager('Adver_gen_missions_DBSM.csv')
 
     '''
        根据docker引擎实际情况修改run.sh
@@ -433,6 +433,10 @@ def adver_eval_query():
                     status = int(line.split(":")[1].strip())
             if line.startswith("process"):
                     process = float(line.split(":")[1].strip())
+        
+        mission.update_status(status)
+        mission_manager.save_eval_missions_to_csv()
+        
         return {
             "code": 200,
             "message": "任务执行中",
@@ -453,7 +457,7 @@ def adver_eval():
 
     #eval_metrics = request.form.getlist('eval_metric')
 
-    mission_manager = MissionManager('Adver_gen_missions_DBSM.csv')
+    mission_manager = Eval_MissionManager('Adver_gen_missions_DBSM.csv')
 
     '''
            根据docker引擎实际情况修改run.sh
@@ -468,8 +472,11 @@ def adver_eval():
             "data": {"status": 2},
         }
     else:
+        mission_status = 2
         mission = mission_manager.missions[mission_id]
         model_dict = init_read_yaml_for_model_duplicate()
+        mission.update_status(mission_status)
+        mission_manager.save_eval_missions_to_csv()
 
         #metrics = ' '.join(eval_metrics)
 
