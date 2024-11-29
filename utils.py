@@ -429,7 +429,7 @@ def replace_param(data_dict: dict, search_pool=None):
 
 
 
-def verify_parall(test_model:str, test_method:str) -> bool:
+def adver_verify_parall(test_model:str, test_method:str) -> bool:
     """
     这个函数用来校验新发送的任务是否能够执行。因为同一种任务类型同一种方法不支持多个进程同时运行。
     因此在收到任务请求后，提取请求中的test_method,test_model，和csv中记录任务状态进行对比。
@@ -479,12 +479,88 @@ def verify_parall(test_model:str, test_method:str) -> bool:
             # print(row['mission_id'], row['test_model'], row['test_method'], row['mission_status'], button_1, button_2, button_3)
             if bool(button_1 and button_2 and button_3):
                 return False
+    csv_file = 'Eval_missions_DBSM.csv'
+    with open(csv_file, 'r', newline='') as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            eval_test_model = row['test_model'].lower()
+            eval_test_method = row['test_method'].lower()
+            eval_test_status = int(row['mission_status'])
+
+            if eval_test_model == test_model.lower() and eval_test_method == test_method.lower() and eval_test_status == 2:
+                return False
+    
+    csv_file = 'Enhance_missions_DBSM.csv'
+    with open(csv_file, 'r', newline='') as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            eval_test_model = row['test_model'].lower()
+            eval_test_method = row['test_method'].lower()
+            eval_test_status = int(row['mission_status'])
+
+            if eval_test_model == test_model.lower() and eval_test_method == test_method.lower() and eval_test_status == 2:
+                return False
+
+        return True
+
+def eval_verify_parall(test_model:str, test_method:str) -> bool:
+    csv_file = 'Adver_gen_missions_DBSM.csv'
+    with open(csv_file, 'r', newline='') as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            eval_test_model = row['test_model'].lower()
+            eval_test_method = row['test_method'].lower()
+            eval_test_status = int(row['mission_status'])
+
+            if eval_test_model == test_model.lower() and eval_test_method == test_method.lower() and eval_test_status == 2:
+                return False
+    
+    csv_file = 'Enhance_missions_DBSM.csv'
+    with open(csv_file, 'r', newline='') as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            eval_test_model = row['test_model'].lower()
+            eval_test_method = row['test_method'].lower()
+            eval_test_status = int(row['mission_status'])
+
+            if eval_test_model == test_model.lower() and eval_test_method == test_method.lower() and eval_test_status == 2:
+                return False
+
+        return True
+    
+def enhance_verify_parall(test_model:str, test_method:str) -> bool:
+    csv_file = 'Adver_gen_missions_DBSM.csv'
+    with open(csv_file, 'r', newline='') as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            eval_test_model = row['test_model'].lower()
+            eval_test_method = row['test_method'].lower()
+            eval_test_status = int(row['mission_status'])
+
+            if eval_test_model == test_model.lower() and eval_test_method == test_method.lower() and eval_test_status == 2:
+                return False
+    
+    csv_file = 'Eval_missions_DBSM.csv'
+    with open(csv_file, 'r', newline='') as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            eval_test_model = row['test_model'].lower()
+            eval_test_method = row['test_method'].lower()
+            eval_test_status = int(row['mission_status'])
+
+            if eval_test_model == test_model.lower() and eval_test_method == test_method.lower() and eval_test_status == 2:
+                return False
 
         return True
 
 if __name__ == "__main__":
-    data_dict = init_read_yaml_for_model()
-    print(data_dict)
+    print(eval_verify_parall("vgg16","FGSM"))
     # dict = init_yaml_read_for_vulndig()
     # print(dict)
     # print(dict["Pytorch"].get('docker_container'))
