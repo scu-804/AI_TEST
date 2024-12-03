@@ -22,6 +22,7 @@ Alexnet_black_box:
   adver_metrics: ["ACC"]
 
 InceptionResnet:
+  docker_continaer_name: cf3186ca31fc
   version:
   dependents:
     torch: 2.0.1
@@ -30,20 +31,21 @@ InceptionResnet:
   test_method: [differential_evolution_algorithm]
   weight_number: 1
   weight_name: [InceptionResnetV1_Face.pt]
-  weight_download_addr: ["cf3186ca31fc:/root/FaceOff/weights/InceptionResnetV1_Face.pt"]
-  result_download_addr: cf3186ca31fc:/root/FaceOff/adversarial_samples/
-  enhance_download_addr: cf3186ca31fc:/root/FaceOff/enhance_models/
-  docker_container_run_shell: cf3186ca31fc:/root/FaceOff/run.sh
-  docker_container_run_query_shell: cf3186ca31fc:/root/FaceOff/run_poll.sh
-  docker_container_run_stop_shell: cf3186ca31fc:/root/FaceOff/run_kill.sh
-  docker_container_evaluate_shell: cf3186ca31fc:/root/FaceOff/evaluation.sh
-  docker_container_evaluate_query_shell: cf3186ca31fc:/root/FaceOff/evaluation_poll.sh
-  docker_container_enchance_shell: cf3186ca31fc:/root/FaceOff/enhance.sh
-  docker_container_enchance_query_shell: cf3186ca31fc:/root/FaceOff/enhance_poll.sh
-  docker_container_enchance_stop_shell: cf3186ca31fc:/root/FaceOff/enhance_kill.sh
+  weight_download_addr: ["${InceptionResnet.docker_container_name}:/root/FaceOff/weights/InceptionResnetV1_Face.pt"]
+  result_download_addr: ${InceptionResnet.docker_container_name}:/root/FaceOff/adversarial_samples/
+  enhance_download_addr: ${InceptionResnet.docker_container_name}:/root/FaceOff/enhance_models/
+  docker_container_run_shell: ${InceptionResnet.docker_container_name}:/root/FaceOff/run.sh
+  docker_container_run_query_shell: ${InceptionResnet.docker_container_name}:/root/FaceOff/run_poll.sh
+  docker_container_run_stop_shell: ${InceptionResnet.docker_container_name}:/root/FaceOff/run_kill.sh
+  docker_container_evaluate_shell: ${InceptionResnet.docker_container_name}:/root/FaceOff/evaluation.sh
+  docker_container_evaluate_query_shell: ${InceptionResnet.docker_container_name}:/root/FaceOff/evaluation_poll.sh
+  docker_container_enchance_shell: ${InceptionResnet.docker_container_name}:/root/FaceOff/enhance.sh
+  docker_container_enchance_query_shell: ${InceptionResnet.docker_container_name}:/root/FaceOff/enhance_poll.sh
+  docker_container_enchance_stop_shell: ${InceptionResnet.docker_container_name}:/root/FaceOff/enhance_kill.sh
   adver_metrics: ["ACC"]
 
 YoloV3:
+  docker_continaer_name: cf3186ca31fc
   version:
   dependents:
     torch: 1.5.1
@@ -52,15 +54,15 @@ YoloV3:
   test_method: [simulated_annealing_algorithm]
   weight_number: 1
   weight_name: [yolov3-tiny.pt]
-  weight_download_addr: ["cf3186ca31fc:/root/adversarial/yolov3/yolov3-tiny.pt"]
-  result_download_addr: cf3186ca31fc:/root/adversarial/adversarial_samples/
-  enhance_download_addr: cf3186ca31fc:/root/adversarial/enhance_models/
-  docker_container_run_shell: cf3186ca31fc:/root/adversarial/run.sh
-  docker_container_run_query_shell: cf3186ca31fc:/root/adversarial/run_poll.sh
-  docker_container_run_stop_shell: cf3186ca31fc:/root/adversarial/run_kill.sh
-  docker_container_evaluate_shell: cf3186ca31fc:/root/adversarial/evaluation.sh
-  docker_container_evaluate_query_shell: cf3186ca31fc:/root/adversarial/evaluation_poll.sh
-  docker_container_enchance_shell: cf3186ca31fc:/root/adversarial/enhance.sh
-  docker_container_enchance_query_shell: cf3186ca31fc:/root/adversarial/enhance_poll.sh
-  docker_container_enchance_stop_shell: cf3186ca31fc:/root/adversarial/enhance_kill.sh
+  weight_download_addr: ["${YoloV3.docker_container_name}:/root/adversarial/yolov3/yolov3-tiny.pt"]
+  result_download_addr: ${YoloV3.docker_container_name}:/root/adversarial/adversarial_samples/
+  enhance_download_addr: ${YoloV3.docker_container_name}:/root/adversarial/enhance_models/
+  docker_container_run_shell: ${YoloV3.docker_container_name}:/root/adversarial/run.sh
+  docker_container_run_query_shell: ${YoloV3.docker_container_name}:/root/adversarial/run_poll.sh
+  docker_container_run_stop_shell: ${YoloV3.docker_container_name}:/root/adversarial/run_kill.sh
+  docker_container_evaluate_shell: ${YoloV3.docker_container_name}:/root/adversarial/evaluation.sh
+  docker_container_evaluate_query_shell: ${YoloV3.docker_container_name}:/root/adversarial/evaluation_poll.sh
+  docker_container_enchance_shell: ${YoloV3.docker_container_name}:/root/adversarial/enhance.sh
+  docker_container_enchance_query_shell: ${YoloV3.docker_container_name}:/root/adversarial/enhance_poll.sh
+  docker_container_enchance_stop_shell: ${YoloV3.docker_container_name}:/root/adversarial/enhance_kill.sh
   adver_metrics: ["ACC"]
