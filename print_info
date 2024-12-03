@@ -76,3 +76,16 @@
 [2024-11-26 20:36:08]:GET:/sec_enhance   params:{'enhance_id': '1133'}
 [2024-11-26 20:38:30]:GET:/sec_enhance   params:{'enhance_id': '1133'}
 [2024-11-26 20:39:01]:POST:/sec_enhance_stop   params:{'enhance_id': '1133'}
+[2024-11-29 11:07:25]:POST:/adver_gen   params:{'mission_id': '12345', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '60'}
+[2024-11-29 11:07:35]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-29 11:07:49]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-29 11:08:43]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-29 11:09:25]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-29 11:10:17]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-29 11:10:25]:POST:/adver_gen_stop   params:{'mission_id': '12345'}
+[2024-11-29 11:10:36]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-11-29 11:10:54]:POST:/adver_eval   params:{'mission_id': '12345'}
+[2024-11-29 11:25:05]:POST:/adver_eval   params:{'mission_id': '12345'}
+[2024-11-29 11:29:44]:GET:/adver_eval   params:{'mission_id': '12345'}
+[2024-11-29 16:41:07]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '60'}
+[2024-11-29 16:41:40]:POST:/adver_eval   params:{'mission_id': '12345'}
