@@ -42,3 +42,25 @@ InceptionResnet:
   docker_container_enchance_query_shell: cf3186ca31fc:/root/FaceOff/enhance_poll.sh
   docker_container_enchance_stop_shell: cf3186ca31fc:/root/FaceOff/enhance_kill.sh
   adver_metrics: ["ACC"]
+
+YoloV3:
+  version:
+  dependents:
+    torch: 1.5.1
+    Numpy: 1.17.0
+    pencv-contrib-python: 4.2.0
+  test_method: [simulated_annealing_algorithm]
+  weight_number: 1
+  weight_name: [yolov3-tiny.pt]
+  weight_download_addr: ["cf3186ca31fc:/root/adversarial/yolov3/yolov3-tiny.pt"]
+  result_download_addr: cf3186ca31fc:/root/adversarial/adversarial_samples/
+  enhance_download_addr: cf3186ca31fc:/root/adversarial/enhance_models/
+  docker_container_run_shell: cf3186ca31fc:/root/adversarial/run.sh
+  docker_container_run_query_shell: cf3186ca31fc:/root/adversarial/run_poll.sh
+  docker_container_run_stop_shell: cf3186ca31fc:/root/adversarial/run_kill.sh
+  docker_container_evaluate_shell: cf3186ca31fc:/root/adversarial/evaluation.sh
+  docker_container_evaluate_query_shell: cf3186ca31fc:/root/adversarial/evaluation_poll.sh
+  docker_container_enchance_shell: cf3186ca31fc:/root/adversarial/enhance.sh
+  docker_container_enchance_query_shell: cf3186ca31fc:/root/adversarial/enhance_poll.sh
+  docker_container_enchance_stop_shell: cf3186ca31fc:/root/adversarial/enhance_kill.sh
+  adver_metrics: ["ACC"]
