@@ -31,7 +31,7 @@ def output_container_cwd() -> None:
         print(f'"{key}": "{val}",')
 
 
-def get_container_cwd(container: str) -> str | None:
+def get_container_cwd(container: str) -> str:
     return container_cwd.get(container)
 
 

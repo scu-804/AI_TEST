@@ -378,7 +378,10 @@ def replace_str(v: str, search_pool):
         for it in rk.split("."):
             rv = rv.get(it)
         rk = "${" + rk + "}"
-        nv = v.replace(rk, rv)
+        try:
+            nv = v.replace(rk, rv)
+        except BaseException as e:
+            nv = v.replace(rk, rv)
         v = nv
     return v
 
