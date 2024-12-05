@@ -282,7 +282,7 @@ def exec_docker_container_shell(shell_path: str) -> str:
 
     container = client.containers.get(container_id)
 
-    print(f"script_path: {script_path}")
+    #print(f"script_path: {script_path}")
 
     exec_result = container.exec_run(cmd=script_path)
 
@@ -294,11 +294,11 @@ def exec_docker_container_shell(shell_path: str) -> str:
                 return exec_result.output
             # 尝试解码输出为 UTF-8 字符串，忽略解码错误
             output = exec_result.output.decode('utf-8', errors='ignore')
-            print("Script output:", output)
+            #print("Script output:", output)
             return output
         except UnicodeDecodeError:
             # 如果解码失败，返回原始字节数据
-            print("Received non-UTF-8 output")
+            #print("Received non-UTF-8 output")
             return exec_result.output
     else:
         print("Script execution failed with exit code:", exec_result.exit_code)
@@ -344,7 +344,7 @@ def multi_file_download_from_docker(file_paths: list) -> io.BytesIO:
     return file_sream
 
 
-def upload_files_to_docker(file_paths, container_id, target_path="/root/file"):
+def upload_files_to_docker(file_paths, container_id, mission_id,target_path="/root/seed"):
 
     try:
         subprocess.run(["docker", "exec", container_id, "mkdir", "-p", target_path], check=True)
@@ -353,6 +353,7 @@ def upload_files_to_docker(file_paths, container_id, target_path="/root/file"):
         return
 
     # 拷贝文件到容器
+    target_file_name = f"{mission_id}.zip"
     for file_path in file_paths:
         if not os.path.isfile(file_path):
             print(f"File {file_path} does not exist or is not a file. Skipping...")
@@ -361,7 +362,7 @@ def upload_files_to_docker(file_paths, container_id, target_path="/root/file"):
         try:
             # 使用 docker cp 进行拷贝
             subprocess.run(
-                ["docker", "cp", file_path, f"{container_id}:{target_path}"],
+                ["docker", "cp", file_path, f"{container_id}:{target_path}/{target_file_name}"],
                 check=True
             )
             print(f"Uploaded {file_path} to container {container_id}:{target_path}")
@@ -378,9 +379,13 @@ def replace_str(v: str, search_pool):
         for it in rk.split("."):
             rv = rv.get(it)
         rk = "${" + rk + "}"
-        nv = v.replace(rk, rv)
+        try:
+            nv = v.replace(rk, rv)
+        except BaseException as e:
+            nv = v.replace(rk, rv)
         v = nv
     return v
+
 
 
 def replace_list(v: list, search_pool):

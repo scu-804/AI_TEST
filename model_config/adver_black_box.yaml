@@ -22,7 +22,7 @@ Alexnet_black_box:
   adver_metrics: ["ACC"]
 
 InceptionResnet:
-  docker_continaer_name: cf3186ca31fc
+  docker_container_name: cf3186ca31fc
   version:
   dependents:
     torch: 2.0.1
@@ -45,7 +45,7 @@ InceptionResnet:
   adver_metrics: ["ACC"]
 
 YoloV3:
-  docker_continaer_name: cf3186ca31fc
+  docker_container_name: cf3186ca31fc
   version:
   dependents:
     torch: 1.5.1

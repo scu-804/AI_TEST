@@ -10,7 +10,7 @@
 #  docker_container: xxx
 
   Alexnet_GAN:
-    docker_container_name: 710399fb0980
+    docker_container_name: gan_test
     version:
     dependents:
       torch: 1.6.0
@@ -20,22 +20,20 @@
     weight_number: 1
     weight_name: [alexnet-owt-4df8aa71.pth]
     weight_download_addr: ["${Alexnet_GAN.docker_container_name}:/root/.cache/torch/hub/checkpoints/alexnet-owt-4df8aa71.pth"]
-    result_download_addr: ${Alexnet_GAN.docker_container_name}:/home/necronone/GAN/advGAN_pytorch/output
-    #enhance_download_addr: xxxx:path3/
+    result_download_addr: ${Alexnet_GAN.docker_container_name}:/home/necronone/GAN/advGAN_pytorch/output/
+    enhance_download_addr: ${Alexnet_GAN.docker_container_name}:/home/necronone/GAN/advGAN_pytorch/models_retrain/alexnet
     docker_container_run_shell: ${Alexnet_GAN.docker_container_name}:/home/necronone/GAN/advGAN_pytorch/run.sh
     docker_container_run_query_shell: ${Alexnet_GAN.docker_container_name}:/home/necronone/GAN/advGAN_pytorch/run_poll.sh
     docker_container_run_stop_shell: ${Alexnet_GAN.docker_container_name}:/home/necronone/GAN/advGAN_pytorch/run_kill.sh
     docker_container_evaluate_shell: ${Alexnet_GAN.docker_container_name}:/home/necronone/GAN/advGAN_pytorch/eval.sh
     docker_container_evaluate_query_shell: ${Alexnet_GAN.docker_container_name}:/home/necronone/GAN/advGAN_pytorch/eval_poll.sh
-    #docker_container_evaluate_query_shell: 4fedc50f276b:/root/eval1.sh
-    #docker_container_evaluate_query_shell: 4fedc50f276b:/roo0t/eval_kill.sh
-    #docker_container_enchance_shell: 5334338a5dfe:/root/enchance.sh
-    #docker_container_enchance_query_shell: 5334338a5dfe:/root/enchance_query.sh
-    #docker_container_enchance_stop_shell: 5334338a5dfe:/root/enchance_stop.sh
+    docker_container_enchance_shell: ${Alexnet_GAN.docker_container_name}:/home/necronone/GAN/advGAN_pytorch/enhance.sh
+    #docker_container_enchance_query_shell: ${Alexnet_GAN.docker_container_name}:/root/enchance_query.sh
+    docker_container_enchance_stop_shell: ${Alexnet_GAN.docker_container_name}:/home/necronone/GAN/advGAN_pytorch/enchance_stop.sh
     adver_metrics: ["ACC"]
 
   Facenet:
-    docker_container_name: 710399fb0980
+    docker_container_name: gan_test
     version:
     dependents:
       torch: 1.6.0
@@ -45,15 +43,37 @@
     weight_number: 1
     weight_name: [20180402-114759-vggface2.pt]
     weight_download_addr: ["${Facenet.docker_container_name}:/root/.cache/torch/checkpoints/20180402-114759-vggface2.pt"]
-    result_download_addr: ${Facenet.docker_container_name}:/home/necronone/GAN/advGAN_pytorch/output
-    #enhance_download_addr: xxxx:path3/
+    result_download_addr: ${Facenet.docker_container_name}:/home/necronone/GAN/advGAN_pytorch/output/
+    enhance_download_addr: ${Facenet.docker_container_name}:/home/necronone/GAN/advGAN_pytorch/models_retrain/facenet
     docker_container_run_shell: ${Facenet.docker_container_name}:/home/necronone/GAN/advGAN_pytorch/run.sh
     docker_container_run_query_shell: ${Facenet.docker_container_name}:/home/necronone/GAN/advGAN_pytorch/run_poll.sh
     docker_container_run_stop_shell: ${Facenet.docker_container_name}:/home/necronone/GAN/advGAN_pytorch/run_kill.sh
     docker_container_evaluate_shell: ${Facenet.docker_container_name}:/home/necronone/GAN/advGAN_pytorch/eval.sh
     docker_container_evaluate_query_shell: ${Facenet.docker_container_name}:/home/necronone/GAN/advGAN_pytorch/eval_poll.sh
-    #docker_container_evaluate_query_shell: ${Facenet.docker_container_name}:/root/eval_kill.sh
-    #docker_container_enchance_shell: ${Facenet.docker_container_name}:/root/enchance.sh
+    docker_container_enchance_shell: ${Facenet.docker_container_name}:/home/necronone/GAN/advGAN_pytorch/enhance.sh
     #docker_container_enchance_query_shell: ${Facenet.docker_container_name}:/root/enchance_query.sh
-    #docker_container_enchance_stop_shell: ${Facenet.docker_container_name}:/root/enchance_stop.sh
+    docker_container_enchance_stop_shell: ${Facenet.docker_container_name}:/home/necronone/GAN/advGAN_pytorch/enhance_stop.sh
+    adver_metrics: ["ACC"]
+
+  Yolov5:
+    version:
+    docker_container_name: gan_test_gpu_2_container
+    dependents:
+      torch: 1.6.0
+      Numpy: 1.19.2
+      pencv-contrib-python: 4.6.0.66
+    test_method: [GAN]
+    weight_number: 1
+    weight_name: [yolov5n.pt]
+    weight_download_addr: ["${Yolov5.docker_container_name}:/home/AdvGAN2YOLO/SafeBench/safebench/agent/object_detection/yolov5n.pt"]
+    result_download_addr: ${Yolov5.docker_container_name}:/home/output/
+    #enhance_download_addr: xxxx:path3/
+    docker_container_run_shell: ${Yolov5.docker_container_name}:/home/run.sh
+    docker_container_run_query_shell: ${Yolov5.docker_container_name}:/home/run_poll.sh
+    docker_container_run_stop_shell: ${Yolov5.docker_container_name}:/home/run_kill.sh
+    docker_container_evaluate_shell: ${Yolov5.docker_container_name}:/home/eval.sh
+    docker_container_evaluate_query_shell: ${Yolov5.docker_container_name}:/home/eval_poll.sh
+    docker_container_enchance_shell: ${Yolov5.docker_container_name}:/home/enhance.sh
+    #docker_container_enchance_query_shell: 5334338a5dfe:/root/enchance_query.sh
+    docker_container_enchance_stop_shell: ${Yolov5.docker_container_name}:/home/enhance_kill.sh
     adver_metrics: ["ACC"]

@@ -89,3 +89,146 @@
 [2024-11-29 11:29:44]:GET:/adver_eval   params:{'mission_id': '12345'}
 [2024-11-29 16:41:07]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '60'}
 [2024-11-29 16:41:40]:POST:/adver_eval   params:{'mission_id': '12345'}
+[2024-12-04 17:37:49]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '60'}
+[2024-12-04 17:38:28]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '100'}
+[2024-12-04 17:39:21]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '100'}
+[2024-12-04 18:33:34]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '100'}
+[2024-12-04 18:49:41]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '100'}
+[2024-12-04 18:54:52]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '100'}
+[2024-12-04 18:59:45]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '100'}
+[2024-12-04 20:09:25]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '100'}
+[2024-12-04 20:13:08]:GET:/test_model   params:{}
+[2024-12-04 20:14:23]:GET:/test_model   params:{}
+[2024-12-04 20:19:43]:GET:/test_model   params:{}
+[2024-12-04 20:21:40]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '100'}
+[2024-12-04 20:21:59]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-04 20:22:20]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-04 20:22:26]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-04 20:22:40]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-04 20:23:08]:POST:/adver_gen_stop   params:{'mission_id': '1234'}
+[2024-12-04 20:27:07]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '200'}
+[2024-12-04 20:27:22]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-04 20:27:30]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-04 20:27:36]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-04 20:27:43]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-04 20:27:52]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-04 20:28:12]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-04 20:28:22]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-04 20:28:42]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-04 20:28:55]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-04 20:29:13]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-04 20:30:23]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-04 20:30:37]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-04 20:40:52]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Alexnet_black_box', 'test_weight': 'saved_model.pb', 'test_method': 'genetic_algorithm', 'timeout': '200'}
+[2024-12-04 20:42:52]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Alexnet_black_box', 'test_weight': 'saved_model.pb', 'test_method': 'genetic_algorithm', 'timeout': '200'}
+[2024-12-04 20:44:00]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Alexnet_GAN', 'test_weight': 'alexnet-owt-4df8aa71.pth', 'test_method': 'GAN', 'timeout': '200'}
+[2024-12-04 20:53:23]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Alexnet_GAN', 'test_weight': 'alexnet-owt-4df8aa71.pth', 'test_method': 'GAN', 'timeout': '200'}
+[2024-12-04 20:53:36]:POST:/adver_gen_stop   params:{'mission_id': '1234'}
+[2024-12-04 20:54:07]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Alexnet_GAN', 'test_weight': 'alexnet-owt-4df8aa71.pth', 'test_method': 'GAN', 'timeout': '200'}
+[2024-12-04 20:54:19]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-04 21:00:12]:POST:/sec_enhance   params:{'enhance_id': '1133', 'test_model': 'Alexnet_GAN', 'mission_id': '1234'}
+[2024-12-04 21:01:06]:POST:/sec_enhance   params:{'enhance_id': '1133', 'test_model': 'Alexnet_GAN', 'mission_id': '1234'}
+[2024-12-04 21:03:54]:POST:/sec_enhance   params:{'enhance_id': '1133', 'test_model': 'Alexnet_GAN', 'mission_id': '1234'}
+[2024-12-04 21:04:45]:POST:/sec_enhance   params:{'enhance_id': '1133', 'test_model': 'Alexnet_GAN', 'mission_id': '1234'}
+[2024-12-04 21:06:13]:POST:/adver_gen   params:{'mission_id': '12345', 'test_model': 'Facenet', 'test_weight': 'alexnet-owt-4df8aa71.pth', 'test_method': 'GAN', 'timeout': '200'}
+[2024-12-04 21:06:25]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-04 21:07:11]:POST:/adver_gen_stop   params:{'mission_id': '12345'}
+[2024-12-04 21:07:24]:POST:/sec_enhance   params:{'enhance_id': '1134', 'test_model': 'Facenet', 'mission_id': '12345'}
+[2024-12-04 21:08:26]:POST:/sec_enhance   params:{'enhance_id': '1134', 'test_model': 'Facenet', 'mission_id': '12345'}
+[2024-12-04 21:15:25]:POST:/adver_gen   params:{'mission_id': '12345', 'test_model': 'Facenet', 'test_weight': 'alexnet-owt-4df8aa71.pth', 'test_method': 'GAN', 'timeout': '200'}
+[2024-12-04 21:15:34]:POST:/adver_gen_stop   params:{'mission_id': '12345'}
+[2024-12-04 21:15:53]:POST:/adver_gen   params:{'mission_id': '12345', 'test_model': 'Facenet', 'test_weight': 'alexnet-owt-4df8aa71.pth', 'test_method': 'GAN', 'timeout': '200'}
+[2024-12-04 21:17:09]:POST:/sec_enhance   params:{'enhance_id': '1134', 'test_model': 'Facenet', 'mission_id': '12345'}
+[2024-12-04 21:17:22]:POST:/sec_enhance   params:{'enhance_id': '1134', 'test_model': 'Facenet', 'mission_id': '12345'}
+[2024-12-04 21:21:01]:POST:/sec_enhance   params:{'enhance_id': '1134', 'test_model': 'Facenet', 'mission_id': '12345'}
+[2024-12-04 21:33:12]:POST:/adver_gen   params:{'mission_id': '123456', 'test_model': 'Yolov5', 'test_weight': 'alexnet-owt-4df8aa71.pth', 'test_method': 'GAN', 'timeout': '200'}
+[2024-12-04 21:36:42]:POST:/adver_gen   params:{'mission_id': '123456', 'test_model': 'Yolov5', 'test_weight': 'alexnet-owt-4df8aa71.pth', 'test_method': 'GAN', 'timeout': '200'}
+[2024-12-04 21:37:54]:POST:/adver_gen   params:{'mission_id': '123456', 'test_model': 'Yolov5', 'test_weight': 'alexnet-owt-4df8aa71.pth', 'test_method': 'GAN', 'timeout': '200'}
+[2024-12-04 21:50:01]:POST:/adver_gen   params:{'mission_id': '123456', 'test_model': 'Yolov5', 'test_weight': 'alexnet-owt-4df8aa71.pth', 'test_method': 'GAN', 'timeout': '200'}
+[2024-12-04 21:57:28]:POST:/adver_gen   params:{'mission_id': '123456', 'test_model': 'Yolov5', 'test_weight': 'alexnet-owt-4df8aa71.pth', 'test_method': 'GAN', 'timeout': '200'}
+[2024-12-04 21:57:37]:POST:/adver_gen_stop   params:{'mission_id': '123456'}
+[2024-12-04 21:57:59]:POST:/adver_gen   params:{'mission_id': '123456', 'test_model': 'Yolov5', 'test_weight': 'alexnet-owt-4df8aa71.pth', 'test_method': 'GAN', 'timeout': '200'}
+[2024-12-05 11:07:02]:POST:/adver_gen   params:{'mission_id': '123456', 'test_model': 'Yolov5', 'test_weight': 'alexnet-owt-4df8aa71.pth', 'test_method': 'GAN', 'timeout': '200'}
+[2024-12-05 11:07:13]:POST:/adver_gen_stop   params:{'mission_id': '123456'}
+[2024-12-05 11:07:33]:POST:/adver_gen   params:{'mission_id': '123456', 'test_model': 'Yolov5', 'test_weight': 'alexnet-owt-4df8aa71.pth', 'test_method': 'GAN', 'timeout': '200'}
+[2024-12-05 11:11:08]:POST:/adver_gen   params:{'mission_id': '12345', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '200'}
+[2024-12-05 11:11:25]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-05 11:11:38]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-05 11:11:46]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-05 11:11:57]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-05 11:12:06]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-05 11:12:15]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-05 11:12:39]:POST:/adver_gen_stop   params:{'mission_id': '12345'}
+[2024-12-05 11:13:40]:POST:/adver_gen   params:{'mission_id': '123456', 'test_model': 'Yolov5', 'test_weight': 'alexnet-owt-4df8aa71.pth', 'test_method': 'GAN', 'timeout': '200'}
+[2024-12-05 11:13:51]:POST:/adver_gen_stop   params:{'mission_id': '123456'}
+[2024-12-05 11:14:09]:POST:/adver_gen   params:{'mission_id': '123456', 'test_model': 'Yolov5', 'test_weight': 'alexnet-owt-4df8aa71.pth', 'test_method': 'GAN', 'timeout': '200'}
+[2024-12-05 11:16:08]:POST:/sec_enhance   params:{'enhance_id': '11345', 'test_model': 'Yolov5', 'mission_id': '123456'}
+[2024-12-05 11:16:30]:POST:/sec_enhance   params:{'enhance_id': '11345', 'test_model': 'Yolov5', 'mission_id': '123456'}
+[2024-12-05 11:25:33]:POST:/adver_gen   params:{'mission_id': '123456', 'test_model': 'Yolov5', 'test_weight': 'alexnet-owt-4df8aa71.pth', 'test_method': 'GAN', 'timeout': '200'}
+[2024-12-05 11:28:20]:POST:/sec_enhance   params:{'enhance_id': '11345', 'test_model': 'Yolov5', 'mission_id': '123456'}
+[2024-12-05 11:28:34]:POST:/sec_enhance   params:{'enhance_id': '11345', 'test_model': 'Yolov5', 'mission_id': '123456'}
+[2024-12-05 11:32:21]:POST:/sec_enhance   params:{'enhance_id': '11345', 'test_model': 'Yolov5', 'mission_id': '123456'}
+[2024-12-05 11:32:40]:POST:/sec_enhance   params:{'enhance_id': '11345', 'test_model': 'Yolov5', 'mission_id': '123456'}
+[2024-12-05 11:58:28]:POST:/adver_gen   params:{'mission_id': '123456', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '200'}
+[2024-12-05 11:59:07]:POST:/adver_gen_stop   params:{'mission_id': '123456'}
+[2024-12-05 15:12:38]:POST:/adver_gen   params:{'mission_id': '123456', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '200'}
+[2024-12-05 15:12:56]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-05 15:13:03]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-05 15:13:13]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-05 15:13:16]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-05 15:13:19]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-05 15:13:22]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-05 15:13:26]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-05 15:13:27]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-05 15:13:29]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-05 15:13:31]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-05 15:13:35]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-05 15:13:43]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-05 15:15:00]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-05 15:15:09]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-05 15:15:47]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-05 15:15:58]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-05 15:18:09]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-05 15:18:41]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-05 15:18:55]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-05 15:19:26]:POST:/adver_gen   params:{'mission_id': '12345', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '200'}
+[2024-12-05 15:19:42]:POST:/adver_gen   params:{'mission_id': '12345', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '200'}
+[2024-12-05 15:19:50]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-05 15:19:55]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-05 15:20:27]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-05 15:20:57]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-05 15:21:24]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-05 15:22:54]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-05 15:23:29]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-05 15:24:00]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '200'}
+[2024-12-05 15:24:06]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-05 15:24:37]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-05 15:24:55]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-05 15:25:05]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-05 15:27:46]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '200'}
+[2024-12-05 15:27:52]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-05 15:29:22]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-05 15:29:42]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-05 15:50:02]:GET:/depn_lib   params:{}
+[2024-12-05 16:08:03]:GET:/depn_lib   params:{}
+[2024-12-05 16:09:08]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '200'}
+[2024-12-05 16:09:20]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '200'}
+[2024-12-05 16:09:28]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-05 16:09:31]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-05 16:10:27]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-05 16:10:30]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-05 16:10:39]:POST:/adver_gen_stop   params:{'mission_id': '1234'}
+[2024-12-05 16:10:49]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-05 16:59:15]:GET:/depn_lib   params:{}
+[2024-12-05 17:02:42]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '200'}
+[2024-12-05 17:02:51]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-05 17:03:17]:POST:/adver_gen_stop   params:{'mission_id': '1234'}
+[2024-12-05 17:03:47]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '600'}
+[2024-12-05 17:11:59]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-05 17:15:43]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-05 17:15:57]:GET:/adver_gen_download   params:{'mission_id': '1234'}
+[2024-12-05 17:16:30]:POST:/adver_eval   params:{'mission_id': '1234'}
+[2024-12-05 17:18:14]:POST:/adver_eval   params:{'mission_id': '1234'}
+[2024-12-05 17:18:25]:GET:/adver_eval   params:{'mission_id': '1234'}
+[2024-12-05 17:19:54]:GET:/adver_eval   params:{'mission_id': '1234'}
+[2024-12-05 17:29:57]:GET:/adver_eval   params:{'mission_id': '1234'}
