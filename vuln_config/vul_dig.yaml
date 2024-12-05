@@ -1,0 +1,89 @@
+## Fill in data in the following format :
+#Pytorch:
+#  version: 2.1
+#  dependents:
+#    Pillow: [1.1, 2.2, 3.3]
+#    Numpy: [1.1, 2.2]
+#    Opencv: [1.0]
+#  test_method: fuzz
+#  docker_container: xxx
+
+Pytorch:
+  version: 2.1
+  dependents:
+    Pillow:  2.2
+    Numpy: 1.1
+    Opencv: 1.0
+  docker_container: vul_test
+  shell_command: "./run_fuzz.sh"
+  test_method: fuzz
+
+Tensorflow:
+  version: 2.1
+  dependents:
+    Pillow: 2.2
+    Numpy: 1.1
+    Opencv: 1.0
+  docker_container: vul_test
+  shell_command: "python fuzz_tensorflow.py"
+  test_method: fuzz
+
+keras:
+  version: 2.1
+  dependents:
+    Pillow: 2.2
+    Numpy: 1.1
+    Opencv: 1.0
+  docker_container: vul_test
+  shell_command: "python fuzz_keras.py"
+  test_method: fuzz
+
+numpy:
+  version: 2.1
+  dependents:
+    Pillow: 2.2
+    Numpy: 1.1
+    Opencv: 1.0
+  docker_container: vul_test
+  shell_command: "python3 fuzz_numpy.py"
+  test_method: fuzz
+
+opencv:
+  version: 2.1
+  dependents:
+    Pillow: 2.2
+    Numpy: 1.1
+    Opencv: 1.0
+  docker_container: vul_test
+  shell_command: "./generateusergallerycollage_fuzzer"
+  test_method: fuzz
+
+pandas:
+  version: 2.1
+  dependents:
+    Pillow: 2.2
+    Numpy: 1.1
+    Opencv: 1.0
+  docker_container: vul_test
+  shell_command: "python3 fuzz_pandas.py"
+  test_method: fuzz
+
+pillow:
+  version: 2.1
+  dependents:
+    Pillow: 2.2
+    Numpy: 1.1
+    Opencv: 1.0
+  docker_container: vul_test
+  shell_command: "./run_fuzz.sh"
+  test_method: fuzz
+
+scipy:
+  version: 2.1
+  dependents:
+    Pillow: 2.2
+    Numpy: 1.1
+    Opencv: 1.0
+  docker_container: vul_test
+  shell_command: "python3 fuzz_scipy.py"
+  test_method: fuzz
