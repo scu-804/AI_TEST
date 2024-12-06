@@ -434,6 +434,8 @@ def adver_eval_query():
         shell_command = f"{script_path} {mission_id}"
         shell_path = f"{container_id}:{shell_command}"
         exec_result = exec_docker_container_shell(shell_path)
+        
+        print(exec_result)
 
         for line in exec_result.splitlines():
             for metric in adver_metrics:
@@ -463,7 +465,7 @@ def adver_eval():
 
     #eval_metrics = request.form.getlist('eval_metric')
 
-    mission_manager = MissionManager('Adver_gen_missions_DBSM.csv')
+    mission_manager = Eval_MissionManager('Adver_gen_missions_DBSM.csv')
 
     '''
            根据docker引擎实际情况修改run.sh
@@ -646,12 +648,12 @@ def adver_gen_get():
         r_data_num = 0
         r_status = mission_manager.missions[mission_id].mission_status
         flag = True
-        if flag:
-            try:
-                r_data_num = int(data_num)
-                flag = False
-            except BaseException as e:
-                pass
+        # if flag:
+        #     try:
+        #         r_data_num = int(data_num)
+        #         flag = False
+        #     except BaseException as e:
+        #         pass
         if flag:
             try:
                 if str(data_num).find("No running process found for mission_id") >= 0:
@@ -733,8 +735,7 @@ def adver_gen():
             }
        }
     
-
-    test_seed = "FGSM"  # TODO 还未约定好文件传输格式，暂且给个确定值，方便后面测试
+    test_seed = "vgg16.pth"  # TODO 还未约定好文件传输格式，暂且给个确定值，方便后面测试
     if all([mission_id, test_model, test_weight, test_seed, test_method, timeout]):
         mission_status = 2
         mission = Mission(mission_id, test_model, test_weight, test_seed, test_method, timeout, mission_status)
@@ -748,13 +749,14 @@ def adver_gen():
 
         # 构建完整的命令：run.sh test_model test_weight test_seed test_method
         shell_command = f"{script_path} {mission_id} {test_model} {test_weight} {test_seed} {test_method} {timeout}"
+        #shell_command = f"{script_path} {mission_id} {test_model} {test_weight} {test_method} {timeout}"
 
         # 拼接容器ID和命令
         shell_path = f"{container_id}:{shell_command}"
 
         #shell_path = f"{container_id}:{script_path}"
 
-        upload_files_to_docker(file_paths, container_id)
+        upload_files_to_docker(file_paths, container_id, mission_id)
 
         exec_docker_container_shell_detach_v2(shell_path)
 
