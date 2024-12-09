@@ -232,3 +232,9 @@
 [2024-12-05 17:18:25]:GET:/adver_eval   params:{'mission_id': '1234'}
 [2024-12-05 17:19:54]:GET:/adver_eval   params:{'mission_id': '1234'}
 [2024-12-05 17:29:57]:GET:/adver_eval   params:{'mission_id': '1234'}
+[2024-12-09 13:16:16]:GET:/test_model   params:{}
+[2024-12-09 13:19:49]:GET:/test_model   params:{}
+[2024-12-09 13:22:06]:GET:/test_model   params:{}
+[2024-12-09 13:24:02]:GET:/test_model   params:{}
+[2024-12-09 13:25:46]:GET:/test_model   params:{}
+[2024-12-09 13:27:41]:GET:/test_model   params:{}
