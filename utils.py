@@ -123,9 +123,9 @@ def init_yaml_read_for_vulndig():
 
 def model_classify(data):
     categories = {
-        "Image_class": ["Alexnet_black_box", "Alexnet_GAN", "Vgg16", "Vgg16_fuzz", "Vgg19", "Resnet"],
-        "Face_detect": ["Facenet", "Deepface", "InceptionResne"],
-        "Obj_detect": ["Yolo3"],
+        "Image_class": ["Alexnet_black_box", "Alexnet_GAN", "Vgg16", "Vgg16_fuzz", "Vgg19", "ResNet"],
+        "Face_detect": ["Facenet", "Deepface", "InceptionResnet"],
+        "Obj_detect": ["YoloV3"],
         "Audio": ["Librispeech", "Wav2vec2"],
         "Reinforce": ["DQN"]
     }
@@ -134,7 +134,7 @@ def model_classify(data):
 
     for model in data:
         for key, keywords in categories.items():
-            if any(keyword.lower() in model.lower() for keyword in keywords):
+            if any(model.lower() in keyword.lower() for keyword in keywords):
                 catrgory = key
                 classified_data.append({"name": model, "type": catrgory})
                 break
