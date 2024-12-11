@@ -10,6 +10,8 @@ FUZZ_LOG = "fuzz_log"
 # note that tailing '/' is needed
 # CRASH_DIR = "/fuzz/crashes/"
 
+REQ_NAME = "requirements.txt"
+
 LOGGER_NAME = "vuln_service"
 # BASE_DIR = sys.path[0]
 
@@ -31,7 +33,7 @@ def output_container_cwd() -> None:
         print(f'"{key}": "{val}",')
 
 
-def get_container_cwd(container: str) -> str:
+def get_container_cwd(container: str) -> str | None:
     return container_cwd.get(container)
 
 
@@ -47,6 +49,17 @@ def path_formalize(*paths) -> str:
     for path in paths:
         assert isinstance(path, str)
     return os.path.join(sys.path[0], *paths)
+
+
+def dir_formalize(*paths) -> str:
+    dir_path = path_formalize(*paths)
+    if not os.path.isdir(dir_path):
+        os.makedirs(dir_path)
+    return dir_path
+
+
+def get_data_dir() -> str:
+    return dir_formalize("data")
 
 
 handler = colorlog.StreamHandler()

@@ -95,7 +95,8 @@ def vuln_dig_download():
 ## model19: 框架漏挖停止
 @app.route('/vul_dig_stop', methods=['POST'])
 def vuln_dig_stop():
-     mission_id = request.form.get('mission_id')
+     param = request_params()
+     mission_id = param.get('mission_id')
      mission_manager = VulnDigMissionManager('Vuln_dig_missions_DBSM.csv')
      if mission_id not in mission_manager.missions.keys():
             return {
@@ -158,9 +159,11 @@ def vuln_dig_query():
 @app.route('/vul_dig', methods=['POST'])
 @vulndig_start_decorator(init_yaml_read_for_vulndig)
 def vuln_dig_start():
-     mission_id = request.form.get('mission_id')
-     lib_name = request.form.get('lib_name')
-     lib_version = request.form.get('lib_version')
+     params = request.get_json()
+
+     mission_id = params.get('mission_id')
+     lib_name = params.get('lib_name')
+     lib_version = params.get('lib_version')
 
      vuln_dict = init_yaml_read_for_vulndig()
      docker_container = vuln_dict[lib_name].get('docker_container')
@@ -405,7 +408,7 @@ def adver_eval_query():
     param = request_params()
     mission_id = param.get("mission_id")
 
-    mission_manager = MissionManager('Adver_gen_missions_DBSM.csv')
+    mission_manager = Eval_MissionManager('Eval_missions_DBSM.csv')
 
     '''
        根据docker引擎实际情况修改run.sh
@@ -423,7 +426,7 @@ def adver_eval_query():
             }
         }
     else:
-        mission = mission_manager.missions[mission_id]
+        mission = mission_manager.eval_missions[mission_id]
         model_dict = init_read_yaml_for_model_duplicate()
 
         adver_metrics = model_dict[mission.test_model].get('adver_metrics', [])
@@ -443,6 +446,8 @@ def adver_eval_query():
                     metrics.append({"name": metric, "score": float(line.split(":")[1].strip())})
             if line.startswith("status"):
                     status = int(line.split(":")[1].strip())
+                    mission.update_status(status)
+                    mission_manager.save_eval_missions_to_csv()
             if line.startswith("process"):
                     process = float(line.split(":")[1].strip())
         return {
@@ -488,12 +493,13 @@ def adver_eval():
             "data": {"status": 2},
         }
     else:
-        mission = mission_manager.missions[mission_id]
+        eval_mission = mission_manager.eval_missions[mission_id]
         model_dict = init_read_yaml_for_model_duplicate()
-
+        eval_mission.update_status(2)
+        mission_manager.save_eval_missions_to_csv()
         #metrics = ' '.join(eval_metrics)
 
-        dcoker_shell_run = model_dict[mission.test_model].get('docker_container_evaluate_shell')
+        dcoker_shell_run = model_dict[eval_mission.test_model].get('docker_container_evaluate_shell')
         container_id, script_path = dcoker_shell_run.split(":", 1)
         shell_command = f"{script_path} {mission_id}"
         shell_path = f"{container_id}:{shell_command}"
@@ -891,8 +897,7 @@ def depn_lib():
 
     model_dict = init_yaml_read_for_vulndig()
 
-    data = [{"targetName": key, "versionList": \
-        [f"{kk}-{str(vv)}" for kk, vv in model_dict[key]["dependents"].items()]} for key in model_dict.keys()]
+    data = data = [{"targetName": key, "versionList": model_dict[key]["version"]} for key in model_dict.keys()]
 
     return {
         "code": 200,

@@ -31,6 +31,7 @@ REC_PAT = re.compile(
 )
 COV_PAT = re.compile(r"cov: (\d+)")
 TPS_PAT = re.compile(r"exec/s: (\d+)")
+TOT_PAT = re.compile(r"^#(\d+)")
 
 
 def get_info_script() -> str:
@@ -67,6 +68,10 @@ def collect_running_info(log_content: str) -> FuzzInfo:
     assert mat
     tps = int(mat.group(1))
 
+    mat = TOT_PAT.search(record)
+    assert mat
+    tot = int(mat.group(1))
+
     paths = 0
     for line in log_content.splitlines():
         line = line.strip()
@@ -76,7 +81,7 @@ def collect_running_info(log_content: str) -> FuzzInfo:
 
     return FuzzInfo(
         coverge=edges / MAP_SIZE,
-        throughput=tps,
+        throughput=tot,
         speed=tps,
         crashNum=0,
         paths=paths,
@@ -103,4 +108,6 @@ def info_read(container: str) -> FuzzInfo:
 
 
 def info_read_json(container: str) -> dict:
-    return vars(info_read(container))
+    json = vars(info_read(container))
+    logger.debug(f"collected info: {json}")
+    return json

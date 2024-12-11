@@ -40,7 +40,7 @@ def get_zip_script(cwd: str) -> str:
     return zip_script_template.format(crash_dir=cwd, crash_zip_path=CRASH_ZIP_PATH)
 
 
-def collect_crashes(container: str) -> str:
+def collect_crashes(container: str) -> str | None:
     """
     returns path of target zip file
     """

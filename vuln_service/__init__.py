@@ -1,19 +1,16 @@
 # vulnerability mining service module
-from .utils import get_container_cwd, output_container_cwd
-from .stop import stop
-import time
-import os
-
-
 from dataclasses import dataclass
+import os
+import time
 
-from .collect_crashes import collect_crashes
 from vuln_service.collect_crashes import collect_crashes
 
+from .collect_crashes import collect_crashes
+from .collect_requirements import collect_requirements
 from .info_read import info_read_json
-
 from .start import start
-
+from .stop import stop
+from .utils import get_container_cwd, output_container_cwd
 from .utils import logger
 
 
@@ -48,6 +45,14 @@ vuln_engine_entry_list = [
 #
 
 
+def run_loop(entry: VulnEngineEntry, tts: int, read_loop: int) -> None:
+    start(entry.container, entry.fuzz_cmd)
+    for _ in range(read_loop):
+        time.sleep(tts)
+        json = info_read_json(entry.container)
+    stop(entry.container)
+
+
 def setup_zip() -> None:
     err_containers = []
     for entry in vuln_engine_entry_list:
@@ -59,29 +64,9 @@ def setup_zip() -> None:
 
 
 def test_one(entry: VulnEngineEntry, tts: int, read_loop: int) -> None:
-
-    start(entry.container, entry.fuzz_cmd)
-
-    # for _ in range(read_loop):
-    #     time.sleep(tts)
-    #     fuzz_info = info_read_json(entry.container)
-    #     logger.debug(f"Fuzz Info: {fuzz_info}")
-
-    # create crash manually
-    # cwd = get_container_cwd(entry.container)
-    # os.system(f"docker exec {entry.container} bash -c 'touch {cwd}/crash-111'")
-
-    zip_path = collect_crashes(entry.container)
-    if zip_path is None:
-        logger.error("Failed to collect crashes zip file")
-    else:
-        logger.info("zip success")
-    stop(entry.container)
-    logger.info(f"test for {entry.container} ended...\n\n")
-
-    # logger.info(
-    #     "*" * 10 + f" conatiner {entry.container} passed the test " + "*" * 10 + "\n"
-    # )
+    # logger.info(f"start testing {entry.container}")
+    # collect_requirements(entry.container)
+    run_loop(entry, 3, 2)
 
 
 def test_all() -> None:
