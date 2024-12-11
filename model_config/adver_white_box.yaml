@@ -10,7 +10,7 @@
 #  docker_container: xxx
 
   ResNet:
-    docker_container_name: white_box_image
+    docker_container_name: 4fedc50f276b
     version:
     dependents:
       torch: 1.6.0
@@ -33,7 +33,7 @@
     adver_metrics: ["ACC", "ACTC", "ASS", "ACAC", "ALDp", "PSD", "NTE"]
 
   Vgg19:
-    docker_container_name: white_box_image
+    docker_container_name: 4fedc50f276b
     version:
     dependents:
       torch: 1.6.0
@@ -57,7 +57,7 @@
     adver_metrics: ["ACC", "ACTC", "ASS", "ACAC", "ALDp", "PSD", "NTE"]
 
   Vgg16:
-    docker_container_name: white_box_image
+    docker_container_name: ydl_wb_image
     version:
     dependents:
       torch: 1.6.0
@@ -79,3 +79,25 @@
     docker_container_enchance_query_shell: ${Vgg16.docker_container_name}:/root/enhance_poll.sh
     docker_container_enchance_stop_shell: ${Vgg16.docker_container_name}:/root/enhance_kill.sh
     adver_metrics: ["ACC", "ACTC", "ASS", "ACAC", "ALDp", "PSD", "NTE"]
+
+  Wav2Vec2_white_box:
+    docker_container_name: ydl_wb_audio_wav2vec2
+    version:
+    dependents:
+      torch: 1.13.1
+      Numpy: 1.21.6
+    test_method: [train_folder]
+    weight_number: 1
+    weight_name: [wav2vec2.pth]
+    weight_download_addr: ["${Wav2Vec2_white_box.docker_container_name}:/root/ASRAdversarialAttack/wav2vec2.pth"]
+    result_download_addr: ${Wav2Vec2_white_box.docker_container_name}:/root/adv_sample/
+    enhance_download_addr: ${Wav2Vec2_white_box.docker_container_name}:/root/retrain/
+    docker_container_run_shell: ${Wav2Vec2_white_box.docker_container_name}:/root/run.sh
+    docker_container_run_query_shell: ${Wav2Vec2_white_box.docker_container_name}:/root/run_poll.sh
+    docker_container_run_stop_shell: ${Wav2Vec2_white_box.docker_container_name}:/root/run_kill.sh
+    # docker_container_evaluate_shell: ${Wav2Vec2_white_box.docker_container_name}:/root/evaluation.sh
+    # docker_container_evaluate_query_shell: ${Wav2Vec2_white_box.docker_container_name}:/root/evaluation_poll.sh
+    docker_container_enchance_shell: ${Wav2Vec2_white_box.docker_container_name}:/root/enhance.sh
+    docker_container_enchance_query_shell: ${Wav2Vec2_white_box.docker_container_name}:/root/enhance_poll.sh
+    docker_container_enchance_stop_shell: ${Wav2Vec2_white_box.docker_container_name}:/root/enhance_kill.sh
+    # adver_metrics: [""]
