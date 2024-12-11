@@ -391,3 +391,13 @@
 [2024-12-11 15:15:01]:GET:/sec_enhance   params:{'enhance_id': '159753456'}
 [2024-12-11 15:15:11]:GET:/sec_enhance   params:{'enhance_id': '159753456'}
 [2024-12-11 15:15:39]:GET:/sec_enhance_weight_download   params:{'enhance_id': '159753456'}
+[2024-12-11 17:49:23]:POST:/adver_gen   params:{'mission_id': '12345', 'test_model': 'Vgg16_fuzz', 'test_weight': 'model.pth', 'test_method': 'fuzzing', 'timeout': '10000'}
+[2024-12-11 17:49:37]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-11 17:52:32]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-11 17:57:26]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-11 17:59:21]:POST:/adver_gen_stop   params:{'mission_id': '12345'}
+[2024-12-11 17:59:33]:GET:/adver_gen_download   params:{'mission_id': '12345'}
+[2024-12-11 19:28:48]:GET:/depn_lib   params:{}
+[2024-12-11 19:31:57]:GET:/depn_lib   params:{}
+[2024-12-11 19:32:18]:GET:/depn_lib   params:{}
+[2024-12-11 19:32:25]:GET:/depn_lib   params:{}

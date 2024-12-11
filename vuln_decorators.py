@@ -13,7 +13,8 @@ def vulndig_start_decorator(yaml_reader):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            lib_name = request.form.get('lib_name')
+            params = request.get_json()
+            lib_name = params.get('lib_name')
             if vuln_dig_verify(lib_name) == False:
                 return jsonify({
                     "code": 400,

@@ -102,22 +102,21 @@ def init_read_yaml_for_model_duplicate():
 
 def init_yaml_read_for_vulndig():
     yaml_file_path = './vuln_config/vul_dig.yaml'
-
+    
     with open(yaml_file_path, 'r') as yaml_file:
         data_dict = yaml.safe_load(yaml_file)
-
+    
     parsed_data = {}
     for key, value in data_dict.items():
         if isinstance(value, dict):
             parsed_data[key] = {
                 'version': value.get('version'),
-                'dependents': value.get('dependents', {}),  # 原始嵌套结构
                 'docker_container': value.get('docker_container'),
                 'shell_command': value.get('shell_command'),
                 'test_method': value.get('test_method'),
                 'download_addr': value.get('download_addr')
             }
-
+    
     return parsed_data
 
 
@@ -580,6 +579,8 @@ def vuln_dig_verify(lib_name:str) -> bool:
 
 if __name__ == "__main__":
     print(vuln_dig_verify("Pytorch"))
+    data = init_yaml_read_for_vulndig()
+    print(data)
     #print(eval_verify_parall("vgg16","FGSM"))
     # dict = init_yaml_read_for_vulndig()
     # print(dict)
