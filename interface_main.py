@@ -405,7 +405,7 @@ def adver_eval_query():
     param = request_params()
     mission_id = param.get("mission_id")
 
-    mission_manager = MissionManager('Adver_gen_missions_DBSM.csv')
+    mission_manager = Eval_MissionManager('Eval_missions_DBSM.csv')
 
     '''
        根据docker引擎实际情况修改run.sh
@@ -423,7 +423,7 @@ def adver_eval_query():
             }
         }
     else:
-        mission = mission_manager.missions[mission_id]
+        mission = mission_manager.eval_missions[mission_id]
         model_dict = init_read_yaml_for_model_duplicate()
 
         adver_metrics = model_dict[mission.test_model].get('adver_metrics', [])
@@ -443,6 +443,8 @@ def adver_eval_query():
                     metrics.append({"name": metric, "score": float(line.split(":")[1].strip())})
             if line.startswith("status"):
                     status = int(line.split(":")[1].strip())
+                    mission.update_status(status)
+                    mission_manager.save_eval_missions_to_csv()
             if line.startswith("process"):
                     process = float(line.split(":")[1].strip())
         return {
@@ -488,12 +490,13 @@ def adver_eval():
             "data": {"status": 2},
         }
     else:
-        mission = mission_manager.missions[mission_id]
+        eval_mission = mission_manager.eval_missions[mission_id]
         model_dict = init_read_yaml_for_model_duplicate()
-
+        eval_mission.update_status(2)
+        mission_manager.save_eval_missions_to_csv()
         #metrics = ' '.join(eval_metrics)
 
-        dcoker_shell_run = model_dict[mission.test_model].get('docker_container_evaluate_shell')
+        dcoker_shell_run = model_dict[eval_mission.test_model].get('docker_container_evaluate_shell')
         container_id, script_path = dcoker_shell_run.split(":", 1)
         shell_command = f"{script_path} {mission_id}"
         shell_path = f"{container_id}:{shell_command}"

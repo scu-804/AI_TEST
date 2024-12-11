@@ -238,3 +238,156 @@
 [2024-12-09 13:24:02]:GET:/test_model   params:{}
 [2024-12-09 13:25:46]:GET:/test_model   params:{}
 [2024-12-09 13:27:41]:GET:/test_model   params:{}
+[2024-12-09 14:02:08]:GET:/test_model   params:{}
+[2024-12-09 14:03:13]:GET:/test_model   params:{}
+[2024-12-09 14:15:51]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'DQN', 'test_weight': 'PongDuel-v0-opp-dqn-model.pth', 'test_method': 'FGSM', 'timeout': '10000'}
+[2024-12-09 14:18:35]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'DQN', 'test_weight': 'PongDuel-v0-opp-dqn-model.pth', 'test_method': 'simulated_annealing_algorithm', 'timeout': '10000'}
+[2024-12-09 14:18:45]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-09 14:20:21]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-09 14:22:30]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-09 14:22:50]:POST:/adver_gen_stop   params:{'mission_id': '1234'}
+[2024-12-09 14:23:30]:GET:/adver_gen_download   params:{'mission_id': '1234'}
+[2024-12-09 14:25:09]:POST:/adver_eval   params:{'mission_id': '1234'}
+[2024-12-09 14:32:54]:GET:/adver_eval   params:{'mission_id': '1234'}
+[2024-12-09 14:34:09]:POST:/sec_enhance   params:{'enhance_id': '1133', 'test_model': 'DQN', 'mission_id': '1234'}
+[2024-12-09 14:34:19]:GET:/sec_enhance   params:{'enhance_id': '1133'}
+[2024-12-09 14:34:31]:GET:/sec_enhance   params:{'enhance_id': '1133'}
+[2024-12-09 14:34:44]:GET:/sec_enhance   params:{'enhance_id': '1133'}
+[2024-12-09 14:35:47]:GET:/sec_enhance   params:{'enhance_id': '1133'}
+[2024-12-09 14:35:56]:GET:/sec_enhance   params:{'enhance_id': '1133'}
+[2024-12-09 14:37:13]:GET:/sec_enhance   params:{'enhance_id': '1133'}
+[2024-12-09 14:37:54]:POST:/sec_enhance_stop   params:{'enhance_id': '1133'}
+[2024-12-09 14:42:36]:GET:/sec_enhance_weight_download   params:{'enhance_id': '1133'}
+[2024-12-09 14:50:14]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Alexnet_GAN', 'test_weight': 'alexnet-owt-4df8aa71.pth', 'test_method': 'GAN', 'timeout': '10000'}
+[2024-12-09 14:50:23]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-09 14:50:28]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-09 14:50:34]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-09 14:51:50]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-09 14:52:20]:GET:/adver_gen_download   params:{'mission_id': '1234'}
+[2024-12-09 14:54:44]:GET:/adver_gen_download   params:{'mission_id': '1234'}
+[2024-12-09 15:00:33]:POST:/adver_eval   params:{'mission_id': '1234'}
+[2024-12-09 15:00:52]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-09 15:01:11]:POST:/adver_eval   params:{'mission_id': '1234'}
+[2024-12-09 15:01:42]:POST:/adver_eval   params:{'mission_id': '1234'}
+[2024-12-09 15:01:59]:GET:/adver_eval   params:{'mission_id': '1234'}
+[2024-12-09 15:06:30]:POST:/sec_enhance   params:{'enhance_id': '1133', 'test_model': 'Alexnet_GAN', 'mission_id': '1234'}
+[2024-12-09 15:37:14]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Alexnet_GAN', 'test_weight': 'alexnet-owt-4df8aa71.pth', 'test_method': 'GAN', 'timeout': '10000'}
+[2024-12-09 15:37:38]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Alexnet_GAN', 'test_weight': 'alexnet-owt-4df8aa71.pth', 'test_method': 'GAN', 'timeout': '10000'}
+[2024-12-09 15:37:45]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-09 15:38:08]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-09 15:38:13]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-09 15:38:29]:POST:/adver_gen_stop   params:{'mission_id': '1234'}
+[2024-12-09 15:38:40]:GET:/adver_gen_download   params:{'mission_id': '1234'}
+[2024-12-09 15:39:28]:POST:/adver_eval   params:{'mission_id': '1234'}
+[2024-12-09 15:45:19]:POST:/adver_eval   params:{'mission_id': '1234'}
+[2024-12-09 15:45:32]:GET:/adver_eval   params:{'mission_id': '1234'}
+[2024-12-09 15:53:34]:GET:/adver_eval   params:{'mission_id': '1234'}
+[2024-12-09 15:54:13]:POST:/sec_enhance   params:{'enhance_id': '1133', 'test_model': 'Alexnet_GAN', 'mission_id': '1234'}
+[2024-12-09 15:59:13]:POST:/sec_enhance   params:{'enhance_id': '1133', 'test_model': 'Alexnet_GAN', 'mission_id': '1234'}
+[2024-12-09 15:59:31]:POST:/adver_gen_stop   params:{'mission_id': '1234'}
+[2024-12-09 15:59:55]:POST:/sec_enhance   params:{'enhance_id': '1133', 'test_model': 'Alexnet_GAN', 'mission_id': '1234'}
+[2024-12-09 16:02:35]:POST:/sec_enhance   params:{'enhance_id': '1133', 'test_model': 'Alexnet_GAN', 'mission_id': '1234'}
+[2024-12-09 16:06:39]:POST:/adver_gen   params:{'mission_id': '12345', 'test_model': 'Facenet', 'test_weight': '20180402-114759-vggface2.pt', 'test_method': 'GAN', 'timeout': '10000'}
+[2024-12-09 16:06:47]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-09 16:06:51]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-09 16:06:56]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-09 16:07:29]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-09 16:07:35]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-09 16:08:19]:GET:/adver_gen   params:{'mission_id': '12345'}
+[2024-12-09 16:08:33]:POST:/adver_gen_stop   params:{'mission_id': '12345'}
+[2024-12-09 16:08:45]:GET:/adver_gen_download   params:{'mission_id': '12345'}
+[2024-12-09 16:09:10]:POST:/adver_eval   params:{'mission_id': '12345'}
+[2024-12-09 16:09:21]:GET:/adver_eval   params:{'mission_id': '12345'}
+[2024-12-09 16:09:43]:POST:/sec_enhance   params:{'enhance_id': '1133', 'test_model': 'Facenet', 'mission_id': '12345'}
+[2024-12-09 16:09:55]:POST:/sec_enhance   params:{'enhance_id': '11334', 'test_model': 'Facenet', 'mission_id': '12345'}
+[2024-12-09 16:20:06]:POST:/adver_gen   params:{'mission_id': '123456', 'test_model': 'Facenet', 'test_weight': '20180402-114759-vggface2.pt', 'test_method': 'GAN', 'timeout': '10000'}
+[2024-12-09 16:28:18]:POST:/adver_gen   params:{'mission_id': '123456', 'test_model': 'Facenet', 'test_weight': '20180402-114759-vggface2.pt', 'test_method': 'GAN', 'timeout': '10000'}
+[2024-12-09 16:28:30]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-09 16:28:40]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-09 16:28:48]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-09 16:29:00]:GET:/adver_gen   params:{'mission_id': '123456'}
+[2024-12-09 16:29:31]:POST:/adver_gen_stop   params:{'mission_id': '123456'}
+[2024-12-09 16:29:43]:POST:/adver_eval   params:{'mission_id': '123456'}
+[2024-12-09 16:29:52]:GET:/adver_eval   params:{'mission_id': '123456'}
+[2024-12-09 16:30:04]:POST:/sec_enhance   params:{'enhance_id': '11334', 'test_model': 'Facenet', 'mission_id': '123456'}
+[2024-12-09 16:30:31]:POST:/sec_enhance   params:{'enhance_id': '113345', 'test_model': 'Facenet', 'mission_id': '123456'}
+[2024-12-09 16:30:47]:GET:/sec_enhance   params:{'enhance_id': '113345'}
+[2024-12-09 16:34:53]:GET:/sec_enhance   params:{'enhance_id': '113345'}
+[2024-12-09 16:42:29]:GET:/sec_enhance   params:{'enhance_id': '113345'}
+[2024-12-10 16:34:43]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Alexnet_GAN', 'test_weight': '20180402-114759-vggface2.pt', 'test_method': 'GAN', 'timeout': '10000'}
+[2024-12-10 16:36:28]:POST:/adver_gen   params:{'mission_id': '1234', 'test_model': 'Alexnet_GAN', 'test_weight': '20180402-114759-vggface2.pt', 'test_method': 'GAN', 'timeout': '10000'}
+[2024-12-10 16:36:38]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-10 16:36:43]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-10 16:36:53]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-10 16:37:21]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-10 16:37:44]:GET:/adver_gen   params:{'mission_id': '1234'}
+[2024-12-10 17:01:03]:POST:/adver_gen   params:{'mission_id': '54321', 'test_model': 'Alexnet_GAN', 'test_weight': '20180402-114759-vggface2.pt', 'test_method': 'GAN', 'timeout': '10000'}
+[2024-12-10 17:01:19]:POST:/adver_gen   params:{'mission_id': '54321', 'test_model': 'Alexnet_GAN', 'test_weight': '20180402-114759-vggface2.pt', 'test_method': 'GAN', 'timeout': '10000'}
+[2024-12-10 17:01:37]:POST:/adver_gen   params:{'mission_id': '54321', 'test_model': 'Alexnet_GAN', 'test_weight': '20180402-114759-vggface2.pt', 'test_method': 'GAN', 'timeout': '10000'}
+[2024-12-10 17:01:52]:GET:/adver_gen   params:{'mission_id': '54321'}
+[2024-12-10 17:03:58]:GET:/adver_gen   params:{'mission_id': '54321'}
+[2024-12-10 17:06:06]:GET:/adver_gen   params:{'mission_id': '54321'}
+[2024-12-10 17:07:49]:GET:/adver_gen   params:{'mission_id': '54321'}
+[2024-12-10 17:08:16]:GET:/adver_gen_download   params:{'mission_id': '54321'}
+[2024-12-10 17:09:01]:POST:/adver_eval   params:{'mission_id': '54321'}
+[2024-12-10 17:09:16]:GET:/adver_eval   params:{'mission_id': '54321'}
+[2024-12-10 17:09:55]:POST:/sec_enhance   params:{'enhance_id': '147258', 'test_model': 'Alexnet_GAN', 'mission_id': '54321'}
+[2024-12-10 17:10:15]:GET:/sec_enhance   params:{'enhance_id': '147258'}
+[2024-12-10 17:11:15]:GET:/sec_enhance   params:{'enhance_id': '147258'}
+[2024-12-10 17:13:32]:GET:/sec_enhance   params:{'enhance_id': '147258'}
+[2024-12-10 18:19:03]:POST:/sec_enhance_stop   params:{'enhance_id': '147258'}
+[2024-12-10 18:23:46]:POST:/sec_enhance_stop   params:{'enhance_id': '147258'}
+[2024-12-10 18:24:04]:POST:/sec_enhance_stop   params:{'enhance_id': '147258'}
+[2024-12-10 18:24:58]:POST:/adver_gen   params:{'mission_id': '5432123', 'test_model': 'Yolov5', 'test_weight': '20180402-114759-vggface2.pt', 'test_method': 'GAN', 'timeout': '10000'}
+[2024-12-10 18:25:23]:GET:/adver_gen   params:{'mission_id': '5432123'}
+[2024-12-10 18:35:34]:POST:/adver_gen   params:{'mission_id': '5432123', 'test_model': 'Yolov5', 'test_weight': '20180402-114759-vggface2.pt', 'test_method': 'GAN', 'timeout': '10000'}
+[2024-12-10 18:57:55]:POST:/adver_gen   params:{'mission_id': '5432123', 'test_model': 'Yolov5', 'test_weight': '20180402-114759-vggface2.pt', 'test_method': 'GAN', 'timeout': '10000'}
+[2024-12-10 18:58:16]:GET:/adver_gen   params:{'mission_id': '5432123'}
+[2024-12-10 19:00:23]:GET:/adver_gen   params:{'mission_id': '5432123'}
+[2024-12-10 19:01:13]:GET:/adver_gen   params:{'mission_id': '5432123'}
+[2024-12-10 19:01:26]:POST:/adver_gen_stop   params:{'mission_id': '5432123'}
+[2024-12-10 19:01:42]:GET:/adver_gen_download   params:{'mission_id': '5432123'}
+[2024-12-10 19:02:24]:POST:/adver_eval   params:{'mission_id': '5432123'}
+[2024-12-10 19:03:36]:GET:/adver_eval   params:{'mission_id': '5432123'}
+[2024-12-10 19:03:52]:GET:/adver_eval   params:{'mission_id': '5432123'}
+[2024-12-10 19:04:14]:POST:/adver_eval   params:{'mission_id': '5432123'}
+[2024-12-10 19:04:24]:GET:/adver_eval   params:{'mission_id': '5432123'}
+[2024-12-10 19:05:03]:POST:/sec_enhance   params:{'enhance_id': '147258963', 'test_model': 'Yolov5', 'mission_id': '5432123'}
+[2024-12-10 19:05:18]:GET:/sec_enhance   params:{'enhance_id': '147258963'}
+[2024-12-10 19:05:37]:GET:/sec_enhance   params:{'enhance_id': '147258963'}
+[2024-12-10 19:05:49]:GET:/sec_enhance   params:{'enhance_id': '147258963'}
+[2024-12-11 14:32:07]:POST:/adver_gen   params:{'mission_id': '54321234', 'test_model': 'Yolov5', 'test_weight': '20180402-114759-vggface2.pt', 'test_method': 'GAN', 'timeout': '10000'}
+[2024-12-11 14:35:48]:POST:/adver_gen   params:{'mission_id': '54321234', 'test_model': 'Yolov5', 'test_weight': '20180402-114759-vggface2.pt', 'test_method': 'GAN', 'timeout': '10000'}
+[2024-12-11 14:36:12]:POST:/adver_gen   params:{'mission_id': '54321234', 'test_model': 'Yolov5', 'test_weight': '20180402-114759-vggface2.pt', 'test_method': 'GAN', 'timeout': '10000'}
+[2024-12-11 14:37:34]:POST:/adver_gen   params:{'mission_id': '54321234', 'test_model': 'Yolov5', 'test_weight': '20180402-114759-vggface2.pt', 'test_method': 'GAN', 'timeout': '10000'}
+[2024-12-11 14:37:48]:GET:/adver_gen   params:{'mission_id': '54321234'}
+[2024-12-11 14:37:53]:GET:/adver_gen   params:{'mission_id': '54321234'}
+[2024-12-11 14:38:12]:GET:/adver_gen   params:{'mission_id': '54321234'}
+[2024-12-11 14:38:19]:GET:/adver_gen   params:{'mission_id': '54321234'}
+[2024-12-11 14:38:47]:GET:/adver_gen   params:{'mission_id': '54321234'}
+[2024-12-11 14:39:03]:GET:/adver_gen   params:{'mission_id': '54321234'}
+[2024-12-11 14:39:24]:POST:/adver_eval   params:{'mission_id': '54321234'}
+[2024-12-11 14:40:32]:POST:/adver_eval   params:{'mission_id': '54321234'}
+[2024-12-11 14:40:50]:GET:/adver_eval   params:{'mission_id': '54321234'}
+[2024-12-11 14:41:15]:GET:/adver_eval   params:{'mission_id': '54321234'}
+[2024-12-11 14:41:43]:POST:/sec_enhance   params:{'enhance_id': '159753', 'test_model': 'Yolov5', 'mission_id': '54321234'}
+[2024-12-11 14:41:56]:GET:/sec_enhance   params:{'enhance_id': '159753'}
+[2024-12-11 14:42:23]:GET:/sec_enhance   params:{'enhance_id': '159753'}
+[2024-12-11 14:43:12]:GET:/sec_enhance   params:{'enhance_id': '159753'}
+[2024-12-11 14:43:36]:GET:/sec_enhance   params:{'enhance_id': '159753'}
+[2024-12-11 14:44:28]:GET:/sec_enhance   params:{'enhance_id': '159753'}
+[2024-12-11 14:44:59]:GET:/sec_enhance   params:{'enhance_id': '159753'}
+[2024-12-11 14:47:02]:GET:/sec_enhance   params:{'enhance_id': '159753'}
+[2024-12-11 14:47:18]:GET:/sec_enhance_weight_download   params:{'enhance_id': '159753'}
+[2024-12-11 15:01:57]:GET:/sec_enhance_weight_download   params:{'enhance_id': '159753'}
+[2024-12-11 15:09:00]:GET:/sec_enhance_weight_download   params:{'enhance_id': '159753'}
+[2024-12-11 15:12:25]:POST:/sec_enhance   params:{'enhance_id': '159753456', 'test_model': 'Yolov5', 'mission_id': '54321234'}
+[2024-12-11 15:12:35]:GET:/sec_enhance   params:{'enhance_id': '159753456'}
+[2024-12-11 15:12:42]:GET:/sec_enhance   params:{'enhance_id': '159753456'}
+[2024-12-11 15:13:04]:GET:/sec_enhance   params:{'enhance_id': '159753456'}
+[2024-12-11 15:13:29]:GET:/sec_enhance   params:{'enhance_id': '159753456'}
+[2024-12-11 15:13:31]:GET:/sec_enhance   params:{'enhance_id': '159753456'}
+[2024-12-11 15:14:41]:GET:/sec_enhance   params:{'enhance_id': '159753456'}
+[2024-12-11 15:15:01]:GET:/sec_enhance   params:{'enhance_id': '159753456'}
+[2024-12-11 15:15:11]:GET:/sec_enhance   params:{'enhance_id': '159753456'}
+[2024-12-11 15:15:39]:GET:/sec_enhance_weight_download   params:{'enhance_id': '159753456'}

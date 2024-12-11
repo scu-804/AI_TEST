@@ -126,7 +126,7 @@ def model_classify(data):
         "Image_class": ["Alexnet_black_box", "Alexnet_GAN", "Vgg16", "Vgg16_fuzz", "Vgg19", "ResNet"],
         "Face_detect": ["Facenet", "Deepface", "InceptionResnet"],
         "Obj_detect": ["YoloV3"],
-        "Audio": ["Librispeech", "Wav2vec2"],
+        "Audio": ["Librispeech", "Wav2Vec2_black_box", "Wav2Vec2_white_box"],
         "Reinforce": ["DQN"]
     }
 
@@ -564,8 +564,23 @@ def enhance_verify_parall(test_model:str, test_method:str) -> bool:
 
         return True
 
+def vuln_dig_verify(lib_name:str) -> bool:
+    csv_file = 'Vuln_dig_missions_DBSM.csv'
+    with open(csv_file, 'r', newline='') as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            test_lib = row['lib_name'].lower()
+            mission_status = int(row['status'])
+
+            if lib_name.lower() == test_lib and mission_status == 2:
+                return False
+        
+        return True
+
 if __name__ == "__main__":
-    print(eval_verify_parall("vgg16","FGSM"))
+    print(vuln_dig_verify("Pytorch"))
+    #print(eval_verify_parall("vgg16","FGSM"))
     # dict = init_yaml_read_for_vulndig()
     # print(dict)
     # print(dict["Pytorch"].get('docker_container'))

@@ -1,2 +1,2 @@
 mission_id,test_model,test_weight,test_seed,test_method,timeout,mission_status
-1234,Vgg16,vgg16.pth,vgg16.pth,FGSM,600,1
+54321234,Yolov5,20180402-114759-vggface2.pt,vgg16.pth,GAN,10000,1

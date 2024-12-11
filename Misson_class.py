@@ -85,13 +85,13 @@ class Eval_Mission(Mission):
 class Eval_MissionManager(MissionManager):
     def __init__(self, csv_file):
         # 使用对抗样本生成任务 CSV 文件初始化
-        super().__init__(csv_file)  
+        super().__init__('Adver_gen_missions_DBSM.csv')  
         self.eval_missions = {}  # 用于存储评估任务
-        self.load_eval_missions_from_csv()
+        self.load_eval_missions_from_csv(csv_file)
 
-    def load_eval_missions_from_csv(self):
+    def load_eval_missions_from_csv(self,csv_file):
         try:
-            with open('Adver_gen_missions_DBSM.csv', mode='r', newline='') as file:
+            with open(csv_file, mode='r', newline='') as file:
                 reader = csv.DictReader(file)
                 for row in reader:
                     # 读取必要的字段来创建 Eval_Mission 对象
@@ -103,7 +103,7 @@ class Eval_MissionManager(MissionManager):
                     )
                     # 将评估任务添加到字典中
                     self.eval_missions[eval_mission.mission_id] = eval_mission
-                    print(f"Loaded Eval_Mission: {eval_mission}")
+                    print(f"Loaded Eval_Mission: {eval_mission.mission_id}")
         except FileNotFoundError:
             pass  # 如果文件不存在则忽略
         except Exception as e:
@@ -291,7 +291,12 @@ class VulnDigMissionManager:
 
 
 if __name__ == "__main__":
-    eval_manager = Eval_MissionManager('Adver_gen_missions_DBSM.csv')
+    mission_id = str(5432123)
+    #eval_manager = Eval_MissionManager('Adver_gen_missions_DBSM.csv')
+    eval_manager = Eval_MissionManager('Eval_missions_DBSM.csv')
+    eval_mission = eval_manager.eval_missions[mission_id]
+    print(eval_mission)
+    eval_mission.update_status(2)
     eval_manager.save_eval_missions_to_csv()
     # enhance_manager = Enhance_MissionManager('Adver_gen_missions_DBSM.csv')
     # print(enhance_manager.missions)

@@ -1,6 +1,7 @@
 from functools import wraps
 from flask import request,jsonify
 from vuln_service.start import start
+from utils import vuln_dig_verify
 import logging
 
 logger = logging.getLogger(__name__)
@@ -13,6 +14,13 @@ def vulndig_start_decorator(yaml_reader):
         @wraps(func)
         def wrapper(*args, **kwargs):
             lib_name = request.form.get('lib_name')
+            if vuln_dig_verify(lib_name) == False:
+                return jsonify({
+                    "code": 400,
+                    "message": "该库已有挖掘任务正在进行",
+                    "data": {"status": 2},
+                })
+            
             if not lib_name:
                 return jsonify({
                     "code": 400,
