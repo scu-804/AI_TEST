@@ -45,7 +45,7 @@ InceptionResnet:
   adver_metrics: ["ACC"]
 
 YoloV3:
-  docker_container_name: cf3186ca31fc
+  docker_container_name: reverent_kepler
   version:
   dependents:
     torch: 1.5.1

@@ -9,49 +9,49 @@
 #  docker_container: xxx
 
 Pytorch:
-  version: [2.5.0, 2.4.0]
+  version: ["2.5.0"]
   docker_container: "yqy_atheris_pt"
   shell_command: "./run_fuzz.sh"
   test_method: fuzz
 
 Tensorflow:
-  version: [2.17.0]
+  version: ["2.17.0"]
   docker_container: "yqy_atheris_tf"
   shell_command: "python fuzz_tensorflow.py"
   test_method: fuzz
 
 keras:
-  version: [3.5.0]
+  version: ["3.5.0", "3.6.0"]
   docker_container: "yqy_atheris_keras"
   shell_command: "python fuzz_keras.py"
   test_method: fuzz
 
 numpy:
-  version: [2.0.2]
+  version: ["2.0.2", "2.1.3"]
   docker_container: "yqy_atheris_np"
   shell_command: "python3 fuzz_numpy.py"
   test_method: fuzz
 
 opencv:
-  version: [4.10.0]
+  version: ["4.10.0"]
   docker_container: "yqy_fuzz_opencv"
   shell_command: "./generateusergallerycollage_fuzzer"
   test_method: fuzz
 
 pandas:
-  version: [2.1]
+  version: ["2.2.3", "2.2.0"]
   docker_container: "yqy_atheris_pandas"
   shell_command: "python3 fuzz_pandas.py"
   test_method: fuzz
 
 pillow:
-  version: [2.1]
+  version: ["7.1.2"]
   docker_container: "yqy_atheris_pillow"
   shell_command: "./run_fuzz.sh"
   test_method: fuzz
 
 scipy:
-  version: [2.1]
+  version: ["1.14.1", "1.13.1"]
   docker_container: "yqy_atheris_scipy"
   shell_command: "python3 fuzz_scipy.py"
   test_method: fuzz
