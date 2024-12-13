@@ -1,2 +1,3 @@
 mission_id,test_model,test_method,mission_status
-54321234,Yolov5,GAN,1
+123456,Vgg16,FGSM,1
+147258,Vgg16_fuzz,fuzz,1
