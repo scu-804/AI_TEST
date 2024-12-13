@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS, cross_origin
 import os
 import re
+import json
 from utils import *
 from Misson_class import *
 from werkzeug.utils import secure_filename
@@ -331,27 +332,59 @@ def sec_enhance_query():
         shell_path = f"{container_id}:{shell_command}"
         exec_result = exec_docker_container_shell(shell_path)
 
-        import json
+        print(exec_result)
 
         try:
-            exec_result = json.loads(exec_result.strip().replace(" ", "").replace(" ", "").replace("'", '"').strip())
+            exec_result = json.loads(exec_result)
+            status = exec_result['status']
+            mission.update_status(status)
+            enhance_manager.save_missions_to_csv()
+
+            return jsonify({
+                "code": 200,
+                "message": "安全加固执行中",
+                "data": exec_result
+            })
         except BaseException as e:
             pass
 
         if isinstance(exec_result, dict):
             status = exec_result['status']
-        else:
-            match = re.search(r'status:\s*(\d+)', exec_result, re.DOTALL)
-            status = int(match.group(1))
-        mission.update_status(status)
-        enhance_manager.save_missions_to_csv()
+            mission.update_status(status)
+            enhance_manager.save_missions_to_csv()
 
-        return {
+            return jsonify({
+                "code": 200,
+                "message": "安全加固执行中",
+                "data": exec_result
+            })
+        else:
+            match_epoch = re.search(r'epoch\s*[=: ]\s*(\d+/\d+)', exec_result, re.IGNORECASE)
+            match_loss = re.search(r'loss\s*[=: ]\s*([\d.]+)', exec_result, re.IGNORECASE)
+            match_acc = re.search(r'acc\s*[=: ]\s*([\d.]+)', exec_result, re.IGNORECASE)
+            match_weightnum = re.search(r'weightnum\s*[=: ]\s*([\d.]+)', exec_result, re.IGNORECASE)
+            match_status = re.search(r'status\s*[=: ]\s*(\d+)', exec_result, re.IGNORECASE)
+
+            epoch = match_epoch.group(1) if match_epoch else "N/A"
+            loss = float(match_loss.group(1)) if match_loss else None
+            acc = float(match_acc.group(1)) if match_acc else None
+            weightnum = int(match_weightnum.group(1)) if match_weightnum else None
+            status = int(match_status.group(1))
+
+            mission.update_status(status)
+            enhance_manager.save_missions_to_csv()
+
+            return jsonify({
             "code": 200,
             "message": "安全加固执行中",
-            "data": exec_result,
-        }
-
+            "data": {
+                "epoch": epoch,
+                "loss": loss,
+                "acc": acc,
+                "weightnum": weightnum,
+                "status": status
+            }
+        })
 
 ## mode13: 启动安全加固任务
 @cross_origin()
