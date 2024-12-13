@@ -47,7 +47,7 @@ def get_zip_script(routine: RoutineEntry) -> str:
     )
 
 
-def collect_crashes(routine: RoutineEntry) -> str | None:
+def collect_crashes(routine: RoutineEntry) -> str:
     """
     returns path of target zip file
     """
