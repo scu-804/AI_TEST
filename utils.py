@@ -147,7 +147,8 @@ def translate_test_method(method):
         "CW": "CW攻击",
         "CW2": "CW2攻击",
         "DeepFool": "深度愚弄法",
-        "fuzzing": "模糊测试"
+        "fuzzing": "模糊测试",
+        "BIM": "基本迭代法"
     }
     return translations.get(method, method)
 

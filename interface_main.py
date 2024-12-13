@@ -8,6 +8,7 @@ from utils import *
 from Misson_class import *
 from werkzeug.utils import secure_filename
 from vuln_decorators import *
+from vuln_service.entities import RoutineEntry
 from vuln_service.info_read import info_read_json
 from vuln_service.stop import stop
 from vuln_service.collect_crashes import collect_crashes
@@ -75,10 +76,15 @@ def vuln_dig_download():
                     "status": 2
                 }
             }
-     
-     docker_container = mission_manager.missions[mission_id].container_id
+     mission = mission_manager.missions[mission_id]
 
-     download_path = collect_crashes(docker_container)
+     docker_container = mission.container_id
+     lib_name = mission.lib_name
+     lib_version = mission.lib_version
+
+     entry = RoutineEntry(container=docker_container, lib_name=lib_name, lib_version=lib_version)
+
+     download_path = collect_crashes(entry)
      if download_path is None:
           return{
                "code": 200,
@@ -108,8 +114,13 @@ def vuln_dig_stop():
             }
      mission = mission_manager.missions[mission_id]
 
-     docker_container = mission_manager.missions[mission_id].container_id
-     stop(docker_container)
+     docker_container = mission.container_id
+     lib_name = mission.lib_name
+     lib_version = mission.lib_version
+
+     entry = RoutineEntry(container=docker_container, lib_name=lib_name, lib_version=lib_version)
+
+     stop(entry)
 
      mission.update_status(1)
      mission_manager.save_missions_to_csv()
@@ -140,10 +151,16 @@ def vuln_dig_query():
             }
      mission = mission_manager.missions[mission_id]
 
-     docker_container = mission_manager.missions[mission_id].container_id
-     container_info = info_read_json(docker_container)
+     docker_container = mission.container_id
+     lib_name = mission.lib_name
+     lib_version = mission.lib_version
+
+     entry = RoutineEntry(container=docker_container, lib_name=lib_name, lib_version=lib_version)
+
+     container_info = info_read_json(entry)
 
      mission_status = container_info["status"]
+     print(mission_status)
      mission.update_status(mission_status)
 
      mission_manager.save_missions_to_csv()
@@ -158,7 +175,16 @@ def vuln_dig_query():
 ## model17: 框架漏挖启动
 @app.route('/vul_dig', methods=['POST'])
 @vulndig_start_decorator(init_yaml_read_for_vulndig)
-def vuln_dig_start():
+def vuln_dig_start(result:bool):
+     if result == False:
+         return{
+             "code": 400,
+             "message": "漏挖任务启动失败",
+             "data": {
+                 "status": 2
+             }
+         }
+
      params = request.get_json()
 
      mission_id = params.get('mission_id')

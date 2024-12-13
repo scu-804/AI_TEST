@@ -1,7 +1,8 @@
 from functools import wraps
 from flask import request,jsonify
-from vuln_service.start import start
+from vuln_service.start import start_routine
 from utils import vuln_dig_verify
+from vuln_service.entities import RoutineEntry
 import logging
 
 logger = logging.getLogger(__name__)
@@ -15,6 +16,7 @@ def vulndig_start_decorator(yaml_reader):
         def wrapper(*args, **kwargs):
             params = request.get_json()
             lib_name = params.get('lib_name')
+            lib_verison = params.get('lib_version')
             if vuln_dig_verify(lib_name) == False:
                 return jsonify({
                     "code": 400,
@@ -50,9 +52,13 @@ def vulndig_start_decorator(yaml_reader):
 
             # 调用 start 函数启动 Docker 容器
             logger.info(f"Starting Docker container '{docker_container}' with command '{shell_command}'")
-            start(docker_container, shell_command)
+
+            entry = RoutineEntry(container=docker_container, lib_name=lib_name, lib_version=lib_verison)
+            result = start_routine(entry)
+
+            print(result)
 
             # 执行被装饰的接口逻辑
-            return func(*args, **kwargs)
+            return func(*args, result=result,**kwargs)
         return wrapper
     return decorator

@@ -1,6 +1,10 @@
-from .utils import container_run_script, get_container_cwd
+from vuln_service.entities import RoutineEntry
+from .utils import (
+    container_run_script,
+    get_crash_dir,
+    get_crash_zip_path,
+)
 
-CRASH_ZIP_PATH = "/crashes.zip"
 
 zip_script_template = """
 
@@ -36,18 +40,19 @@ find "$CRASH_DIR" -mindepth 1 -maxdepth 1 -type f -name 'crash-*' -exec rm '{{}}
 """
 
 
-def get_zip_script(cwd: str) -> str:
-    return zip_script_template.format(crash_dir=cwd, crash_zip_path=CRASH_ZIP_PATH)
+def get_zip_script(routine: RoutineEntry) -> str:
+    crash_dir = get_crash_dir(routine.get_name())
+    return zip_script_template.format(
+        crash_dir=crash_dir, crash_zip_path=get_crash_zip_path(routine.get_name())
+    )
 
 
-def collect_crashes(container: str) -> str | None:
+def collect_crashes(routine: RoutineEntry) -> str | None:
     """
     returns path of target zip file
     """
-    cwd = get_container_cwd(container)
-    assert cwd
-    script = get_zip_script(cwd)
-    proc = container_run_script(container, script, True)
+    script = get_zip_script(routine)
+    proc = container_run_script(routine.container, script, True)
     if proc.returncode != 0:
         return None
-    return CRASH_ZIP_PATH
+    return get_crash_zip_path(routine.get_name())
