@@ -359,7 +359,7 @@ def sec_enhance_query():
                 "data": exec_result
             })
         else:
-            match_epoch = re.search(r'epoch\s*[=: ]\s*(\d+/\d+)', exec_result, re.IGNORECASE)
+            match_epoch = re.search(r'epoch\s*[=: ]\s*(\d+)(?:/\d+)?', exec_result, re.IGNORECASE)
             match_loss = re.search(r'loss\s*[=: ]\s*([\d.]+)', exec_result, re.IGNORECASE)
             match_acc = re.search(r'acc\s*[=: ]\s*([\d.]+)', exec_result, re.IGNORECASE)
             match_weightnum = re.search(r'weightnum\s*[=: ]\s*([\d.]+)', exec_result, re.IGNORECASE)
