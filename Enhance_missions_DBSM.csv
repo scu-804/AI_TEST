@@ -1,6 +1,2 @@
 mission_id,test_model,test_weight,test_seed,test_method,timeout,mission_status,enhance_id
-54321234,Yolov5,20180402-114759-vggface2.pt,vgg16.pth,GAN,10000,1,159753
-54321234,Yolov5,20180402-114759-vggface2.pt,vgg16.pth,GAN,10000,1,159753456
-123456,Vgg16,vgg16.pth,vgg16.pth,FGSM,10000,1,654321
-123456,Vgg16,vgg16.pth,vgg16.pth,FGSM,10000,1,65432123
-147258,Vgg16_fuzz,model.pth,vgg16.pth,fuzz,10000,1,369258
+147258,Vgg16,vgg16.pth,vgg16.pth,FGSM,10000,1,369258

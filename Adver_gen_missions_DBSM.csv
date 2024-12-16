@@ -1,3 +1,2 @@
 mission_id,test_model,test_weight,test_seed,test_method,timeout,mission_status
-123456,Vgg16,vgg16.pth,vgg16.pth,FGSM,10000,1
-147258,Vgg16_fuzz,model.pth,vgg16.pth,fuzz,10000,1
+147258,Vgg16,vgg16.pth,vgg16.pth,FGSM,10000,1
