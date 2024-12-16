@@ -8,14 +8,14 @@ from .utils import container_run_script, FUZZ_DIR, FUZZ_LOG
 from .utils import logger, get_log_name, get_crash_dir, get_pid_name
 
 container_fuzzcmd = {
-    "yqy_atheris_pt": 'LD_PRELOAD="$(python -c "import atheris; print(atheris.path())")/asan_with_fuzzer.so" python ./my_fuzzer.py',
-    "yqy_atheris_tf": "python fuzz_tensorflow.py",
-    "yqy_atheris_keras": "python fuzz_keras.py",
-    "yqy_atheris_np": "python3 fuzz_numpy.py",
-    "yqy_fuzz_opencv": "./generateusergallerycollage_fuzzer",
-    "yqy_atheris_pandas": "python3 fuzz_pandas.py",
-    "yqy_atheris_pillow": 'LD_PRELOAD="$(python -c "import atheris; print(atheris.path())")/asan_with_fuzzer.so" python ./fuzz_pil.py',
-    "yqy_atheris_scipy": "python3 fuzz_scipy.py",
+    "vul_pytorch": 'LD_PRELOAD="$(python -c "import atheris; print(atheris.path())")/asan_with_fuzzer.so" python ./my_fuzzer.py',
+    "vul_tf": "python fuzz_tensorflow.py",
+    "vul_keras": "python fuzz_keras.py",
+    "vul_np": "python3 fuzz_numpy.py",
+    "vul_opencv": "./generateusergallerycollage_fuzzer",
+    "vul_pandas": "python3 fuzz_pandas.py",
+    "vul_pillow": 'LD_PRELOAD="$(python -c "import atheris; print(atheris.path())")/asan_with_fuzzer.so" python ./fuzz_pil.py',
+    "vul_scipy": "python3 fuzz_scipy.py",
 }
 
 # params needed: fuzz_dir, fuzz_cmd, fuzz_log
@@ -126,9 +126,6 @@ def get_start_script(routine: RoutineEntry, fuzz_cmd: str) -> str:
 
 
 def exec_routine(routine: RoutineEntry, fuzz_cmd: str) -> None:
-    """
-    return cwd of fuzzing process
-    """
     script = get_start_script(routine, fuzz_cmd)
     container_run_script(routine.container, script, False)
     # add_container_cwd(container, cwd)
