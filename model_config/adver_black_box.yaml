@@ -104,9 +104,9 @@ Wav2Vec2_black_box:
   docker_container_run_shell: ${Wav2Vec2_black_box.docker_container_name}:/root/run.sh
   docker_container_run_query_shell: ${Wav2Vec2_black_box.docker_container_name}:/root/run_poll.sh
   docker_container_run_stop_shell: ${Wav2Vec2_black_box.docker_container_name}:/root/run_kill.sh
-  # docker_container_evaluate_shell: ${Wav2Vec2_black_box.docker_container_name}:/root/evaluation.sh
-  # docker_container_evaluate_query_shell: ${Wav2Vec2_black_box.docker_container_name}:/root/evaluation_poll.sh
+  docker_container_evaluate_shell: ${Wav2Vec2_black_box.docker_container_name}:/root/evaluation.sh
+  docker_container_evaluate_query_shell: ${Wav2Vec2_black_box.docker_container_name}:/root/evaluation_poll.sh
   docker_container_enchance_shell: ${Wav2Vec2_black_box.docker_container_name}:/root/enhance.sh
   docker_container_enchance_query_shell: ${Wav2Vec2_black_box.docker_container_name}:/root/enhance_poll.sh
   docker_container_enchance_stop_shell: ${Wav2Vec2_black_box.docker_container_name}:/root/enhance_kill.sh
-  # adver_metrics: [""]
+  adver_metrics: ["ACC"]
