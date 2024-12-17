@@ -287,7 +287,17 @@ def sec_enhance_stop():
         shell_command = f"{script_path} {enhance_id}"
         #shell_command = f"{script_path}"
         shell_path = f"{container_id}:{shell_command}"
-        exec_docker_container_shell(shell_path)
+        exec_result = exec_docker_container_shell(shell_path)
+
+        if exec_result.startswith("Error"):
+            return {
+                "code": 200,
+                "message": "docker内部脚本执行出错",
+                "data": {
+                    "error_output": exec_result,
+                    "status": 3
+                }
+            }
 
         return {
             "code": 200,
@@ -332,7 +342,15 @@ def sec_enhance_query():
         shell_path = f"{container_id}:{shell_command}"
         exec_result = exec_docker_container_shell(shell_path)
 
-        print(exec_result)
+        if exec_result.startswith("Error"):
+            return {
+                "code": 200,
+                "message": "docker内部脚本执行出错",
+                "data": {
+                    "error_output": exec_result,
+                    "status": 3
+                }
+            }
 
         try:
             exec_result = json.loads(exec_result)
@@ -497,7 +515,15 @@ def adver_eval_query():
         shell_path = f"{container_id}:{shell_command}"
         exec_result = exec_docker_container_shell(shell_path)
         
-        print(exec_result)
+        if exec_result.startswith("Error"):
+            return {
+                "code": 200,
+                "message": "docker内部脚本执行出错",
+                "data": {
+                    "error_output": exec_result,
+                    "status": 3
+                }
+            }
 
         for line in exec_result.splitlines():
             for metric in adver_metrics:
@@ -656,6 +682,7 @@ def adver_gen_stop():
                 "status": 2
             }
         }
+    
     else:
         mission = mission_manager.missions[mission_id]
         mission.update_status(1)
@@ -665,8 +692,18 @@ def adver_gen_stop():
         docker_shell_run = model_dict[mission.test_model].get('docker_container_run_stop_shell')
         container_id, script_path = docker_shell_run.split(":", 1)
         shell_path = f"{container_id}:{script_path} {mission_id}"
-        exec_docker_container_shell(shell_path)
+        exec_result = exec_docker_container_shell(shell_path)
 
+        if exec_result.startswith("Error"):
+            return {
+                "code": 200,
+                "message": "docker内部脚本执行出错",
+                "data": {
+                    "error_output": exec_result,
+                    "status": 3
+                }
+            }
+        
         return {
             "code": 200,
             "message": "任务已停止",
@@ -709,16 +746,21 @@ def adver_gen_get():
 
         print(f"shell result: {data_num}")
 
+        if data_num.startswith("Error"):
+            return {
+                "code": 200,
+                "message": "docker内部脚本执行出错",
+                "data": {
+                    "error_output": data_num,
+                    "status": 3
+                }
+            }
+
         # 尝试解析data_num
         r_data_num = 0
         r_status = mission_manager.missions[mission_id].mission_status
         flag = True
-        # if flag:
-        #     try:
-        #         r_data_num = int(data_num)
-        #         flag = False
-        #     except BaseException as e:
-        #         pass
+
         if flag:
             try:
                 if str(data_num).find("No running process found for mission_id") >= 0:
