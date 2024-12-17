@@ -1,2 +1,2 @@
 mission_id,test_model,test_weight,test_seed,test_method,timeout,mission_status,enhance_id
-147258,Vgg16,vgg16.pth,vgg16.pth,FGSM,10000,1,369258
+147258,Alexnet_black_box,saved_model.pb,vgg16.pth,genetic_algorithm,10000,1,369258

@@ -1,5 +1,5 @@
 Alexnet_black_box:
-  docker_container_name: f4b846b38ccb
+  docker_container_name: vigorous_shamir
   version:
   dependents:
     tensorflow: 2.4.1
@@ -97,8 +97,8 @@ Wav2Vec2_black_box:
     Numpy: 1.24.2
   test_method: [simulated_annealing_algorithm]
   weight_number: 1
-  weight_name: [wav2vec2.pth]
-  weight_download_addr: ["${Wav2Vec2_black_box.docker_container_name}:/root/ASRAdversarialAttack/wav2vec2.pth"]
+  weight_name: [Wav2vec2.pth]
+  weight_download_addr: ["${Wav2Vec2_black_box.docker_container_name}:/root/ASRAdversarialAttack/CRDNN_Model/Wav2vec2.pth"]
   result_download_addr: ${Wav2Vec2_black_box.docker_container_name}:/root/adv_sample/
   enhance_download_addr: ${Wav2Vec2_black_box.docker_container_name}:/root/retrain/
   docker_container_run_shell: ${Wav2Vec2_black_box.docker_container_name}:/root/run.sh

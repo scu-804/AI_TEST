@@ -481,3 +481,33 @@
 [2024-12-16 18:50:04]:GET:/sec_enhance   params:{'enhance_id': '369258'}
 [2024-12-16 18:50:50]:GET:/sec_enhance   params:{'enhance_id': '369258'}
 [2024-12-16 18:51:00]:POST:/sec_enhance_stop   params:{'enhance_id': '369258'}
+[2024-12-17 10:25:50]:POST:/adver_gen   params:{'mission_id': '147258', 'test_model': 'Alexnet_black_box', 'test_weight': 'saved_model.pb', 'test_method': 'genetic_algorithm', 'timeout': '10000'}
+[2024-12-17 10:26:43]:POST:/adver_gen   params:{'mission_id': '147258', 'test_model': 'Alexnet_black_box', 'test_weight': 'saved_model.pb', 'test_method': 'genetic_algorithm', 'timeout': '10000'}
+[2024-12-17 10:27:05]:GET:/adver_gen   params:{'mission_id': '147258'}
+[2024-12-17 10:27:09]:GET:/adver_gen   params:{'mission_id': '147258'}
+[2024-12-17 10:27:27]:GET:/adver_gen   params:{'mission_id': '147258'}
+[2024-12-17 10:27:32]:GET:/adver_gen   params:{'mission_id': '147258'}
+[2024-12-17 10:27:40]:GET:/adver_gen   params:{'mission_id': '147258'}
+[2024-12-17 10:27:43]:POST:/adver_gen_stop   params:{'mission_id': '147258'}
+[2024-12-17 10:27:57]:POST:/adver_eval   params:{'mission_id': '147258'}
+[2024-12-17 10:28:05]:GET:/adver_eval   params:{'mission_id': '147258'}
+[2024-12-17 10:28:45]:POST:/sec_enhance   params:{'enhance_id': '369258', 'test_model': 'Vgg16', 'mission_id': '147258'}
+[2024-12-17 10:29:21]:GET:/sec_enhance   params:{'enhance_id': '369258'}
+[2024-12-17 10:30:05]:POST:/sec_enhance   params:{'enhance_id': '369258', 'test_model': 'Alexnet_black_box', 'mission_id': '147258'}
+[2024-12-17 10:31:15]:GET:/sec_enhance   params:{'enhance_id': '369258'}
+[2024-12-17 10:33:48]:POST:/adver_gen   params:{'mission_id': '147258', 'test_model': 'Alexnet_black_box', 'test_weight': 'saved_model.pb', 'test_method': 'genetic_algorithm', 'timeout': '10000'}
+[2024-12-17 10:34:05]:GET:/adver_gen   params:{'mission_id': '147258'}
+[2024-12-17 10:35:35]:GET:/adver_gen   params:{'mission_id': '147258'}
+[2024-12-17 10:35:55]:GET:/adver_gen   params:{'mission_id': '147258'}
+[2024-12-17 10:36:19]:GET:/adver_gen   params:{'mission_id': '147258'}
+[2024-12-17 10:37:07]:GET:/adver_gen   params:{'mission_id': '147258'}
+[2024-12-17 10:38:12]:GET:/adver_gen   params:{'mission_id': '147258'}
+[2024-12-17 10:40:01]:GET:/adver_gen   params:{'mission_id': '147258'}
+[2024-12-17 10:40:12]:POST:/adver_eval   params:{'mission_id': '147258'}
+[2024-12-17 10:40:18]:GET:/adver_eval   params:{'mission_id': '147258'}
+[2024-12-17 10:40:30]:GET:/adver_eval   params:{'mission_id': '147258'}
+[2024-12-17 10:40:43]:POST:/sec_enhance   params:{'enhance_id': '369258', 'test_model': 'Alexnet_black_box', 'mission_id': '147258'}
+[2024-12-17 10:40:48]:GET:/sec_enhance   params:{'enhance_id': '369258'}
+[2024-12-17 10:41:52]:GET:/sec_enhance   params:{'enhance_id': '369258'}
+[2024-12-17 10:42:12]:GET:/sec_enhance   params:{'enhance_id': '369258'}
+[2024-12-17 10:42:42]:GET:/sec_enhance   params:{'enhance_id': '369258'}
