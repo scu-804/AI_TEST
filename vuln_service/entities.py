@@ -23,30 +23,30 @@ class VulnEngineEntry:
 
 vuln_engine_entry_list = [
     # 8 in total
-    VulnEngineEntry("yqy_atheris_pt", "./run_fuzz.sh"),
-    VulnEngineEntry("yqy_atheris_tf", "python fuzz_tensorflow.py"),
-    VulnEngineEntry("yqy_atheris_keras", "python fuzz_keras.py"),
-    VulnEngineEntry("yqy_atheris_np", "python3 fuzz_numpy.py"),
-    VulnEngineEntry("yqy_fuzz_opencv", "./generateusergallerycollage_fuzzer"),
-    VulnEngineEntry("yqy_atheris_pandas", "python3 fuzz_pandas.py"),
-    VulnEngineEntry("yqy_atheris_pillow", "./run_fuzz.sh"),
-    VulnEngineEntry("yqy_atheris_scipy", "python3 fuzz_scipy.py"),
+    VulnEngineEntry("vul_pytorch", "./run_fuzz.sh"),
+    VulnEngineEntry("vul_tf", "python fuzz_tensorflow.py"),
+    VulnEngineEntry("vul_np", "python3 fuzz_numpy.py"),
+    VulnEngineEntry("vul_keras", "python fuzz_keras.py"),
+    VulnEngineEntry("vul_opencv", "./generateusergallerycollage_fuzzer"),
+    VulnEngineEntry("vul_pandas", "python3 fuzz_pandas.py"),
+    VulnEngineEntry("vul_pillow", "./run_fuzz.sh"),
+    VulnEngineEntry("vul_scipy", "python3 fuzz_scipy.py"),
 ]
 routine_entry_list = [
     # no_conda
-    RoutineEntry("yqy_atheris_pt", "pytorch", "2.5.0"),
+    RoutineEntry("vul_pytorch", "pytorch", "2.5.0"),
     # no_conda
-    RoutineEntry("yqy_atheris_tf", "tensorflow", "2.17.0"),
-    RoutineEntry("yqy_atheris_keras", "keras", "3.5.0"),
-    RoutineEntry("yqy_atheris_keras", "keras", "3.6.0"),
-    RoutineEntry("yqy_atheris_np", "numpy", "2.0.2"),
-    RoutineEntry("yqy_atheris_np", "numpy", "2.1.3"),
+    RoutineEntry("vul_tf", "tensorflow", "2.17.0"),
+    RoutineEntry("vul_keras", "keras", "3.5.0"),
+    RoutineEntry("vul_keras", "keras", "3.6.0"),
+    RoutineEntry("vul_np", "numpy", "2.0.2"),
+    RoutineEntry("vul_np", "numpy", "2.1.3"),
     # no_conda
-    RoutineEntry("yqy_fuzz_opencv", "opencv", "4.10.0"),
-    RoutineEntry("yqy_atheris_pandas", "pandas", "2.2.3"),
-    RoutineEntry("yqy_atheris_pandas", "pandas", "2.2.0"),
+    RoutineEntry("vul_opencv", "opencv", "4.10.0"),
+    RoutineEntry("vul_pandas", "pandas", "2.2.3"),
+    RoutineEntry("vul_pandas", "pandas", "2.2.0"),
     # no conda
-    RoutineEntry("yqy_atheris_pillow", "pillow", "7.1.2"),
-    RoutineEntry("yqy_atheris_scipy", "scipy", "1.14.1"),
-    RoutineEntry("yqy_atheris_scipy", "scipy", "1.13.1"),
+    RoutineEntry("vul_pillow", "pillow", "7.1.2"),
+    RoutineEntry("vul_scipy", "scipy", "1.14.1"),
+    RoutineEntry("vul_scipy", "scipy", "1.13.1"),
 ]

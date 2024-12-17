@@ -53,7 +53,7 @@ def setup_zip() -> None:
 def test_one(entry: RoutineEntry, tts: int, read_loop: int) -> None:
     # logger.info(f"start testing {entry.container}")
     # collect_requirements(entry.container)
-    if entry.container != "yqy_atheris_np":
+    if entry.container != "vul_np":
         return
     run_loop(entry, 5, 2)
 
