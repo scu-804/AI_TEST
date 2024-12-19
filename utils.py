@@ -12,6 +12,9 @@ import subprocess
 import threading
 import time
 
+adver_task_result = {}
+
+result_lock = threading.Lock()
 
 def return_0_1(code: int =200 , message: str = "done", data: dict = {"v":"k"}):
     #  this code for returning response of POST(GET) with json format
@@ -235,7 +238,6 @@ def container_run_cmd(res: list, cmd, ctn):
         res.append(error_message)
         return error_message
 
-
 def exec_docker_container_shell_detach_v2(shell_path: str) -> str:
     client = docker.from_env()
 
@@ -266,6 +268,56 @@ def exec_docker_container_shell_detach_v2(shell_path: str) -> str:
         time.sleep(0.2)
     return "process is  running"
 
+def container_run_cmd_v2(mission_id: str, cmd: str, ctn, result_event: threading.Event, result_output: dict):
+    exec_result = ctn.exec_run(cmd=cmd, stderr=True)
+    
+    if exec_result.exit_code == 0:
+        try:
+            output = exec_result.output.decode('utf-8', errors='ignore') if isinstance(exec_result.output, bytes) else exec_result.output
+            print(f"Script output for mission {mission_id}: {output}")
+            result_output["status"] = "success"
+            result_output["output"] = output
+        except UnicodeDecodeError:
+            print(f"Received non-UTF-8 output for mission {mission_id}")
+            result_output["status"] = "success"
+            result_output["output"] = exec_result.output
+    else:
+        error_message = f"Script execution failed with exit code: {exec_result.exit_code}\nError output: {exec_result.output.decode('utf-8', errors='ignore')}"
+        print(f"Error for mission {mission_id}: {error_message}")
+        result_output["status"] = "error"
+        result_output["output"] = error_message
+    
+    result_event.set()
+
+def exec_docker_container_shell_detach_v3(mission_id: str, shell_path: str) -> str:
+    client = docker.from_env()
+
+    parts = shell_path.split(":")
+
+    container_name = parts[0]
+
+    container_id = get_container_id(container_name, client)
+
+    script_path = parts[1]
+
+    os.system(f"docker start {container_id}")
+
+    print(f"docker:{container_id} run cmd: {script_path}")
+
+    container = client.containers.get(container_id)
+
+    result_event = threading.Event()
+    result_output = {}
+
+    threading.Thread(target=container_run_cmd_v2, args=(mission_id, script_path, container, result_event, result_output)).start()
+
+    if result_event.wait(timeout=5):
+        if result_output["status"] == "error":
+            return f"Error: {result_output['output']}"
+        else:
+            return "success"
+    else:
+        return "success"
 
 def exec_docker_container_shell(shell_path: str) -> str:
     client = docker.from_env()
@@ -462,7 +514,7 @@ def adver_verify_parall(test_model:str, test_method:str) -> bool:
             print(row['mission_id'], row['test_model'], row['test_method'], row['mission_status'])
             # 校验当前行是否状态为1，为1则已经结束，跳转下一行
             button_3 = int(row['mission_status'])
-            if button_3 == 1: continue
+            if button_3 != 2: continue
 
             ## 校验新任务是否和现有任务面向同一种模型
             for item in all_type_dict['model']:
@@ -485,7 +537,7 @@ def adver_verify_parall(test_model:str, test_method:str) -> bool:
             eval_test_method = row['test_method'].lower()
             eval_test_status = int(row['mission_status'])
 
-            if eval_test_model == test_model.lower() and eval_test_method == test_method.lower() and eval_test_status == 2:
+            if eval_test_model == test_model.lower() and eval_test_method == test_method.lower() and eval_test_status != 1:
                 return False
     
     csv_file = 'Enhance_missions_DBSM.csv'
@@ -497,7 +549,7 @@ def adver_verify_parall(test_model:str, test_method:str) -> bool:
             eval_test_method = row['test_method'].lower()
             eval_test_status = int(row['mission_status'])
 
-            if eval_test_model == test_model.lower() and eval_test_method == test_method.lower() and eval_test_status == 2:
+            if eval_test_model == test_model.lower() and eval_test_method == test_method.lower() and eval_test_status != 1:
                 return False
 
         return True
@@ -512,7 +564,7 @@ def eval_verify_parall(test_model:str, test_method:str) -> bool:
             eval_test_method = row['test_method'].lower()
             eval_test_status = int(row['mission_status'])
 
-            if eval_test_model == test_model.lower() and eval_test_method == test_method.lower() and eval_test_status == 2:
+            if eval_test_model == test_model.lower() and eval_test_method == test_method.lower() and eval_test_status != 1:
                 return False
     
     csv_file = 'Enhance_missions_DBSM.csv'
@@ -524,7 +576,7 @@ def eval_verify_parall(test_model:str, test_method:str) -> bool:
             eval_test_method = row['test_method'].lower()
             eval_test_status = int(row['mission_status'])
 
-            if eval_test_model == test_model.lower() and eval_test_method == test_method.lower() and eval_test_status == 2:
+            if eval_test_model == test_model.lower() and eval_test_method == test_method.lower() and eval_test_status != 1:
                 return False
 
         return True
@@ -539,7 +591,7 @@ def enhance_verify_parall(test_model:str, test_method:str) -> bool:
             eval_test_method = row['test_method'].lower()
             eval_test_status = int(row['mission_status'])
 
-            if eval_test_model == test_model.lower() and eval_test_method == test_method.lower() and eval_test_status == 2:
+            if eval_test_model == test_model.lower() and eval_test_method == test_method.lower() and eval_test_status != 1:
                 return False
     
     csv_file = 'Eval_missions_DBSM.csv'
@@ -551,7 +603,7 @@ def enhance_verify_parall(test_model:str, test_method:str) -> bool:
             eval_test_method = row['test_method'].lower()
             eval_test_status = int(row['mission_status'])
 
-            if eval_test_model == test_model.lower() and eval_test_method == test_method.lower() and eval_test_status == 2:
+            if eval_test_model == test_model.lower() and eval_test_method == test_method.lower() and eval_test_status != 1:
                 return False
 
         return True
@@ -565,7 +617,7 @@ def vuln_dig_verify(lib_name:str) -> bool:
             test_lib = row['lib_name'].lower()
             mission_status = int(row['status'])
 
-            if lib_name.lower() == test_lib and mission_status == 2:
+            if lib_name.lower() == test_lib and mission_status != 1:
                 return False
         
         return True
