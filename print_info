@@ -511,3 +511,42 @@
 [2024-12-17 10:41:52]:GET:/sec_enhance   params:{'enhance_id': '369258'}
 [2024-12-17 10:42:12]:GET:/sec_enhance   params:{'enhance_id': '369258'}
 [2024-12-17 10:42:42]:GET:/sec_enhance   params:{'enhance_id': '369258'}
+[2024-12-18 20:46:22]:POST:/adver_gen   params:{'mission_id': '147258', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '10000'}
+[2024-12-18 20:46:32]:GET:/adver_gen   params:{'mission_id': '147258'}
+[2024-12-18 20:47:20]:GET:/adver_gen   params:{'mission_id': '147258'}
+[2024-12-18 20:49:32]:POST:/adver_gen_stop   params:{'mission_id': '147258'}
+[2024-12-18 20:53:15]:GET:/adver_gen   params:{'mission_id': '147258'}
+[2024-12-18 20:53:43]:POST:/adver_gen   params:{'mission_id': '1472589', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '10000'}
+[2024-12-18 20:53:50]:GET:/adver_gen   params:{'mission_id': '1472589'}
+[2024-12-18 20:55:49]:POST:/adver_gen_stop   params:{'mission_id': '1472589'}
+[2024-12-18 21:02:29]:POST:/adver_gen   params:{'mission_id': '14725890', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '10000'}
+[2024-12-18 21:02:42]:GET:/adver_gen   params:{'mission_id': '1472589'}
+[2024-12-18 21:04:19]:GET:/adver_gen   params:{'mission_id': '14725890'}
+[2024-12-18 21:04:34]:GET:/adver_gen   params:{'mission_id': '14725890'}
+[2024-12-18 21:05:14]:GET:/adver_gen   params:{'mission_id': '14725890'}
+[2024-12-18 21:09:09]:POST:/adver_gen_stop   params:{'mission_id': '1472589'}
+[2024-12-18 21:09:24]:POST:/adver_gen_stop   params:{'mission_id': '14725890'}
+[2024-12-18 21:09:43]:POST:/adver_gen   params:{'mission_id': '147258901', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '10000'}
+[2024-12-18 21:09:54]:GET:/adver_gen   params:{'mission_id': '14725890'}
+[2024-12-18 21:09:59]:GET:/adver_gen   params:{'mission_id': '147258901'}
+[2024-12-18 21:20:17]:GET:/adver_gen   params:{'mission_id': '1472589012'}
+[2024-12-18 21:20:38]:POST:/adver_gen   params:{'mission_id': '1472589012', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '10000'}
+[2024-12-18 21:23:37]:POST:/adver_gen   params:{'mission_id': '1472589012', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '10000'}
+[2024-12-18 21:23:47]:GET:/adver_gen   params:{'mission_id': '1472589012'}
+[2024-12-18 21:24:26]:GET:/adver_gen   params:{'mission_id': '1472589012'}
+[2024-12-18 21:24:42]:POST:/adver_gen_stop   params:{'mission_id': '1472589012'}
+[2024-12-18 21:44:54]:POST:/adver_gen   params:{'mission_id': '14725890123', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '10000'}
+[2024-12-18 21:48:06]:POST:/adver_gen   params:{'mission_id': '147258901234', 'test_model': 'Alexnet_black_box', 'test_weight': 'saved_model.pb', 'test_method': 'genetic_algorithm', 'timeout': '10000'}
+[2024-12-18 21:52:25]:POST:/adver_gen_stop   params:{'mission_id': '14725890123'}
+[2024-12-18 21:52:32]:POST:/adver_gen_stop   params:{'mission_id': '147258901234'}
+[2024-12-18 21:56:36]:POST:/adver_gen   params:{'mission_id': '1472589012345', 'test_model': 'Alexnet_black_box', 'test_weight': 'saved_model.pb', 'test_method': 'genetic_algorithm', 'timeout': '10000'}
+[2024-12-18 22:01:56]:POST:/adver_gen_stop   params:{'mission_id': '1472589012345'}
+[2024-12-19 10:51:54]:POST:/adver_gen   params:{'mission_id': '14725890123456', 'test_model': 'Vgg16', 'test_weight': 'vgg16.pth', 'test_method': 'FGSM', 'timeout': '10000'}
+[2024-12-19 10:52:26]:GET:/adver_gen   params:{'mission_id': '14725890123456'}
+[2024-12-19 10:52:31]:GET:/adver_gen   params:{'mission_id': '14725890123456'}
+[2024-12-19 10:53:04]:GET:/adver_gen   params:{'mission_id': '14725890123456'}
+[2024-12-19 10:53:33]:GET:/adver_gen   params:{'mission_id': '14725890123456'}
+[2024-12-19 10:53:59]:GET:/adver_gen   params:{'mission_id': '14725890123456'}
+[2024-12-19 10:54:24]:GET:/adver_gen   params:{'mission_id': '14725890123456'}
+[2024-12-19 10:55:39]:GET:/adver_gen   params:{'mission_id': '14725890123456'}
+[2024-12-19 10:55:46]:POST:/adver_gen_stop   params:{'mission_id': '14725890123456'}

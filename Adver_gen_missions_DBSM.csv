@@ -1,2 +1,10 @@
 mission_id,test_model,test_weight,test_seed,test_method,timeout,mission_status
-147258,Alexnet_black_box,saved_model.pb,vgg16.pth,genetic_algorithm,10000,1
+147258,Vgg16,vgg16.pth,/root/seed/147258_test_seed.zip,FGSM,10000,1
+1472589,Vgg16,vgg16.pth,/root/seed/1472589_test_seed.zip,FGSM,10000,1
+14725890,Vgg16,vgg16.pth,/root/seed/14725890_test_seed.zip,FGSM,10000,1
+147258901,Vgg16,vgg16.pth,/root/seed/147258901_test_seed.zip,FGSM,10000,3
+1472589012,Vgg16,vgg16.pth,/root/seed/1472589012_test_seed.zip,FGSM,10000,1
+14725890123,Vgg16,vgg16.pth,/root/seed/14725890123_test_seed.zip,FGSM,10000,1
+147258901234,Alexnet_black_box,saved_model.pb,/root/seed/147258901234_test_seed.zip,genetic_algorithm,10000,1
+1472589012345,Alexnet_black_box,saved_model.pb,/root/seed/1472589012345_test_seed.zip,genetic_algorithm,10000,1
+14725890123456,Vgg16,vgg16.pth,/root/seed/14725890123456_test_seed.zip,FGSM,10000,1

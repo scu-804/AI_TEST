@@ -423,7 +423,7 @@ def sec_enhance():
     if enhance_verify_parall(enhance_manager.missions[mission_id].test_model, enhance_manager.missions[mission_id].test_method) == False :
             return {
                 "code": 400,
-                "message": "该类型下的方法有对抗样本生成或评估任务正在进行",
+                "message": "该类型下的方法有对抗样本生成或评估任务正在进行或者其生成评估任务脚本启动出错",
                 "data": {
                         "status": 2
                 }
@@ -459,8 +459,18 @@ def sec_enhance():
         shell_command = f"{script_path} {mission_id} {test_model} {enhance_id}"
         #shell_command = f"{script_path}"
         shell_path = f"{container_id}:{shell_command}"
-        exec_docker_container_shell_detach_v2(shell_path)
-
+        exec_result = exec_docker_container_shell_detach_v3(shell_path)
+        if exec_result != "success":
+            enhance_mission.update_status(3)
+            enhance_manager.save_missions_to_csv()
+            return {
+                "code": 200,
+                "message": "docker内脚本执行失败",
+                "data": {
+                    "status": 3,
+                    "output": exec_result
+                }
+            }
         return {
             "code": 200,
             "message": "安全加固已开始执行",
@@ -557,15 +567,10 @@ def adver_eval():
 
     mission_manager = Eval_MissionManager('Adver_gen_missions_DBSM.csv')
 
-    '''
-           根据docker引擎实际情况修改run.sh
-
-        exec_docker_container_shell("xxxxx:/some/path/your_run1.sh")
-        '''
     if eval_verify_parall(mission_manager.eval_missions[mission_id].test_model, mission_manager.eval_missions[mission_id].test_method) == False :
         return {
             "code": 400,
-            "message": "该类型下的方法任务对抗样本生成或评估任务正在进行",
+            "message": "该类型下的方法任务对抗样本生成或评估任务正在进行或其生成加固任务脚本执行出错",
             "data": {
                 "status": 2
             }
@@ -588,7 +593,19 @@ def adver_eval():
         container_id, script_path = dcoker_shell_run.split(":", 1)
         shell_command = f"{script_path} {mission_id}"
         shell_path = f"{container_id}:{shell_command}"
-        exec_docker_container_shell_detach_v2(shell_path)
+        exec_result = exec_docker_container_shell_detach_v3(shell_path)
+        
+        if exec_result != "success":
+            eval_mission.update_status(3)
+            mission_manager.save_eval_missions_to_csv()
+            return {
+                "code": 200,
+                "message": "docker内脚本执行失败",
+                "data": {
+                    "status": 3,
+                    "output": exec_result
+                }
+            }
 
         return {
             "code": 200,
@@ -716,16 +733,10 @@ def adver_gen_stop():
 @cross_origin()
 @app.route('/adver_gen', methods=['GET'])
 def adver_gen_get():
-
     print_info()
     param = request_params()
     mission_id = param.get("mission_id")
 
-    '''
-           根据docker引擎实际情况修改run.sh
-
-        exec_docker_container_shell("xxxxx:/some/path/your_run1.sh")
-        '''
     mission_manager = MissionManager('Adver_gen_missions_DBSM.csv')
     if mission_id not in mission_manager.missions.keys():
         return {
@@ -805,7 +816,7 @@ def adver_gen():
     if adver_verify_parall(test_model, test_method) == False :
          return {
               "code": 400,
-              "message": "该类型下的方法任务已存在",
+              "message": "该类型下的方法任务已存在或其评估加固脚本执行出错",
               "data": {
                     "status": 2
               }
@@ -829,7 +840,7 @@ def adver_gen():
         file.save(file_path)  # 保存文件
         file_paths.append(file_path)
 
-    seed_list = ",".join(file_paths)
+    seed_list = f"/root/seed/{mission_id}_test_seed.zip"
 
     mission_manager = MissionManager('Adver_gen_missions_DBSM.csv')
 
@@ -842,7 +853,7 @@ def adver_gen():
             }
        }
     
-    test_seed = "vgg16.pth"  # TODO 还未约定好文件传输格式，暂且给个确定值，方便后面测试
+    test_seed = seed_list  # TODO 还未约定好文件传输格式，暂且给个确定值，方便后面测试
     if all([mission_id, test_model, test_weight, test_seed, test_method, timeout]):
         mission_status = 2
         mission = Mission(mission_id, test_model, test_weight, test_seed, test_method, timeout, mission_status)
@@ -865,7 +876,20 @@ def adver_gen():
 
         upload_files_to_docker(file_paths, container_id, mission_id)
 
-        exec_docker_container_shell_detach_v2(shell_path)
+        #exec_docker_container_shell_detach_v2(shell_path)
+        exec_result = exec_docker_container_shell_detach_v3(mission_id, shell_path)
+
+        if exec_result != "success":
+            mission.update_status(3)
+            mission_manager.add_or_update_mission(mission)
+            return {
+                "code": 200,
+                "message": "docker内脚本执行失败",
+                "data": {
+                    "status": 3,
+                    "output": exec_result
+                }
+            }
 
         return {
             "code": 200,
