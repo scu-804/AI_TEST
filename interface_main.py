@@ -401,7 +401,7 @@ def sec_enhance_query():
                     "epoch": epoch,
                     "loss": loss,
                     "acc": acc,
-                    "weightNum": weightnum,
+                    "weightnum": weightnum,
                     "status": status
                 }
             })
