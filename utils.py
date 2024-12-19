@@ -127,7 +127,7 @@ def model_classify(data):
     categories = {
         "Image_class": ["Alexnet_black_box", "Alexnet_GAN", "Vgg16", "Vgg16_fuzz", "Vgg19", "ResNet"],
         "Face_detect": ["Facenet", "Deepface", "InceptionResnet"],
-        "Obj_detect": ["YoloV3"],
+        "Obj_detect": ["YoloV3", "Yolov5"],
         "Audio": ["Librispeech", "Wav2Vec2_black_box", "Wav2Vec2_white_box"],
         "Reinforce": ["DQN"]
     }
@@ -341,6 +341,7 @@ def exec_docker_container_shell(shell_path: str) -> str:
     if exec_result.exit_code != 0:
         # 如果有错误输出，则返回错误信息
         error_message = f"Error: Script execution failed with exit code {exec_result.exit_code},{exec_result.output.decode('utf-8', errors='ignore')}"
+        print(error_message)
         return error_message
 
     # 如果没有错误，返回标准输出

@@ -647,3 +647,11 @@
 [2024-12-19 16:07:23]:GET:/sec_enhance   params:{'enhance_id': '36925890123'}
 [2024-12-19 16:08:01]:GET:/sec_enhance   params:{'enhance_id': '36925890123'}
 [2024-12-19 16:08:08]:POST:/sec_enhance_stop   params:{'enhance_id': '36925890123'}
+[2024-12-19 16:45:39]:POST:/adver_gen   params:{'mission_id': '147258901234567890', 'test_model': 'Wav2Vec2_white_box', 'test_weight': 'wav2vec2.pth', 'test_method': 'BIM', 'timeout': '10000'}
+[2024-12-19 16:45:50]:GET:/adver_gen   params:{'mission_id': '147258901234567890'}
+[2024-12-19 16:46:17]:GET:/adver_gen   params:{'mission_id': '147258901234567890'}
+[2024-12-19 16:47:14]:GET:/adver_gen   params:{'mission_id': '147258901234567890'}
+[2024-12-19 16:47:21]:POST:/adver_gen_stop   params:{'mission_id': '147258901234567890'}
+[2024-12-19 16:47:33]:POST:/adver_eval   params:{'mission_id': '147258901234567890'}
+[2024-12-19 16:47:43]:GET:/adver_eval   params:{'mission_id': '147258901234567890'}
+[2024-12-19 16:51:27]:GET:/adver_eval   params:{'mission_id': '147258901234567890'}

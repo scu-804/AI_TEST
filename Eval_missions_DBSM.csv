@@ -11,3 +11,4 @@ mission_id,test_model,test_method,mission_status
 147258901234567,Vgg16,FGSM,1
 1472589012345678,Wav2Vec2_white_box,BIM,1
 14725890123456789,Wav2Vec2_black_box,simulated_annealing_algorithm,1
+147258901234567890,Wav2Vec2_white_box,BIM,1
