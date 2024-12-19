@@ -364,7 +364,7 @@ def sec_enhance_query():
                 "data": exec_result
             })
         except BaseException as e:
-            print(f"{str(e)}")
+            pass
 
         if isinstance(exec_result, dict):
             status = exec_result['status']
@@ -377,42 +377,32 @@ def sec_enhance_query():
                 "data": exec_result
             })
         else:
-            print(exec_result)
-            try:
-                match_epoch = re.search(r'epoch\s*[=: ]\s*(\d+)(?:/\d+)?', exec_result, re.IGNORECASE)
-                match_loss = re.search(r'loss\s*[=: ]\s*([\d.]+)', exec_result, re.IGNORECASE)
-                match_acc = re.search(r'acc\s*[=: ]\s*([\d.]+)', exec_result, re.IGNORECASE)
-                match_weightnum = re.search(r'weightnum\s*[=: ]\s*([\d.]+)', exec_result, re.IGNORECASE)
-                match_status = re.search(r'status\s*[=: ]\s*(\d+)', exec_result, re.IGNORECASE)
+            match_epoch = re.search(r'epoch\s*[=: ]\s*(\d+)(?:/\d+)?', exec_result, re.IGNORECASE)
+            match_loss = re.search(r'loss\s*[=: ]\s*([\d.]+)', exec_result, re.IGNORECASE)
+            match_acc = re.search(r'acc\s*[=: ]\s*([\d.]+)', exec_result, re.IGNORECASE)
+            match_weightnum = re.search(r'weightnum\s*[=: ]\s*([\d.]+)', exec_result, re.IGNORECASE)
+            match_status = re.search(r'status\s*[=: ]\s*(\d+)', exec_result, re.IGNORECASE)
 
-                epoch = match_epoch.group(1) if match_epoch else "N/A"
-                loss = float(match_loss.group(1)) if match_loss else None
-                acc = float(match_acc.group(1)) if match_acc else None
-                weightnum = int(match_weightnum.group(1)) if match_weightnum else None
-                status = int(match_status.group(1))
+            epoch = match_epoch.group(1) if match_epoch else "N/A"
+            loss = float(match_loss.group(1)) if match_loss else None
+            acc = float(match_acc.group(1)) if match_acc else None
+            weightnum = int(match_weightnum.group(1)) if match_weightnum else None
+            status = int(match_status.group(1))
 
-                mission.update_status(status)
-                enhance_manager.save_missions_to_csv()
+            mission.update_status(status)
+            enhance_manager.save_missions_to_csv()
 
-                return jsonify({
-                "code": 200,
-                "message": "安全加固执行中",
-                "data": {
-                    "epoch": epoch,
-                    "loss": loss,
-                    "acc": acc,
-                    "weightnum": weightnum,
-                    "status": status
-                }
-            })
-            except Exception as e:
-                return jsonify({
-                    "code": 400,
-                    "message": "正则匹配或处理过程中出现错误",
-                    "data": {
-                        "error": str(e)
-                    }
-                })
+            return jsonify({
+            "code": 200,
+            "message": "安全加固执行中",
+            "data": {
+                "epoch": epoch,
+                "loss": loss,
+                "acc": acc,
+                "weightnum": weightnum,
+                "status": status
+            }
+        })
 
 ## mode13: 启动安全加固任务
 @cross_origin()
@@ -469,7 +459,7 @@ def sec_enhance():
         shell_command = f"{script_path} {mission_id} {test_model} {enhance_id}"
         #shell_command = f"{script_path}"
         shell_path = f"{container_id}:{shell_command}"
-        exec_result = exec_docker_container_shell_detach_v3(enhance_id ,shell_path)
+        exec_result = exec_docker_container_shell_detach_v3(shell_path)
         if exec_result != "success":
             enhance_mission.update_status(3)
             enhance_manager.save_missions_to_csv()
@@ -507,6 +497,13 @@ def adver_eval_query():
 
     mission_manager = Eval_MissionManager('Eval_missions_DBSM.csv')
 
+    '''
+       根据docker引擎实际情况修改run.sh
+       
+    exec_docker_container_shell("xxxxx:/some/path/your_run1.sh")
+    '''
+
+
     if mission_id not in mission_manager.missions.keys():
         return {
             "code": 400,
@@ -527,7 +524,7 @@ def adver_eval_query():
         shell_command = f"{script_path} {mission_id}"
         shell_path = f"{container_id}:{shell_command}"
         exec_result = exec_docker_container_shell(shell_path)
-
+        
         if exec_result.startswith("Error"):
             return {
                 "code": 200,
@@ -537,56 +534,26 @@ def adver_eval_query():
                     "status": 3
                 }
             }
-        
-        try:
-            process = None
-            status = None
-            metrics = []
 
-            for line in exec_result.splitlines():
-                for metric in adver_metrics:
-                    if line.startswith(metric):
-                        try:
-                            score = float(line.split(":")[1].strip())
-                            metrics.append({"name": metric, "score": score})
-                        except (ValueError, IndexError):
-                            raise ValueError(f"Invalid format for metric: {line}")
-                if line.startswith("status"):
-                    try:
-                        status = int(line.split(":")[1].strip())
-                        mission.update_status(status)
-                        mission_manager.save_eval_missions_to_csv()
-                    except (ValueError, IndexError):
-                        raise ValueError(f"Invalid format for status: {line}")
-                if line.startswith("process"):
-                    try:
-                        process = float(line.split(":")[1].strip())
-                    except (ValueError, IndexError):
-                        raise ValueError(f"Invalid format for process: {line}")
-                # 检查是否所有值都成功匹配到
-            if process is None:
-                raise ValueError("Process value not found or invalid")
-            if status is None:
-                raise ValueError("Status value not found or invalid")
-            if not metrics:
-                raise ValueError("No valid metrics found")
-            return {
-                "code": 200,
-                "message": "任务执行中",
-                "data": {
-                    "process": process,   ## 0-100的进度值，平台拼接%(实现方式有待商榷)
-                    "metricsScores": metrics,
-                    "status": status
-                }
+        for line in exec_result.splitlines():
+            for metric in adver_metrics:
+                if line.startswith(metric):
+                    metrics.append({"name": metric, "score": float(line.split(":")[1].strip())})
+            if line.startswith("status"):
+                    status = int(line.split(":")[1].strip())
+                    mission.update_status(status)
+                    mission_manager.save_eval_missions_to_csv()
+            if line.startswith("process"):
+                    process = float(line.split(":")[1].strip())
+        return {
+            "code": 200,
+            "message": "任务执行中",
+            "data": {
+                "process": process,   ## 0-100的进度值，平台拼接%(实现方式有待商榷)
+                "metricsScores": metrics,
+                "status": status
             }
-        except Exception as e:
-            return {
-                "code": 500,
-                "message": "数据解析错误",
-                "data": {
-                    "error": str(e)
-                }
-            }
+        }
 
 ## mode11: 启动测试任务评估
 @cross_origin()
@@ -626,7 +593,7 @@ def adver_eval():
         container_id, script_path = dcoker_shell_run.split(":", 1)
         shell_command = f"{script_path} {mission_id}"
         shell_path = f"{container_id}:{shell_command}"
-        exec_result = exec_docker_container_shell_detach_v3(mission_id=mission_id,shell_path=shell_path)
+        exec_result = exec_docker_container_shell_detach_v3(shell_path)
         
         if exec_result != "success":
             eval_mission.update_status(3)
