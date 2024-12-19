@@ -564,6 +564,8 @@ def eval_verify_parall(test_model:str, test_method:str) -> bool:
             eval_test_method = row['test_method'].lower()
             eval_test_status = int(row['mission_status'])
 
+            print(eval_test_status != 1)
+
             if eval_test_model == test_model.lower() and eval_test_method == test_method.lower() and eval_test_status != 1:
                 return False
     
