@@ -90,14 +90,14 @@ DQN:
   adver_metrics: ["ACC"]
 
 Wav2Vec2_black_box:
-  docker_container_name: ydl_wb_audio_wav2vec2
+  docker_container_name: hardcore_goldberg
   version:
   dependents:
     torch: 2.0.0
     Numpy: 1.24.2
   test_method: [simulated_annealing_algorithm]
   weight_number: 1
-  weight_name: [Wav2vec2.pth]
+  weight_name: [Wav2Vec2.pth]
   weight_download_addr: ["${Wav2Vec2_black_box.docker_container_name}:/root/ASRAdversarialAttack/CRDNN_Model/Wav2vec2.pth"]
   result_download_addr: ${Wav2Vec2_black_box.docker_container_name}:/root/adv_sample/
   enhance_download_addr: ${Wav2Vec2_black_box.docker_container_name}:/root/retrain/

@@ -1,3 +1,7 @@
 mission_id,test_model,test_weight,test_seed,test_method,timeout,mission_status,enhance_id
 147258901234567,Vgg16,vgg16.pth,/root/seed/147258901234567_test_seed.zip,FGSM,10000,1,369258
 147258901234567,Vgg16,vgg16.pth,/root/seed/147258901234567_test_seed.zip,FGSM,10000,2,3692589
+147258901234567,Vgg16,vgg16.pth,/root/seed/147258901234567_test_seed.zip,FGSM,10000,1,36925890
+147258901234567,Vgg16,vgg16.pth,/root/seed/147258901234567_test_seed.zip,FGSM,10000,1,369258901
+1472589012345678,Wav2Vec2_white_box,wav2vec2.pth,/root/seed/1472589012345678_test_seed.zip,BIM,10000,1,3692589012
+14725890123456789,Wav2Vec2_black_box,Wav2Vec2.pth,/root/seed/14725890123456789_test_seed.zip,simulated_annealing_algorithm,10000,1,36925890123

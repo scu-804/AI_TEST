@@ -591,3 +591,59 @@
 [2024-12-19 13:01:39]:GET:/sec_enhance   params:{'enhance_id': '3692589'}
 [2024-12-19 13:01:56]:GET:/sec_enhance   params:{'enhance_id': '3692589'}
 [2024-12-19 13:02:27]:GET:/sec_enhance   params:{'enhance_id': '3692589'}
+[2024-12-19 15:20:09]:POST:/sec_enhance   params:{'enhance_id': '36925890', 'test_model': 'Vgg16', 'mission_id': '147258901234567'}
+[2024-12-19 15:20:28]:GET:/sec_enhance   params:{'enhance_id': '36925890'}
+[2024-12-19 15:20:41]:GET:/sec_enhance   params:{'enhance_id': '36925890'}
+[2024-12-19 15:21:53]:GET:/sec_enhance   params:{'enhance_id': '36925890'}
+[2024-12-19 15:22:40]:GET:/sec_enhance   params:{'enhance_id': '36925890'}
+[2024-12-19 15:22:47]:POST:/sec_enhance_stop   params:{'enhance_id': '36925890'}
+[2024-12-19 15:23:47]:POST:/sec_enhance   params:{'enhance_id': '369258901', 'test_model': 'Vgg16', 'mission_id': '147258901234567'}
+[2024-12-19 15:23:58]:GET:/sec_enhance   params:{'enhance_id': '369258901'}
+[2024-12-19 15:24:02]:GET:/sec_enhance   params:{'enhance_id': '369258901'}
+[2024-12-19 15:24:26]:GET:/sec_enhance   params:{'enhance_id': '369258901'}
+[2024-12-19 15:24:41]:GET:/sec_enhance   params:{'enhance_id': '369258901'}
+[2024-12-19 15:25:19]:GET:/sec_enhance   params:{'enhance_id': '369258901'}
+[2024-12-19 15:26:17]:POST:/sec_enhance_stop   params:{'enhance_id': '369258901'}
+[2024-12-19 15:32:05]:POST:/adver_gen   params:{'mission_id': '1472589012345678', 'test_model': 'Wav2Vec2_white_box', 'test_weight': 'wav2vec2.pth', 'test_method': 'BIM', 'timeout': '10000'}
+[2024-12-19 15:32:23]:GET:/adver_gen   params:{'mission_id': '1472589012345678'}
+[2024-12-19 15:32:27]:GET:/adver_gen   params:{'mission_id': '1472589012345678'}
+[2024-12-19 15:32:47]:GET:/adver_gen   params:{'mission_id': '1472589012345678'}
+[2024-12-19 15:33:22]:GET:/adver_gen   params:{'mission_id': '1472589012345678'}
+[2024-12-19 15:33:31]:GET:/adver_gen   params:{'mission_id': '1472589012345678'}
+[2024-12-19 15:33:35]:GET:/adver_gen   params:{'mission_id': '1472589012345678'}
+[2024-12-19 15:33:38]:GET:/adver_gen   params:{'mission_id': '1472589012345678'}
+[2024-12-19 15:33:48]:GET:/adver_gen   params:{'mission_id': '1472589012345678'}
+[2024-12-19 15:33:57]:GET:/adver_gen   params:{'mission_id': '1472589012345678'}
+[2024-12-19 15:34:05]:GET:/adver_gen   params:{'mission_id': '1472589012345678'}
+[2024-12-19 15:35:11]:GET:/adver_gen   params:{'mission_id': '1472589012345678'}
+[2024-12-19 15:35:20]:POST:/adver_gen_stop   params:{'mission_id': '1472589012345678'}
+[2024-12-19 15:35:30]:POST:/adver_eval   params:{'mission_id': '1472589012345678'}
+[2024-12-19 15:35:41]:GET:/adver_eval   params:{'mission_id': '1472589012345678'}
+[2024-12-19 15:38:19]:GET:/adver_eval   params:{'mission_id': '1472589012345678'}
+[2024-12-19 15:39:09]:POST:/sec_enhance   params:{'enhance_id': '3692589012', 'test_model': 'Wav2Vec2_white_box', 'mission_id': '1472589012345678'}
+[2024-12-19 15:39:41]:GET:/sec_enhance   params:{'enhance_id': '3692589012'}
+[2024-12-19 15:39:47]:GET:/sec_enhance   params:{'enhance_id': '3692589012'}
+[2024-12-19 15:39:55]:GET:/sec_enhance   params:{'enhance_id': '3692589012'}
+[2024-12-19 15:40:16]:GET:/sec_enhance   params:{'enhance_id': '3692589012'}
+[2024-12-19 15:40:50]:POST:/sec_enhance_stop   params:{'enhance_id': '3692589012'}
+[2024-12-19 15:44:48]:GET:/sec_enhance   params:{'enhance_id': '3692589012'}
+[2024-12-19 15:47:46]:GET:/sec_enhance   params:{'enhance_id': '369258901'}
+[2024-12-19 16:00:34]:POST:/adver_gen   params:{'mission_id': '14725890123456789', 'test_model': 'Wav2Vec2_black_box', 'test_weight': 'Wav2vec2.pth', 'test_method': 'simulated_annealing_algorithm', 'timeout': '10000'}
+[2024-12-19 16:00:55]:POST:/adver_gen   params:{'mission_id': '14725890123456789', 'test_model': 'Wav2Vec2_black_box', 'test_weight': 'Wav2Vec2.pth', 'test_method': 'simulated_annealing_algorithm', 'timeout': '10000'}
+[2024-12-19 16:01:07]:GET:/adver_gen   params:{'mission_id': '14725890123456789'}
+[2024-12-19 16:01:14]:GET:/adver_gen   params:{'mission_id': '14725890123456789'}
+[2024-12-19 16:02:02]:GET:/adver_gen   params:{'mission_id': '14725890123456789'}
+[2024-12-19 16:02:06]:GET:/adver_gen   params:{'mission_id': '14725890123456789'}
+[2024-12-19 16:02:50]:GET:/adver_gen   params:{'mission_id': '14725890123456789'}
+[2024-12-19 16:03:29]:GET:/adver_gen   params:{'mission_id': '14725890123456789'}
+[2024-12-19 16:03:35]:POST:/adver_gen_stop   params:{'mission_id': '14725890123456789'}
+[2024-12-19 16:03:43]:POST:/adver_eval   params:{'mission_id': '14725890123456789'}
+[2024-12-19 16:03:57]:GET:/adver_eval   params:{'mission_id': '14725890123456789'}
+[2024-12-19 16:04:10]:GET:/adver_eval   params:{'mission_id': '14725890123456789'}
+[2024-12-19 16:04:19]:GET:/adver_eval   params:{'mission_id': '14725890123456789'}
+[2024-12-19 16:04:22]:GET:/adver_eval   params:{'mission_id': '14725890123456789'}
+[2024-12-19 16:07:04]:POST:/sec_enhance   params:{'enhance_id': '36925890123', 'test_model': 'Wav2Vec2_black_box', 'mission_id': '14725890123456789'}
+[2024-12-19 16:07:19]:GET:/sec_enhance   params:{'enhance_id': '36925890123'}
+[2024-12-19 16:07:23]:GET:/sec_enhance   params:{'enhance_id': '36925890123'}
+[2024-12-19 16:08:01]:GET:/sec_enhance   params:{'enhance_id': '36925890123'}
+[2024-12-19 16:08:08]:POST:/sec_enhance_stop   params:{'enhance_id': '36925890123'}
