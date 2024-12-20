@@ -291,7 +291,7 @@ def sec_enhance_stop():
 
         if exec_result.startswith("Error"):
             return {
-                "code": 200,
+                "code": 500,
                 "message": "docker内部脚本执行出错",
                 "data": {
                     "error_output": exec_result,
@@ -344,7 +344,7 @@ def sec_enhance_query():
 
         if exec_result.startswith("Error"):
             return {
-                "code": 200,
+                "code": 500,
                 "message": "docker内部脚本执行出错",
                 "data": {
                     "error_output": exec_result,
@@ -372,7 +372,7 @@ def sec_enhance_query():
             enhance_manager.save_missions_to_csv()
 
             return jsonify({
-                "code": 200,
+                "code": 500,
                 "message": "安全加固执行中",
                 "data": exec_result
             })
@@ -407,7 +407,7 @@ def sec_enhance_query():
             })
             except Exception as e:
                 return jsonify({
-                    "code": 400,
+                    "code": 500,
                     "message": "正则匹配或处理过程中出现错误",
                     "data": {
                         "error": str(e)
@@ -474,7 +474,7 @@ def sec_enhance():
             enhance_mission.update_status(3)
             enhance_manager.save_missions_to_csv()
             return {
-                "code": 200,
+                "code": 500,
                 "message": "docker内脚本执行失败",
                 "data": {
                     "status": 3,
@@ -530,7 +530,7 @@ def adver_eval_query():
 
         if exec_result.startswith("Error"):
             return {
-                "code": 200,
+                "code": 500,
                 "message": "docker内部脚本执行出错",
                 "data": {
                     "error_output": exec_result,
@@ -632,7 +632,7 @@ def adver_eval():
             eval_mission.update_status(3)
             mission_manager.save_eval_missions_to_csv()
             return {
-                "code": 200,
+                "code": 500,
                 "message": "docker内脚本执行失败",
                 "data": {
                     "status": 3,
@@ -746,7 +746,7 @@ def adver_gen_stop():
 
         if exec_result.startswith("Error"):
             return {
-                "code": 200,
+                "code": 500,
                 "message": "docker内部脚本执行出错",
                 "data": {
                     "error_output": exec_result,
@@ -792,7 +792,7 @@ def adver_gen_get():
 
         if data_num.startswith("Error"):
             return {
-                "code": 200,
+                "code": 500,
                 "message": "docker内部脚本执行出错",
                 "data": {
                     "error_output": data_num,
@@ -916,7 +916,7 @@ def adver_gen():
             mission.update_status(3)
             mission_manager.add_or_update_mission(mission)
             return {
-                "code": 200,
+                "code": 500,
                 "message": "docker内脚本执行失败",
                 "data": {
                     "status": 3,
