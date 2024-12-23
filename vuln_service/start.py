@@ -1,4 +1,5 @@
 import logging
+import ipdb
 import os
 
 from .utils import routines_seen
@@ -59,6 +60,16 @@ fi
 done < requirements.txt
 }}
 
+check_fail_exit(){{
+    if [[ $? != 0 ]]; then 
+        if [[ -n "$CONDA_DEFAULT_ENV" ]]; then 
+            conda deactivate
+        fi
+        conda env remove -n "$target_env" -y
+        exit 1
+    fi
+}}
+
 conda_manage() {{
   lib_name='{lib_name}'
   lib_version='{lib_version}'
@@ -89,16 +100,24 @@ conda_manage() {{
   if [[ -n "$cand_env" ]]; then
     echo "CONDA ENV: candidate env $cand_env found"
     conda create --clone "$cand_env" --name "$target_env" -y
+    check_fail_exit
+
     conda activate "$target_env"
     pip install "$lib_name"=="$lib_version"
+    check_fail_exit
+
     echo "CONDA ENV: target env $target_env activated by cloning existing env $cand_env"
   else
     echo "CONDA ENV: creating $target_env from scratch"
     pip freeze >requirements.txt
     conda create -n "$target_env" python=3.10 -y
+    check_fail_exit
+
     conda activate "$target_env"
     pip_install
     pip install "$lib_name"=="$lib_version"
+    check_fail_exit
+
   fi
 }}
 
@@ -125,9 +144,13 @@ def get_start_script(routine: RoutineEntry, fuzz_cmd: str) -> str:
     )
 
 
-def exec_routine(routine: RoutineEntry, fuzz_cmd: str) -> None:
+def exec_routine(routine: RoutineEntry, fuzz_cmd: str) -> bool:
+    """
+    returns whether the script executes successfully
+    """
     script = get_start_script(routine, fuzz_cmd)
-    container_run_script(routine.container, script, False)
+    proc = container_run_script(routine.container, script, False)
+    return proc.returncode == 0
     # add_container_cwd(container, cwd)
 
 
@@ -144,7 +167,10 @@ def start_routine(routine: RoutineEntry) -> bool:
     container = routine.container
     os.system(f"docker start {container}")
     fuzz_cmd = get_fuzzcmd(container)
-    exec_routine(routine, fuzz_cmd)
+    flag = exec_routine(routine, fuzz_cmd)
+    if not flag:
+        logger.error(f"{routine.get_name()} fails to start")
+        return False
 
     routines_seen.add(routine)
     logger.info(f"{routine.get_name()} started successfully")
