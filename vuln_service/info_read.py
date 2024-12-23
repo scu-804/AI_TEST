@@ -9,16 +9,26 @@ from .utils import (
     FUZZ_DIR,
     FUZZ_LOG,
     container_run_script,
-    get_pid_name,
+    get_routine_fuzz_log_path,
+    routines_seen,
     logger,
     get_log_name,
 )
+
+from .stop import clean_after_stop
 
 MAP_SIZE = 65535
 
 # params needed: fuzz_dir fuzz_log
 info_script_template = """
-cat {fuzz_dir}/{fuzz_log}
+fpath="{log_path}"
+
+if [[ ! -f "$fpath" ]]; then 
+    echo "target log file $fpath does not exits"
+    exit 2
+fi
+
+cat "$fpath"
 """
 
 pid_check_script_template = """
@@ -57,8 +67,8 @@ TOT_PAT = re.compile(r"^#(\d+)")
 
 
 def get_info_script(routine: RoutineEntry) -> str:
-    log_name = get_log_name(routine.get_name())
-    return info_script_template.format(fuzz_dir=FUZZ_DIR, fuzz_log=log_name)
+    log_path = get_routine_fuzz_log_path(routine)
+    return info_script_template.format(log_path=log_path)
 
 
 def is_complete_rec(rec: str) -> bool:
@@ -93,6 +103,8 @@ def get_status(routine: RoutineEntry) -> int:
     proc = container_run_script(routine.container, script, False)
     if proc.returncode == 0:
         return 2
+    # remove routine_lock
+    clean_after_stop(routine)
     return 1
 
 
@@ -129,11 +141,17 @@ def collect_running_info(log_content: str) -> FuzzInfo:
     )
 
 
-def info_read(routine: RoutineEntry) -> FuzzInfo:
+def info_read(routine: RoutineEntry) -> FuzzInfo | None:
     # read and logger.info
     logger.info("start reading info...")
     script = get_info_script(routine)
     proc = container_run_script(routine.container, script, True)
+    if proc.returncode != 0:
+        if proc.returncode == 2:
+            return None
+        else:
+            assert False, f"failed to read log file for routine {routine.get_name()}"
+
     log_content = proc.stdout.decode()
 
     logger.debug(f"log_content suffix: {repr(log_content[-150:])}")

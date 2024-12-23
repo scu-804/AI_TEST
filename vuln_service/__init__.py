@@ -30,7 +30,9 @@ from .entities import vuln_engine_entry_list, routine_entry_list
 
 
 def run_loop(entry: RoutineEntry, tts: int, read_loop: int) -> None:
-    start_routine(entry)
+    flag = start_routine(entry)
+    if not flag:
+        return
     for _ in range(read_loop):
         time.sleep(tts)
         json = info_read_json(entry)
@@ -53,8 +55,6 @@ def setup_zip() -> None:
 def test_one(entry: RoutineEntry, tts: int, read_loop: int) -> None:
     # logger.info(f"start testing {entry.container}")
     # collect_requirements(entry.container)
-    if entry.container != "vul_np":
-        return
     run_loop(entry, 5, 2)
 
 

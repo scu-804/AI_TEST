@@ -12,3 +12,8 @@ mission_id,test_model,test_weight,test_seed,test_method,timeout,mission_status
 1472589012345678,Wav2Vec2_white_box,wav2vec2.pth,/root/seed/1472589012345678_test_seed.zip,BIM,10000,1
 14725890123456789,Wav2Vec2_black_box,Wav2Vec2.pth,/root/seed/14725890123456789_test_seed.zip,simulated_annealing_algorithm,10000,1
 147258901234567890,Wav2Vec2_white_box,wav2vec2.pth,/root/seed/147258901234567890_test_seed.zip,BIM,10000,1
+159753,Vgg16,vgg16.pth,/root/seed/159753_test_seed.zip,FGSM,30,1
+1597531,Vgg16,vgg16.pth,/root/seed/1597531_test_seed.zip,FGSM,2000,1
+15975312,Wav2Vec2_white_box,wav2vec2.pth,/root/seed/15975312_test_seed.zip,BIM,2000,1
+1869999927380148225,Wav2Vec2_white_box,wav2vec2.pth,/root/seed/1869999927380148225_test_seed.zip,BIM,300,1
+1869999927380148,Vgg16,vgg16.pth,/root/seed/1869999927380148_test_seed.zip,FGSM,3000,1
