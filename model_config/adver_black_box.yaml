@@ -109,4 +109,4 @@ Wav2Vec2_black_box:
   docker_container_enchance_shell: ${Wav2Vec2_black_box.docker_container_name}:/root/enhance.sh
   docker_container_enchance_query_shell: ${Wav2Vec2_black_box.docker_container_name}:/root/enhance_poll.sh
   docker_container_enchance_stop_shell: ${Wav2Vec2_black_box.docker_container_name}:/root/enhance_kill.sh
-  adver_metrics: ["ACC"]
+  adver_metrics: ["ACC","LOS", "CONF", "ASS", "PCC"]
