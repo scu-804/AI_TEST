@@ -174,7 +174,8 @@ class Enhance_Mission(Mission):
         self.enhance_id = enhance_id if enhance_id else None
 
     def update_status(self, new_status):
-        self.mission_status = new_status
+        if int(self.mission_status) != 1:
+            self.mission_status = new_status
 
 
 class Enhance_MissionManager(MissionManager):

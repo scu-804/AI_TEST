@@ -353,6 +353,7 @@ def sec_enhance_query():
             }
 
         try:
+            print(exec_result)
             exec_result = json.loads(exec_result)
             status = exec_result['status']
             mission.update_status(status)
@@ -529,6 +530,8 @@ def adver_eval_query():
         exec_result = exec_docker_container_shell(shell_path)
 
         if exec_result.startswith("Error"):
+            mission.update_status(1)
+            mission_manager.save_eval_missions_to_csv()
             return {
                 "code": 500,
                 "message": "docker内部脚本执行出错",
@@ -539,6 +542,7 @@ def adver_eval_query():
             }
         
         try:
+            print(exec_result)
             process = None
             status = None
             metrics = []
