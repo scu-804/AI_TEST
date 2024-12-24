@@ -19,7 +19,7 @@ Alexnet_black_box:
   docker_container_enchance_shell: ${Alexnet_black_box.docker_container_name}:/root/adversial_attack/enhance.sh
   docker_container_enchance_query_shell: ${Alexnet_black_box.docker_container_name}:/root/adversial_attack/enhance_poll.sh
   docker_container_enchance_stop_shell: ${Alexnet_black_box.docker_container_name}:/root/adversial_attack/enhance_kill.sh
-  adver_metrics: ["ACC"]
+  adver_metrics: ["ACC", "LOS", "CONF", "ASS"]
 
 InceptionResnet:
   docker_container_name: black_test_face
@@ -42,7 +42,7 @@ InceptionResnet:
   docker_container_enchance_shell: ${InceptionResnet.docker_container_name}:/root/FaceOff/enhance.sh
   docker_container_enchance_query_shell: ${InceptionResnet.docker_container_name}:/root/FaceOff/enhance_poll.sh
   docker_container_enchance_stop_shell: ${InceptionResnet.docker_container_name}:/root/FaceOff/enhance_kill.sh
-  adver_metrics: ["ACC"]
+  adver_metrics: ["ACC", "LOS", "CONF", "ASS"]
 
 YoloV3:
   docker_container_name: black_test_object
@@ -65,7 +65,7 @@ YoloV3:
   docker_container_enchance_shell: ${YoloV3.docker_container_name}:/root/adversarial/enhance.sh
   docker_container_enchance_query_shell: ${YoloV3.docker_container_name}:/root/adversarial/enhance_poll.sh
   docker_container_enchance_stop_shell: ${YoloV3.docker_container_name}:/root/adversarial/enhance_kill.sh
-  adver_metrics: ["ACC"]
+  adver_metrics: ["ACC", "LOS", "CONF", "ASS"]
 
 DQN:
   docker_container_name: black_test_rl
@@ -87,7 +87,7 @@ DQN:
   docker_container_enchance_shell: ${DQN.docker_container_name}:/root/rl-adversarial-attack/enhance.sh
   docker_container_enchance_query_shell: ${DQN.docker_container_name}:/root/rl-adversarial-attack/enhance_poll.sh
   docker_container_enchance_stop_shell: ${DQN.docker_container_name}:/root/rl-adversarial-attack/enhance_kill.sh
-  adver_metrics: ["ACC"]
+  adver_metrics: ["ACC", "LOS", "CONF", "ASS"]
 
 Wav2Vec2_black_box:
   docker_container_name: black_test_audio

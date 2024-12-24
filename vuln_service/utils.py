@@ -65,6 +65,11 @@ def get_data_dir() -> str:
     return dir_formalize("data")
 
 
+def get_routine_fuzz_log_path(routine: RoutineEntry) -> str:
+    log_name = get_log_name(routine.get_name())
+    return f"{FUZZ_DIR}/{log_name}"
+
+
 handler = colorlog.StreamHandler()
 handler.setFormatter(
     colorlog.ColoredFormatter(
@@ -104,6 +109,11 @@ def get_crash_dir(routine_name: str) -> str:
 
 def get_pid_name(routine_name: str) -> str:
     return f"{routine_name}_pid"
+
+
+def get_pid_path(routine: RoutineEntry) -> str:
+    pid_name = get_pid_name(routine.get_name())
+    return f"{FUZZ_DIR}/{pid_name}"
 
 
 def get_crash_zip_path(routine_name: str) -> str:
