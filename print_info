@@ -1097,3 +1097,92 @@
 [2024-12-24 16:21:57]:GET:/adver_gen   params:{'mission_id': '9876543210123456789'}
 [2024-12-24 16:22:08]:POST:/adver_eval   params:{'mission_id': '9876543210123456789'}
 [2024-12-24 16:22:18]:GET:/adver_eval   params:{'mission_id': '9876543210123456789'}
+[2024-12-24 16:53:57]:POST:/adver_gen   params:{'mission_id': '98765432101234567890', 'test_model': 'InceptionResnet', 'test_weight': 'yolov5n.pt', 'test_method': 'differential_evolution_algorithm', 'timeout': '30000'}
+[2024-12-24 16:54:39]:POST:/adver_gen   params:{'mission_id': '98765432101234567890', 'test_model': 'InceptionResnet', 'test_weight': 'InceptionResnetV1_Face.pt', 'test_method': 'differential_evolution_algorithm', 'timeout': '30000'}
+[2024-12-24 16:54:52]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 16:54:56]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 16:54:58]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 16:55:02]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 16:55:04]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 16:55:06]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 16:55:08]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 16:55:10]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 16:55:12]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 16:55:16]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 16:55:18]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 16:55:44]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 16:55:48]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 16:56:13]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 16:56:16]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 16:56:17]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 16:56:19]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 16:56:21]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 17:00:42]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 17:04:38]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 17:06:45]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 17:14:47]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 17:15:10]:POST:/adver_gen_stop   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 17:15:13]:GET:/adver_gen   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 17:15:35]:POST:/adver_eval   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 17:16:08]:GET:/adver_eval   params:{'mission_id': '98765432101234567890'}
+[2024-12-24 17:16:53]:POST:/sec_enhance   params:{'enhance_id': '32165456789012', 'test_model': 'InceptionResnet', 'mission_id': '98765432101234567890'}
+[2024-12-24 17:18:07]:POST:/sec_enhance   params:{'enhance_id': '32165456789012', 'test_model': 'InceptionResnet', 'mission_id': '98765432101234567890'}
+[2024-12-24 17:18:15]:GET:/sec_enhance   params:{'enhance_id': '32165456789012'}
+[2024-12-24 17:19:33]:GET:/sec_enhance   params:{'enhance_id': '32165456789012'}
+[2024-12-24 17:19:45]:GET:/sec_enhance   params:{'enhance_id': '32165456789012'}
+[2024-12-24 17:20:46]:POST:/sec_enhance_stop   params:{'enhance_id': '32165456789012'}
+[2024-12-24 17:20:56]:POST:/sec_enhance   params:{'enhance_id': '321654567890123', 'test_model': 'InceptionResnet', 'mission_id': '98765432101234567890'}
+[2024-12-24 17:21:06]:GET:/sec_enhance   params:{'enhance_id': '321654567890123'}
+[2024-12-24 17:21:15]:GET:/sec_enhance   params:{'enhance_id': '321654567890123'}
+[2024-12-24 17:21:30]:POST:/sec_enhance_stop   params:{'enhance_id': '321654567890123'}
+[2024-12-24 20:47:43]:POST:/adver_gen   params:{'mission_id': '987654321012345678901', 'test_model': 'Alexnet_black_box', 'test_weight': 'saved_model.pb', 'test_method': 'genetic_algorithm', 'timeout': '30000'}
+[2024-12-24 20:47:53]:GET:/adver_gen   params:{'mission_id': '987654321012345678901'}
+[2024-12-24 20:47:56]:GET:/adver_gen   params:{'mission_id': '987654321012345678901'}
+[2024-12-24 20:48:14]:GET:/adver_gen   params:{'mission_id': '987654321012345678901'}
+[2024-12-24 20:50:41]:GET:/adver_gen   params:{'mission_id': '987654321012345678901'}
+[2024-12-24 20:51:05]:GET:/adver_gen   params:{'mission_id': '987654321012345678901'}
+[2024-12-24 20:51:48]:GET:/adver_gen   params:{'mission_id': '987654321012345678901'}
+[2024-12-24 20:51:55]:POST:/adver_eval   params:{'mission_id': '987654321012345678901'}
+[2024-12-24 20:52:05]:GET:/adver_eval   params:{'mission_id': '987654321012345678901'}
+[2024-12-24 20:52:12]:GET:/adver_eval   params:{'mission_id': '987654321012345678901'}
+[2024-12-24 20:52:35]:POST:/sec_enhance   params:{'enhance_id': '3216545678901234', 'test_model': 'Alexnet_black_box', 'mission_id': '987654321012345678901'}
+[2024-12-24 20:53:41]:POST:/sec_enhance   params:{'enhance_id': '3216545678901234', 'test_model': 'Alexnet_black_box', 'mission_id': '987654321012345678901'}
+[2024-12-24 20:55:41]:POST:/adver_eval   params:{'mission_id': '987654321012345678901'}
+[2024-12-24 20:55:55]:POST:/adver_eval   params:{'mission_id': '987654321012345678901'}
+[2024-12-24 21:00:01]:POST:/adver_gen   params:{'mission_id': '9876543210123456789012', 'test_model': 'Alexnet_black_box', 'test_weight': 'saved_model.pb', 'test_method': 'genetic_algorithm', 'timeout': '30000'}
+[2024-12-24 21:00:18]:POST:/adver_gen   params:{'mission_id': '9876543210123456789012', 'test_model': 'Alexnet_black_box', 'test_weight': 'saved_model.pb', 'test_method': 'genetic_algorithm', 'timeout': '30000'}
+[2024-12-24 21:00:28]:GET:/adver_gen   params:{'mission_id': '9876543210123456789012'}
+[2024-12-24 21:00:32]:GET:/adver_gen   params:{'mission_id': '9876543210123456789012'}
+[2024-12-24 21:01:42]:GET:/adver_gen   params:{'mission_id': '9876543210123456789012'}
+[2024-12-24 21:03:09]:GET:/adver_gen   params:{'mission_id': '9876543210123456789012'}
+[2024-12-24 21:03:41]:GET:/adver_gen   params:{'mission_id': '9876543210123456789012'}
+[2024-12-24 21:04:25]:GET:/adver_gen   params:{'mission_id': '9876543210123456789012'}
+[2024-12-24 21:04:29]:GET:/adver_gen   params:{'mission_id': '9876543210123456789012'}
+[2024-12-24 21:04:43]:POST:/adver_eval   params:{'mission_id': '9876543210123456789012'}
+[2024-12-24 21:04:55]:GET:/adver_eval   params:{'mission_id': '9876543210123456789012'}
+[2024-12-24 21:05:00]:GET:/adver_eval   params:{'mission_id': '9876543210123456789012'}
+[2024-12-24 21:05:19]:POST:/sec_enhance   params:{'enhance_id': '3216545678901234', 'test_model': 'Alexnet_black_box', 'mission_id': '9876543210123456789012'}
+[2024-12-24 21:05:36]:GET:/sec_enhance   params:{'enhance_id': '3216545678901234'}
+[2024-12-24 21:05:41]:GET:/sec_enhance   params:{'enhance_id': '3216545678901234'}
+[2024-12-24 21:06:26]:POST:/sec_enhance_stop   params:{'enhance_id': '321654567890123'}
+[2024-12-24 21:06:44]:GET:/sec_enhance   params:{'enhance_id': '3216545678901234'}
+[2024-12-24 21:07:10]:GET:/sec_enhance   params:{'enhance_id': '3216545678901234'}
+[2024-12-24 21:07:14]:POST:/sec_enhance_stop   params:{'enhance_id': '3216545678901234'}
+[2024-12-24 21:07:20]:GET:/sec_enhance   params:{'enhance_id': '3216545678901234'}
+[2024-12-24 21:34:46]:POST:/adver_gen   params:{'mission_id': '98765432101234567890123', 'test_model': 'DQN', 'test_weight': 'PongDuel-v0-opp-dqn-model.pth', 'test_method': 'simulated_annealing_algorithm', 'timeout': '30000'}
+[2024-12-24 21:35:07]:GET:/adver_gen   params:{'mission_id': '98765432101234567890123'}
+[2024-12-24 21:35:36]:GET:/adver_gen   params:{'mission_id': '98765432101234567890123'}
+[2024-12-24 21:37:35]:GET:/adver_gen   params:{'mission_id': '98765432101234567890123'}
+[2024-12-24 21:42:08]:GET:/adver_gen   params:{'mission_id': '98765432101234567890123'}
+[2024-12-24 21:43:23]:GET:/adver_gen   params:{'mission_id': '98765432101234567890123'}
+[2024-12-24 21:43:34]:POST:/adver_eval   params:{'mission_id': '98765432101234567890123'}
+[2024-12-24 21:43:42]:GET:/adver_eval   params:{'mission_id': '98765432101234567890123'}
+[2024-12-24 21:44:07]:POST:/sec_enhance   params:{'enhance_id': '32165456789012345', 'test_model': 'DQN', 'mission_id': '98765432101234567890123'}
+[2024-12-24 21:44:20]:GET:/sec_enhance   params:{'enhance_id': '32165456789012345'}
+[2024-12-24 21:45:37]:GET:/sec_enhance   params:{'enhance_id': '32165456789012345'}
+[2024-12-24 21:45:52]:GET:/sec_enhance   params:{'enhance_id': '32165456789012345'}
+[2024-12-24 21:48:52]:GET:/sec_enhance   params:{'enhance_id': '32165456789012345'}
+[2024-12-24 21:50:21]:GET:/sec_enhance   params:{'enhance_id': '32165456789012345'}
+[2024-12-24 21:50:33]:GET:/sec_enhance   params:{'enhance_id': '32165456789012345'}
+[2024-12-24 21:55:17]:GET:/sec_enhance   params:{'enhance_id': '32165456789012345'}
+[2024-12-24 21:55:28]:POST:/sec_enhance_stop   params:{'enhance_id': '32165456789012345'}

@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from enum import Enum
 
 
 @dataclass()
@@ -19,6 +20,35 @@ class RoutineEntry:
 class VulnEngineEntry:
     container: str
     fuzz_cmd: str
+
+
+class RoutineStatus(Enum):
+    EXI = 1
+    RUN = 2
+    INI = 3
+
+
+@dataclass
+class FuzzInfo:
+    coverage: float = 0.0
+    throughput: int = 0
+    speed: int = 0
+    crashNum: int = 0
+    paths: int = 0
+    edges: int = 0
+    # 1 for finished, 2 for running, 3 for initializing
+    status: int = RoutineStatus.RUN.value
+
+
+class ExitReason(Enum):
+    """
+    SAN for error exit, INTER for explicit exit
+    OOM to be implemented
+    """
+
+    SAN = 1
+    OOM = 2
+    INTER = 3
 
 
 vuln_engine_entry_list = [

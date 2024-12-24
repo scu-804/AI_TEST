@@ -89,7 +89,7 @@
     test_method: [BIM, PGD, CW2]
     weight_number: 1
     weight_name: [wav2vec2.pth]
-    weight_download_addr: ["${Wav2Vec2_white_box.docker_container_name}:/root/ASRAdversarialAttack/wav2vec2.pth"]
+    weight_download_addr: ["${Wav2Vec2_white_box.docker_container_name}:/root/ASRAdversarialAttacks/wav2vec2.pth"]
     result_download_addr: ${Wav2Vec2_white_box.docker_container_name}:/root/adv_sample/
     enhance_download_addr: ${Wav2Vec2_white_box.docker_container_name}:/root/retrain/
     docker_container_run_shell: ${Wav2Vec2_white_box.docker_container_name}:/root/run.sh

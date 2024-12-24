@@ -431,7 +431,7 @@ def sec_enhance():
     # enhance_manager.update_enhance_mission_dict(mission_id, enhance_id)
     # enhance_manager.save_missions_to_csv()
 
-    if enhance_verify_parall(enhance_manager.missions[mission_id].test_model, enhance_manager.missions[mission_id].test_method) == False :
+    if mission_id in enhance_manager.missions.keys() and enhance_verify_parall(enhance_manager.missions[mission_id].test_model, enhance_manager.missions[mission_id].test_method) == False :
             return {
                 "code": 400,
                 "message": "该类型下的方法有对抗样本生成或评估任务正在进行或者其生成评估任务脚本启动出错",

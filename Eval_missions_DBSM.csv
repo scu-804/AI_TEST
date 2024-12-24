@@ -40,3 +40,7 @@ mission_id,test_model,test_method,mission_status
 98765432101234567,Alexnet_GAN,GAN,1
 987654321012345678,Facenet,GAN,1
 9876543210123456789,Yolov5,GAN,1
+98765432101234567890,InceptionResnet,differential_evolution_algorithm,1
+987654321012345678901,Alexnet_black_box,genetic_algorithm,1
+9876543210123456789012,Alexnet_black_box,genetic_algorithm,1
+98765432101234567890123,DQN,simulated_annealing_algorithm,1

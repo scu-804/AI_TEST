@@ -1,5 +1,5 @@
 Alexnet_black_box:
-  docker_container_name: gracious_chaum
+  docker_container_name: quirky_margulis
   version:
   dependents:
     tensorflow: 2.4.1
@@ -22,7 +22,7 @@ Alexnet_black_box:
   adver_metrics: ["ACC", "LOS", "CONF", "ASS"]
 
 InceptionResnet:
-  docker_container_name: practical_mendel
+  docker_container_name: eager_shirley
   version:
   dependents:
     torch: 2.0.1
@@ -68,7 +68,7 @@ YoloV3:
   adver_metrics: ["ACC", "LOS", "CONF", "ASS"]
 
 DQN:
-  docker_container_name: hungry_meitner
+  docker_container_name: mystifying_darwin
   version:
   dependents:
     torch: 1.13.1

@@ -1,4 +1,5 @@
 import logging
+from .utils import get_routine_corpus_dir
 import ipdb
 import os
 
@@ -6,7 +7,7 @@ from .utils import routines_seen
 
 from .entities import RoutineEntry
 from .utils import container_run_script, FUZZ_DIR, FUZZ_LOG
-from .utils import logger, get_log_name, get_crash_dir, get_pid_name
+from .utils import logger, get_log_name, get_routine_crash_dir, get_pid_name
 
 container_fuzzcmd = {
     "vul_pytorch": 'LD_PRELOAD="$(python -c "import atheris; print(atheris.path())")/asan_with_fuzzer.so" python ./my_fuzzer.py',
@@ -23,11 +24,17 @@ container_fuzzcmd = {
 start_script_template = """ 
 # directory setup
 fuzz_dir='{fuzz_dir}'
+
 if [[ ! -d "$fuzz_dir" ]]; then
   mkdir "$fuzz_dir"
 fi
 
-crash_dir='{crash_dir}'
+corpus_dir='{corpus_dir}'
+if [[ ! -d "$corpus_dir" ]]; then
+  mkdir -p "$corpus_dir"
+fi
+
+crash_dir='{crash_dir}/'
 if [[ ! -d "$crash_dir" ]]; then
     mkdir -p "$crash_dir"
 fi
@@ -123,16 +130,17 @@ conda_manage() {{
 
 conda_manage
 
-{fuzz_cmd} -artifact_prefix="$crash_dir" 2>"$fuzz_dir"/{fuzz_log} &
+{fuzz_cmd} "$corpus_dir" -artifact_prefix="$crash_dir" 2>"$fuzz_dir"/{fuzz_log} &
 echo "$!" > "$fuzz_dir"/{pid_name}
 """
 
 
 def get_start_script(routine: RoutineEntry, fuzz_cmd: str) -> str:
     routine_name = routine.get_name()
-    crash_dir = get_crash_dir(routine_name)
+    crash_dir = get_routine_crash_dir(routine_name)
     log_name = get_log_name(routine_name)
     pid_name = get_pid_name(routine_name)
+    corpus_dir = get_routine_corpus_dir(routine_name)
     return start_script_template.format(
         fuzz_dir=FUZZ_DIR,
         fuzz_cmd=fuzz_cmd,
@@ -141,6 +149,7 @@ def get_start_script(routine: RoutineEntry, fuzz_cmd: str) -> str:
         pid_name=pid_name,
         lib_name=routine.lib_name,
         lib_version=routine.lib_version,
+        corpus_dir=corpus_dir,
     )
 
 
@@ -179,7 +188,7 @@ def start_routine(routine: RoutineEntry) -> bool:
 
 # def start(container: str) -> None:
 #     """
-#     container: container name
+#     containener name
 #     script: path of the script to execute inside docker container
 #     """
 #     logger.info("starting docker container...")

@@ -1,4 +1,6 @@
 # vulnerability mining service module
+import ipdb
+from .config import CRASH_FILE_TIMEOUT
 from dataclasses import dataclass
 import os
 import time
@@ -39,6 +41,7 @@ def run_loop(entry: RoutineEntry, tts: int, read_loop: int) -> None:
 
     stop(entry)
     info_read_json(entry)
+    collect_crashes(entry)
     print("\n")
 
 
@@ -55,7 +58,11 @@ def setup_zip() -> None:
 def test_one(entry: RoutineEntry, tts: int, read_loop: int) -> None:
     # logger.info(f"start testing {entry.container}")
     # collect_requirements(entry.container)
-    run_loop(entry, 5, 2)
+    if entry.lib_name == "pytorch":
+        run_loop(entry, 10, 12)
+    else:
+        return
+        run_loop(entry, 5, 2)
 
 
 def test_all_routine() -> None:
