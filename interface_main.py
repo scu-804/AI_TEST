@@ -86,6 +86,11 @@ def vuln_dig_download():
      entry = RoutineEntry(container=docker_container, lib_name=lib_name, lib_version=lib_version)
 
      download_path = collect_crashes(entry)
+
+     download_path = f"{docker_container}:{download_path}"
+
+     print(download_path)
+
      if download_path is None:
           return{
                "code": 200,

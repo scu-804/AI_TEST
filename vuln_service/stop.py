@@ -1,8 +1,8 @@
 import ipdb
-from vuln_service.entities import ExitReason, RoutineEntry, RoutineStatus
+from vuln_service.entities import ExitReason, ExitStatus, RoutineEntry, RoutineStatus
 from .utils import get_time_suffix
 from .utils import (
-    check_status,
+    check_exit_status,
     get_pid_path,
     FUZZ_DIR,
     container_run_script,
@@ -12,7 +12,6 @@ from .utils import (
     logger,
 )
 from .info_read.utils import check_exit_reason
-from .utils import routines_seen
 
 stop_script_template = """
 fuzz_dir='{fuzz_dir}'
@@ -80,7 +79,6 @@ def clean_pid(routine: RoutineEntry) -> None:
 
 def clean_after_stop(routine: RoutineEntry) -> None:
     logger.debug(f"Cleaning {routine.get_name()} routine info...")
-    routines_seen.discard(routine)
     # backup log files
     backup_routine_log_file(routine)
     backup_routine_crash_dir(routine)
@@ -99,13 +97,18 @@ def show_exit_reason(routine: RoutineEntry) -> None:
 
 def stop(routine: RoutineEntry) -> None:
     logger.info(f"Trying to stop routine {routine.get_name()}")
-    if check_status(routine) == RoutineStatus.EXI:
+    status = check_exit_status(routine)
+    if status == ExitStatus.CLN:
         logger.warning(f"Routine {routine.get_name()} already exited")
         # check exit reason
         show_exit_reason(routine)
-    else:
+    elif status == ExitStatus.RUN:
         script = get_stop_script(routine)
         proc = container_run_script(routine.container, script, False)
         clean_after_stop(routine)
         assert proc.returncode == 0, f"stopping failed at routine {routine.get_name()}"
+    else:
+        assert (
+            False
+        ), f"It seems that previous read did not clean the exited routine {routine.get_name()}"
     logger.info(f"routine {routine.get_name()} stopped.")
