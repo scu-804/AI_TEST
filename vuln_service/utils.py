@@ -11,7 +11,7 @@ from vuln_service.config import LOGGING_LEVEL
 from .config import CRASH_FILE_TIMEOUT
 from vuln_service.entities import RoutineEntry, RoutineStatus
 
-from .entities import ExitReason
+from .entities import ExitReason, ExitStatus
 
 FUZZ_DIR = "/fuzz"
 FUZZ_LOG = "fuzz_log"
@@ -44,7 +44,6 @@ LOGGER_NAME = "vuln_service"
 # def get_container_cwd(container: str) -> str | None:
 #     return container_cwd.get(container)
 
-routines_seen: set[RoutineEntry] = set()
 
 # def add_container_cwd(container: str, cwd: str) -> bool:
 #     if container in container_cwd:
@@ -148,17 +147,22 @@ def get_crash_zip_path(routine_name: str) -> str:
     return os.path.join(FUZZ_DIR, f"{routine_name}.zip")
 
 
-def check_status(routine: RoutineEntry) -> RoutineStatus:
+def check_exit_status(routine: RoutineEntry) -> ExitStatus:
     """
     1 finished, 2 running
     """
     script = get_pid_check_script(routine)
 
     proc = container_run_script(routine.container, script, False)
+    # pid file is cleaned
+    if proc.returncode == 2:
+        return ExitStatus.CLN
+    # query success
     if proc.returncode == 0:
-        return RoutineStatus.RUN
+        return ExitStatus.RUN
 
-    return RoutineStatus.EXI
+    # pid file exists and query fails
+    return ExitStatus.PAR
 
 
 pid_check_script_template = """
@@ -169,7 +173,7 @@ fi
 
 pid_path="$fuzz_dir"/{pid_name}
 if [[ ! -f "$pid_path" ]]; then 
-    exit 1
+    exit 2
 fi
 
 pid=$(cat "$pid_path")

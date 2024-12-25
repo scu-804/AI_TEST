@@ -28,6 +28,12 @@ class RoutineStatus(Enum):
     INI = 3
 
 
+class ExitStatus(Enum):
+    CLN = 1
+    PAR = 2
+    RUN = 3
+
+
 @dataclass
 class FuzzInfo:
     coverage: float = 0.0
@@ -70,7 +76,7 @@ routine_entry_list = [
     RoutineEntry("vul_keras", "keras", "3.5.0"),
     RoutineEntry("vul_keras", "keras", "3.6.0"),
     RoutineEntry("vul_np", "numpy", "2.0.2"),
-    RoutineEntry("vul_np", "numpy", "2.1.3"),
+    # RoutineEntry("vul_np", "numpy", "2.1.3"),
     # no_conda
     RoutineEntry("vul_opencv", "opencv", "4.10.0"),
     RoutineEntry("vul_pandas", "pandas", "2.2.3"),
