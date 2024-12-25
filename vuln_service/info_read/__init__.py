@@ -5,10 +5,9 @@ import ipdb
 from vuln_service.entities import RoutineEntry, RoutineStatus
 from vuln_service.stop import clean_after_stop
 
-from ..entities import FuzzInfo
+from ..entities import ExitStatus, FuzzInfo
 from ..utils import (
-    check_status,
-    routines_seen,
+    check_exit_status,
     container_run_script,
     get_routine_crash_dir,
     get_routine_fuzz_log_path,
@@ -86,13 +85,13 @@ def is_running(log_content: str) -> bool:
     return is_running_rec(record)
 
 
-def get_crash_num(routine: RoutineEntry, exited: bool) -> int:
+def get_routine_crash_num(routine: RoutineEntry, exited: bool) -> int:
     if exited:
         crash_dir = get_routine_backup_crash_dir(routine)
     else:
         crash_dir = get_routine_crash_dir(routine.get_name())
     script = f"""
-    find {crash_dir} -type f -name 'crash-*'
+    find {crash_dir} -mindepth 1 -maxdepth 1 -type f
     """
     proc = container_run_script(routine.container, script, True)
     output = proc.stdout.decode()
@@ -154,7 +153,7 @@ def parse_log_info(log_content: str) -> FuzzInfo:
 
 
 def collect_log_info(log_content: str, routine: RoutineEntry, exited: bool) -> FuzzInfo:
-    crash_num = get_crash_num(routine, exited)
+    crash_num = get_routine_crash_num(routine, exited)
     if not is_running(log_content):
         logger.debug(f"routine {routine.get_name()} is initializing...")
         return FuzzInfo(crashNum=crash_num, status=RoutineStatus.INI.value)
@@ -191,12 +190,13 @@ def exit_read(routine: RoutineEntry) -> FuzzInfo | None:
 
 
 def is_partial_exit(routine: RoutineEntry) -> bool:
-    status = check_status(routine)
-    return status == RoutineStatus.EXI
+    status = check_exit_status(routine)
+    return status == ExitStatus.PAR
 
 
 def is_cleaned_exit(routine: RoutineEntry) -> bool:
-    return routine not in routines_seen
+    status = check_exit_status(routine)
+    return status == ExitStatus.CLN
 
 
 def info_read(routine: RoutineEntry) -> FuzzInfo | None:
