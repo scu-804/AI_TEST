@@ -27,7 +27,7 @@ fi
 
 # Find files starting with 'crash-' and compress them into a zip file
 echo "Collecting crash files from $CRASH_DIR..."
-find "$CRASH_DIR" -mindepth 1 -maxdepth 1 -type f -name 'crash-*' | zip -j "$OUTPUT_ZIP" -@
+find "$CRASH_DIR" -mindepth 1 -maxdepth 1 -type f | zip -j "$OUTPUT_ZIP" -@
 
 # Check if the zip file was created successfully
 if [ $? -eq 0 ]; then

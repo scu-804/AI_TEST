@@ -3,7 +3,6 @@ from .utils import get_routine_corpus_dir
 import ipdb
 import os
 
-from .utils import routines_seen
 
 from .entities import RoutineEntry
 from .utils import container_run_script, FUZZ_DIR, FUZZ_LOG
@@ -13,7 +12,7 @@ container_fuzzcmd = {
     "vul_pytorch": 'LD_PRELOAD="$(python -c "import atheris; print(atheris.path())")/asan_with_fuzzer.so" python ./my_fuzzer.py',
     "vul_tf": "python fuzz_tensorflow.py",
     "vul_keras": "python fuzz_keras.py",
-    "vul_np": "python3 fuzz_numpy.py",
+    "vul_np": 'LD_PRELOAD="$(python3 -c "import atheris; print(atheris.path())")/asan_with_fuzzer.so" python3 ./fuzz_numpy.py',
     "vul_opencv": "./generateusergallerycollage_fuzzer",
     "vul_pandas": "python3 fuzz_pandas.py",
     "vul_pillow": 'LD_PRELOAD="$(python -c "import atheris; print(atheris.path())")/asan_with_fuzzer.so" python ./fuzz_pil.py',
@@ -88,7 +87,7 @@ conda_manage() {{
   if [[ -z "$(which conda)" ]]; then
     return
   fi
-  if [[ "$CONDA_DEFAULT_ENV" == 'atheris' ]]; then
+  if [[ -n "$CONDA_DEFAULT_ENV" ]]; then
     return
   fi
 
@@ -163,25 +162,21 @@ def exec_routine(routine: RoutineEntry, fuzz_cmd: str) -> bool:
     # add_container_cwd(container, cwd)
 
 
-def get_fuzzcmd(container: str) -> str:
+def get_container_fuzzcmd(container: str) -> str:
     fuzz_cmd = container_fuzzcmd.get(container)
     assert fuzz_cmd
     return fuzz_cmd
 
 
 def start_routine(routine: RoutineEntry) -> bool:
-    if routine in routines_seen:
-        logger.warning(f"{routine.get_name()} is already running...")
-        return False
     container = routine.container
     os.system(f"docker start {container}")
-    fuzz_cmd = get_fuzzcmd(container)
+    fuzz_cmd = get_container_fuzzcmd(container)
     flag = exec_routine(routine, fuzz_cmd)
     if not flag:
         logger.error(f"{routine.get_name()} fails to start")
         return False
 
-    routines_seen.add(routine)
     logger.info(f"{routine.get_name()} started successfully")
     return True
 

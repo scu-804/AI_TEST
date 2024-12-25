@@ -1,3 +1,6 @@
 mission_id,container_id,lib_name,lib_version,status
 1234,yqy_atheris_keras,keras,3.5.0,1
 12345,yqy_atheris_keras,keras,3.5.0,1
+123456,vul_pytorch,Pytorch,2.5.0,1
+1234567,vul_pytorch,Pytorch,2.5.0,1
+12345678,vul_pytorch,Pytorch,2.5.0,1

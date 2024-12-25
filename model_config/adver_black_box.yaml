@@ -45,7 +45,7 @@ InceptionResnet:
   adver_metrics: ["ACC", "LOS", "CONF", "ASS"]
 
 YoloV3:
-  docker_container_name: intelligent_jepsen
+  docker_container_name: relaxed_driscoll
   version:
   dependents:
     torch: 1.5.1

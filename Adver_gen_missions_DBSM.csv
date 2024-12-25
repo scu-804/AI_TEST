@@ -44,3 +44,5 @@ mission_id,test_model,test_weight,test_seed,test_method,timeout,mission_status
 987654321012345678901,Alexnet_black_box,saved_model.pb,/root/seed/987654321012345678901_test_seed.zip,genetic_algorithm,30000,1
 9876543210123456789012,Alexnet_black_box,saved_model.pb,/root/seed/9876543210123456789012_test_seed.zip,genetic_algorithm,30000,1
 98765432101234567890123,DQN,PongDuel-v0-opp-dqn-model.pth,/root/seed/98765432101234567890123_test_seed.zip,simulated_annealing_algorithm,30000,1
+987654321012345678901234,YoloV3,yolov3-tiny.pt,/root/seed/987654321012345678901234_test_seed.zip,simulated_annealing_algorithm,30000,1
+9876543210123456789012345,YoloV3,yolov3-tiny.pt,/root/seed/9876543210123456789012345_test_seed.zip,simulated_annealing_algorithm,30000,1

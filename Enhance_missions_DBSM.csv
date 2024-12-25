@@ -16,3 +16,5 @@ mission_id,test_model,test_weight,test_seed,test_method,timeout,mission_status,e
 98765432101234567890,InceptionResnet,InceptionResnetV1_Face.pt,/root/seed/98765432101234567890_test_seed.zip,differential_evolution_algorithm,30000,1,321654567890123
 9876543210123456789012,Alexnet_black_box,saved_model.pb,/root/seed/9876543210123456789012_test_seed.zip,genetic_algorithm,30000,1,3216545678901234
 98765432101234567890123,DQN,PongDuel-v0-opp-dqn-model.pth,/root/seed/98765432101234567890123_test_seed.zip,simulated_annealing_algorithm,30000,1,32165456789012345
+9876543210123456789012345,YoloV3,yolov3-tiny.pt,/root/seed/9876543210123456789012345_test_seed.zip,simulated_annealing_algorithm,30000,1,321654567890123456
+9876543210123456789012345,YoloV3,yolov3-tiny.pt,/root/seed/9876543210123456789012345_test_seed.zip,simulated_annealing_algorithm,30000,1,3216545678901234567

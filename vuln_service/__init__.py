@@ -5,12 +5,10 @@ from dataclasses import dataclass
 import os
 import time
 
-from vuln_service.collect_crashes import collect_crashes
 from vuln_service.entities import RoutineEntry
 from vuln_service.start import start_routine
 
 from .collect_crashes import collect_crashes
-from .collect_requirements import collect_requirements
 from .info_read import info_read_json
 from .stop import stop
 from .utils import logger
@@ -58,8 +56,8 @@ def setup_zip() -> None:
 def test_one(entry: RoutineEntry, tts: int, read_loop: int) -> None:
     # logger.info(f"start testing {entry.container}")
     # collect_requirements(entry.container)
-    if entry.lib_name == "pytorch":
-        run_loop(entry, 10, 12)
+    if entry.lib_name == "numpy":
+        run_loop(entry, 10, 4)
     else:
         return
         run_loop(entry, 5, 2)
