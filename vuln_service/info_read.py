@@ -141,7 +141,7 @@ def collect_running_info(log_content: str) -> FuzzInfo:
     )
 
 
-def info_read(routine: RoutineEntry) -> FuzzInfo :
+def info_read(routine: RoutineEntry) -> FuzzInfo | None:
     # read and logger.info
     logger.info("start reading info...")
     script = get_info_script(routine)
