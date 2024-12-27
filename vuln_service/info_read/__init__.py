@@ -3,17 +3,26 @@ import re
 import ipdb
 
 from vuln_service.entities import RoutineEntry, RoutineStatus
+from vuln_service.info_read.entities import FuzzerStatus, LogStatus
 from vuln_service.stop import clean_after_stop
+from .utils import is_cleaned_exit, is_exit_code_line, is_partial_exit
 
 from ..entities import ExitStatus, FuzzInfo
 from ..utils import (
-    check_exit_status,
     container_run_script,
     get_routine_crash_dir,
-    get_routine_fuzz_log_path,
     logger,
 )
-from .utils import get_info_script, get_routine_backup_crash_dir, read_backup_log
+from .utils import read_log, get_routine_backup_crash_dir, read_backup_log
+from .patterns import (
+    is_complete_rec,
+    has_record_prefix,
+    has_init_prefix,
+    COV_PAT,
+    TPS_PAT,
+    TOT_PAT,
+    is_init_record,
+)
 
 MAP_SIZE = 65535
 
@@ -21,68 +30,94 @@ MAP_SIZE = 65535
 # REC_PAT = re.compile(
 #     r"#\d+\s+[a-zA-Z]+\s+cov:\s+\d+\s+ft:\s+\d+\s+corp:\s+\d+\/\d+b\s+(lim:\s+\d+\s+)?exec\/s:\s+\d+\s+rss:\s+\d+Mb\s+L:\s+\d+(\/\d+)?\s+MS:\s"
 # )
-REC_PAT = re.compile(
-    r"#\d+\s+[a-zA-Z]+\s+cov:\s+\d+\s+ft:\s+\d+\s+corp:\s+\d+\/\d+b\s+(lim:\s+\d+\s+)?exec\/s:\s+\d+\s+rss:\s+\d+Mb"
-)
-REC_PRE_PAT = re.compile(r"#\d+\s+")
-COV_PAT = re.compile(r"cov: (\d+)")
-TPS_PAT = re.compile(r"exec/s: (\d+)")
-TOT_PAT = re.compile(r"^#(\d+)")
-INI_PAT = re.compile(r"([A-Z]+): ")
 
 
-def is_running_rec(rec: str) -> bool:
-    mat = REC_PAT.match(rec)
-    return mat is not None
-
-
-def has_running_prefix(rec: str) -> bool:
-    mat = REC_PRE_PAT.match(rec)
-    return mat is not None
-
-
-def is_init_rec(rec: str) -> bool:
-    mat = INI_PAT.match(rec)
-    if mat is None:
-        return False
-    level = mat.group(1)
-    level_list = [
-        "INFO",
-        "WARNING",
-        "DEBUG",
-        "ERROR",
-    ]
-    return level in level_list
-
-
-def is_not_complete(rec: str) -> bool:
-    """Only for running record"""
-    return has_running_prefix(rec) and not is_running_rec(rec)
-
-
-def get_recent_record(log_content: str) -> str:
-    pos = None
-
-    lines = log_content.splitlines()
-    for ind, line in enumerate(reversed(lines)):
-        line = line.strip()
-        if not is_init_rec(line) and not has_running_prefix(line):
+def skip_error_log(log_lines: list[str]) -> int:
+    """
+    return the index of last line of fuzzer running log
+    """
+    # skip to exit code line
+    end = len(log_lines)
+    flag = False
+    for ind, line in enumerate(reversed(log_lines[:end])):
+        cnt = ind + 1
+        if not is_exit_code_line(line):
             continue
-        pos = len(lines) - 1 - ind
+        flag = True
+        end = end - cnt
         break
+    assert flag, "No exit code line in the exit fuzzer log"
 
-    assert pos, "No valid line in current log"
-    # get
-    rec = lines[pos].strip()
-    if is_not_complete(rec):
-        rec = lines[pos - 1].strip()
+    # target line now is the first non-error line -> division: remaining
+    for ind, line in enumerate(reversed(log_lines[:end])):
+        if not has_init_prefix(line) and not has_record_prefix(line):
+            continue
+        flag = True
+        end = end - ind
+        break
+    assert flag, "No fuzz running part in the exit fuzzer log"
+    return end
 
-    return rec
+
+def has_exit_code_line(lines: list[str]) -> bool:
+    for line in reversed(lines):
+        if is_exit_code_line(line):
+            return True
+    return False
 
 
-def is_running(log_content: str) -> bool:
-    record = get_recent_record(log_content)
-    return is_running_rec(record)
+def get_init_record_pos(lines: list[str]) -> int | None:
+    for ind, line in enumerate(reversed(lines)):
+        cnt = ind + 1
+        if is_init_record(line):
+            return len(lines) - cnt
+    return None
+
+
+def get_last_run_record(lines: list[str]) -> str | None:
+    """
+    returns the position of last record
+    """
+    beg = get_init_record_pos(lines)
+    if beg is None:
+        return None
+    for line in reversed(lines[beg:]):
+        if is_complete_rec(line):
+            return line
+    assert False, "Failed to get running record in running situation"
+
+
+def get_recent_record(lines: list[str]) -> tuple[str, FuzzerStatus, LogStatus]:
+    """
+    get recent complete record or init log line
+    analyze status based on log content
+    """
+
+    # exit skip part: returns an index
+    log_stat = None
+    fuz_stat = None
+    rec = None
+    exited = has_exit_code_line(lines)
+    if exited:
+        fuz_stat = FuzzerStatus.EXI
+        end = skip_error_log(lines)
+    else:
+        fuz_stat = FuzzerStatus.RUN
+        end = len(lines)
+
+    rec = get_last_run_record(lines[:end])
+    if rec is None:
+        return "", fuz_stat, LogStatus.INI
+    else:
+        return rec, fuz_stat, LogStatus.RUN
+
+
+# def is_target_running(log_content: str) -> bool:
+#     """
+#     Invoked when fuzzer is running
+#     """
+#     record, _ = get_recent_record(log_content)
+#     return is_complete_rec(record)
 
 
 def get_routine_crash_num(routine: RoutineEntry, exited: bool) -> int:
@@ -94,6 +129,11 @@ def get_routine_crash_num(routine: RoutineEntry, exited: bool) -> int:
     find {crash_dir} -mindepth 1 -maxdepth 1 -type f
     """
     proc = container_run_script(routine.container, script, True)
+    if proc.returncode != 0:
+        err_msg = proc.stderr.decode()
+        assert (
+            False
+        ), f"failed to collect crash files for routine {routine.get_name()}: {err_msg}"
     output = proc.stdout.decode()
     return len(output.splitlines())
 
@@ -117,25 +157,47 @@ def get_routine_crash_num(routine: RoutineEntry, exited: bool) -> int:
 #     return RoutineStatus.FIN
 
 
+def calc_routine_status(fuz_stat: FuzzerStatus, log_stat: LogStatus) -> RoutineStatus:
+    if fuz_stat == FuzzerStatus.EXI:
+        return RoutineStatus.EXI
+
+    if log_stat == LogStatus.RUN:
+        return RoutineStatus.RUN
+    elif log_stat == LogStatus.INI:
+        return RoutineStatus.INI
+
+
 def parse_log_info(log_content: str) -> FuzzInfo:
-    record = get_recent_record(log_content)
+    """
+    get recent record and parse
+    """
+    lines = [line.rstrip() for line in log_content.splitlines()]
+    rec, fuz_stat, log_stat = get_recent_record(lines)
+    # exited status judge
+    rout_stat = calc_routine_status(fuz_stat, log_stat)
+    if log_stat == LogStatus.INI:
+        return FuzzInfo(status=rout_stat.value)
 
-    mat = COV_PAT.search(record)
-    assert mat
-    edges = int(mat.group(1))
+    mat = COV_PAT.search(rec)
+    if mat is None:
+        edges = 0
+    else:
+        edges = int(mat.group(1))
 
-    mat = TPS_PAT.search(record)
-    assert mat
-    tps = int(mat.group(1))
+    if fuz_stat == FuzzerStatus.RUN:
+        tps = 0
+    else:
+        mat = TPS_PAT.search(rec)
+        assert mat
+        tps = int(mat.group(1))
 
-    mat = TOT_PAT.search(record)
+    mat = TOT_PAT.search(rec)
     assert mat
     tot = int(mat.group(1))
 
     paths = 0
-    for line in log_content.splitlines():
-        line = line.strip()
-        if not is_running_rec(line):
+    for line in lines:
+        if not is_complete_rec(line):
             continue
         paths += 1
 
@@ -148,73 +210,41 @@ def parse_log_info(log_content: str) -> FuzzInfo:
         paths=paths,
         edges=edges,
         # no sense
-        status=RoutineStatus.RUN.value,
+        status=rout_stat.value,
     )
 
 
-def collect_log_info(log_content: str, routine: RoutineEntry, exited: bool) -> FuzzInfo:
+def collect_routine_info(
+    log_content: str, routine: RoutineEntry, exited: bool
+) -> FuzzInfo:
     crash_num = get_routine_crash_num(routine, exited)
-    if not is_running(log_content):
-        logger.debug(f"routine {routine.get_name()} is initializing...")
-        return FuzzInfo(crashNum=crash_num, status=RoutineStatus.INI.value)
+
+    # if not exited and not is_target_running(log_content):
+    #     logger.debug(f"routine {routine.get_name()} is initializing...")
+    #     return FuzzInfo(crashNum=crash_num, status=RoutineStatus.INI.value)
     # logger.info("Already running...")
 
     info = parse_log_info(log_content)
-    info.status = RoutineStatus.RUN.value
     info.crashNum = crash_num
     return info
-
-
-def read_log(routine: RoutineEntry) -> str | None:
-    log_path = get_routine_fuzz_log_path(routine)
-    script = get_info_script(log_path)
-    proc = container_run_script(routine.container, script, True)
-    if proc.returncode != 0:
-        if proc.returncode == 2:
-            return None
-        else:
-            assert False, f"failed to read log file for routine {routine.get_name()}"
-
-    log_content = proc.stdout.decode()
-    return log_content
-
-
-def exit_read(routine: RoutineEntry) -> FuzzInfo | None:
-    log_content = read_backup_log(routine)
-    if log_content is None:
-        return None
-
-    info = collect_log_info(log_content, routine, True)
-    info.status = RoutineStatus.EXI.value
-    return info
-
-
-def is_partial_exit(routine: RoutineEntry) -> bool:
-    status = check_exit_status(routine)
-    return status == ExitStatus.PAR
-
-
-def is_cleaned_exit(routine: RoutineEntry) -> bool:
-    status = check_exit_status(routine)
-    return status == ExitStatus.CLN
 
 
 def info_read(routine: RoutineEntry) -> FuzzInfo | None:
     # read and logger.info
     logger.info("start reading info...")
 
+    exited = False
     if is_cleaned_exit(routine):
         logger.warning(f"routine {routine.get_name()} has been cleaned")
-        info = exit_read(routine)
-        return info
-
-    if is_partial_exit(routine):
+        log_content = read_backup_log(routine)
+        exited = True
+    elif is_partial_exit(routine):
         logger.warning(f"routine {routine.get_name()} has exited")
         clean_after_stop(routine)
-        info = exit_read(routine)
-        return info
-
-    log_content = read_log(routine)
+        log_content = read_backup_log(routine)
+        exited = True
+    else:
+        log_content = read_log(routine)
     if log_content is None:
         return None
 
@@ -229,7 +259,7 @@ def info_read(routine: RoutineEntry) -> FuzzInfo | None:
     else:
         logger.debug(f"log last line: {lines[-1]}")
 
-    info = collect_log_info(log_content, routine, False)
+    info = collect_routine_info(log_content, routine, exited)
 
     return info
 
