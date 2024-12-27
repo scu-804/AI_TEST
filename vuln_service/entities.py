@@ -68,21 +68,3 @@ vuln_engine_entry_list = [
     VulnEngineEntry("vul_pillow", "./run_fuzz.sh"),
     VulnEngineEntry("vul_scipy", "python3 fuzz_scipy.py"),
 ]
-routine_entry_list = [
-    # no_conda
-    RoutineEntry("vul_pytorch", "pytorch", "2.5.0"),
-    # no_conda
-    RoutineEntry("vul_tf", "tensorflow", "2.17.0"),
-    RoutineEntry("vul_keras", "keras", "3.5.0"),
-    RoutineEntry("vul_keras", "keras", "3.6.0"),
-    RoutineEntry("vul_np", "numpy", "2.0.2"),
-    # RoutineEntry("vul_np", "numpy", "2.1.3"),
-    # no_conda
-    RoutineEntry("vul_opencv", "opencv", "4.10.0"),
-    RoutineEntry("vul_pandas", "pandas", "2.2.3"),
-    RoutineEntry("vul_pandas", "pandas", "2.2.0"),
-    # no conda
-    RoutineEntry("vul_pillow", "pillow", "7.1.2"),
-    RoutineEntry("vul_scipy", "scipy", "1.14.1"),
-    RoutineEntry("vul_scipy", "scipy", "1.13.1"),
-]
