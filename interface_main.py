@@ -873,6 +873,11 @@ def adver_gen():
             }
         }
     files = request.files.getlist('test_seed')  # 获取多个文件
+    
+    upload_folder = "./upload"
+    if not os.path.exists(upload_folder):
+        os.makedirs(upload_folder)
+
     for file in files:
         if file.filename == '' or not str(file.filename).endswith(".zip"):
             continue
