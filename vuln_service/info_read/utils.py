@@ -1,12 +1,55 @@
-from vuln_service.entities import ExitReason, RoutineEntry
+from vuln_service.entities import ExitReason, ExitStatus, RoutineEntry
+
 import re
 from vuln_service.utils import (
     FUZZ_DIR,
+    check_exit_status,
     get_routine_backup_fuzz_log_path,
     container_run_script,
-    get_routine_crash_dir,
     get_routine_crash_dir_name,
+    get_routine_fuzz_log_path,
 )
+
+
+def read_backup_log(routine: RoutineEntry) -> str | None:
+    log_path = get_routine_backup_fuzz_log_path(routine)
+    script = get_info_script(log_path)
+    proc = container_run_script(routine.container, script, True)
+    if proc.returncode != 0:
+        if proc.returncode == 2:
+            return None
+        else:
+            assert (
+                False
+            ), f"failed to read backup log file for routine {routine.get_name()}"
+
+    log_content = proc.stdout.decode()
+    return log_content
+
+
+def read_log(routine: RoutineEntry) -> str | None:
+    log_path = get_routine_fuzz_log_path(routine)
+    script = get_info_script(log_path)
+    proc = container_run_script(routine.container, script, True)
+    if proc.returncode != 0:
+        if proc.returncode == 2:
+            return None
+        else:
+            assert False, f"failed to read log file for routine {routine.get_name()}"
+
+    log_content = proc.stdout.decode()
+    return log_content
+
+
+def is_partial_exit(routine: RoutineEntry) -> bool:
+    status = check_exit_status(routine)
+    return status == ExitStatus.PAR
+
+
+def is_cleaned_exit(routine: RoutineEntry) -> bool:
+    status = check_exit_status(routine)
+    return status == ExitStatus.CLN
+
 
 # params needed: fuzz_dir fuzz_log
 info_script_template = """
@@ -39,23 +82,12 @@ def get_routine_backup_crash_dir(routine: RoutineEntry) -> str:
     return lines[-1]
 
 
-def read_backup_log(routine: RoutineEntry) -> str | None:
-    log_path = get_routine_backup_fuzz_log_path(routine)
-    script = get_info_script(log_path)
-    proc = container_run_script(routine.container, script, True)
-    if proc.returncode != 0:
-        if proc.returncode == 2:
-            return None
-        else:
-            assert (
-                False
-            ), f"failed to read backup log file for routine {routine.get_name()}"
-
-    log_content = proc.stdout.decode()
-    return log_content
-
-
 EXIT_LINE_PAT = re.compile(r"==(\d+)==")
+
+
+def is_exit_code_line(line: str) -> bool:
+    mat = EXIT_LINE_PAT.match(line)
+    return mat is not None
 
 
 def exit_status_judge(line: str) -> ExitReason:
@@ -74,9 +106,8 @@ def check_exit_reason(routine: RoutineEntry) -> ExitReason:
     assert log_content, f"Failed to read backup log of routine {routine.get_name()}"
     lines = log_content.splitlines()
     for line in reversed(lines):
-        line = line.strip()
-        mat = EXIT_LINE_PAT.match(line)
-        if mat is None:
+        line = line.rstrip()
+        if not is_exit_code_line(line):
             continue
 
         reason = exit_status_judge(line)
