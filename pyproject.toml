@@ -1,0 +1,24 @@
+[project]
+name = "AI_TEST"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Wakotu", email = "442444286@qq.com"},
+]
+dependencies = [
+    "flask",
+    "gevent",
+    "gunicorn",
+    "requests",
+    "docker==7.1.0",
+    "ipdb>=0.13.13",
+    "colorlog>=6.9.0",
+    "pytest>=8.3.4",
+]
+requires-python = "==3.10.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
