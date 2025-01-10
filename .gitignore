@@ -209,3 +209,4 @@ cython_debug/
 #.idea/
 
 test_parse.sh
+push_to_bc.sh
