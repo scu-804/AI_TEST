@@ -184,7 +184,7 @@ def parse_log_info(log_content: str) -> FuzzInfo:
     else:
         edges = int(mat.group(1))
 
-    if fuz_stat == FuzzerStatus.EXI:
+    if fuz_stat == FuzzerStatus.RUN:
         tps = 0
     else:
         mat = TPS_PAT.search(rec)

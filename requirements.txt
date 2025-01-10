@@ -1,0 +1,6 @@
+flask
+gevent
+gunicorn
+#paramiko
+requests
+docker==7.1.0
