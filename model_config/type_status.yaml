@@ -1,5 +1,3 @@
-##  这个文件用来统计目前项目支持的方法和测试模型，提供给有些函数进行查询。
-
 model:
   image_cls: [Alexnet_black_box, Alexnet_GAN,Vgg16, Vgg16_fuzz,Vgg19, Resnet]
   face_dect: [Facenet, Deepface, InceptionResnet]

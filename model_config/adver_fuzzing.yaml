@@ -10,7 +10,7 @@
 #  docker_container: xxx
 
 Vgg16_fuzz:
-  docker_container_name: xuan_AItest
+  docker_container_name: fuzzing_test
   version:
   dependents:
     tensorflow: 2.18.0
@@ -34,7 +34,7 @@ Vgg16_fuzz:
   adver_metrics: ["ACC", "LOS", "CONF", "ASS"]
 
 DeepFace:
-  docker_container_name: xuan_AItest
+  docker_container_name: fuzzing_test
   version:
   dependents:
     tensorflow: 2.18.0

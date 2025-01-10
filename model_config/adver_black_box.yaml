@@ -1,5 +1,5 @@
 Alexnet_black_box:
-  docker_container_name: quirky_margulis
+  docker_container_name: black_test_alexnet
   version:
   dependents:
     tensorflow: 2.4.1
@@ -22,7 +22,7 @@ Alexnet_black_box:
   adver_metrics: ["ACC", "LOS", "CONF", "ASS"]
 
 InceptionResnet:
-  docker_container_name: eager_shirley
+  docker_container_name: black_test_face
   version:
   dependents:
     torch: 2.0.1
@@ -45,7 +45,7 @@ InceptionResnet:
   adver_metrics: ["ACC", "LOS", "CONF", "ASS"]
 
 YoloV3:
-  docker_container_name: interesting_nash
+  docker_container_name: black_test_object
   version:
   dependents:
     torch: 1.5.1
@@ -68,7 +68,7 @@ YoloV3:
   adver_metrics: ["ACC", "LOS", "CONF", "ASS"]
 
 DQN:
-  docker_container_name: mystifying_darwin
+  docker_container_name: black_test_rl
   version:
   dependents:
     torch: 1.13.1
@@ -90,15 +90,15 @@ DQN:
   adver_metrics: ["ACC", "LOS", "CONF", "ASS"]
 
 Wav2Vec2_black_box:
-  docker_container_name: determined_dubinsky
+  docker_container_name: black_test_audio
   version:
   dependents:
     torch: 2.0.0
     Numpy: 1.24.2
   test_method: [simulated_annealing_algorithm]
   weight_number: 1
-  weight_name: [Wav2Vec2.pth]
-  weight_download_addr: ["${Wav2Vec2_black_box.docker_container_name}:/root/ASRAdversarialAttack/CRDNN_Model/Wav2vec2.pth"]
+  weight_name: [wav2vec2.pth]
+  weight_download_addr: ["${Wav2Vec2_black_box.docker_container_name}:/root/ASRAdversarialAttack/wav2vec2.pth"]
   result_download_addr: ${Wav2Vec2_black_box.docker_container_name}:/root/adv_sample/
   enhance_download_addr: ${Wav2Vec2_black_box.docker_container_name}:/root/retrain/
   docker_container_run_shell: ${Wav2Vec2_black_box.docker_container_name}:/root/run.sh

@@ -10,7 +10,7 @@
 #  docker_container: xxx
 
   Alexnet_GAN:
-    docker_container_name: gan_test
+    docker_container_name: gan_test_alexnet_facenet
     version:
     dependents:
       torch: 1.6.0
@@ -33,7 +33,7 @@
     adver_metrics: ["ACC", "LOS", "CONF", "ASS"]
 
   Facenet:
-    docker_container_name: gan_test
+    docker_container_name: gan_test_alexnet_facenet
     version:
     dependents:
       torch: 1.6.0
@@ -57,7 +57,7 @@
 
   Yolov5:
     version:
-    docker_container_name: gan_test_gpu_2_container
+    docker_container_name: gan_test_yolov5
     dependents:
       torch: 1.6.0
       Numpy: 1.19.2
