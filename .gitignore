@@ -7,6 +7,9 @@ Enhance_missions_DBSM.csv
 Eval_missions_DBSM.csv
 Vuln_dig_missions_DBSM.csv
 
+# scripts
+commit.sh
+
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -214,5 +217,3 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-test_parse.sh
-push_to_bc.sh
