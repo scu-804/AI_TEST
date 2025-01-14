@@ -1,5 +1,7 @@
 ### custom
 upload/
+log/
+print_info
 
 target/
 !.mvn/wrapper/maven-wrapper.jar
