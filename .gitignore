@@ -2,6 +2,10 @@
 upload/
 log/
 print_info
+Adver_gen_missions_DBSM.csv
+Enhance_missions_DBSM.csv
+Eval_missions_DBSM.csv
+Vuln_dig_missions_DBSM.csv
 
 target/
 !.mvn/wrapper/maven-wrapper.jar
