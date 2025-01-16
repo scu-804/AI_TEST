@@ -12,28 +12,32 @@ from vuln_service.start import start_routine
 from .collect_crashes import collect_crashes
 from .info_read import info_read_json
 from .stop import stop
-from .utils import logger
+from .utils import logger, path_formalize
 
 # from .entities import vuln_engine_entry_list, routine_entry_list
 
+EXAMPLE_HARN_PATH = path_formalize(".data", "example.py")
+
+status = os.system("docker context use server2")
+assert status == 0, "Failed to set docker context to server2"
 
 routine_entry_list = [
     # no_conda
-    RoutineEntry("vul_pytorch", "pytorch", "2.5.0"),
+    RoutineEntry("vul_pytorch", "pytorch", "2.5.0", EXAMPLE_HARN_PATH),
     # no_conda
-    RoutineEntry("vul_tf", "tensorflow", "2.17.0"),
-    RoutineEntry("vul_keras", "keras", "3.5.0"),
-    RoutineEntry("vul_keras", "keras", "3.6.0"),
-    RoutineEntry("vul_np", "numpy", "2.0.2"),
+    RoutineEntry("vul_tf", "tensorflow", "2.17.0", EXAMPLE_HARN_PATH),
+    RoutineEntry("vul_keras", "keras", "3.5.0", EXAMPLE_HARN_PATH),
+    RoutineEntry("vul_keras", "keras", "3.6.0", EXAMPLE_HARN_PATH),
+    RoutineEntry("vul_np", "numpy", "2.0.2", EXAMPLE_HARN_PATH),
     # RoutineEntry("vul_np", "numpy", "2.1.3"),
     # no_conda
-    RoutineEntry("vul_opencv", "opencv", "4.10.0"),
-    RoutineEntry("vul_pandas", "pandas", "2.2.3"),
-    RoutineEntry("vul_pandas", "pandas", "2.2.0"),
+    RoutineEntry("vul_opencv", "opencv", "4.10.0", EXAMPLE_HARN_PATH),
+    RoutineEntry("vul_pandas", "pandas", "2.2.3", EXAMPLE_HARN_PATH),
+    RoutineEntry("vul_pandas", "pandas", "2.2.0", EXAMPLE_HARN_PATH),
     # no conda
-    RoutineEntry("vul_pillow", "pillow", "7.1.2"),
-    RoutineEntry("vul_scipy", "scipy", "1.14.1"),
-    RoutineEntry("vul_scipy", "scipy", "1.13.1"),
+    RoutineEntry("vul_pillow", "pillow", "7.1.2", EXAMPLE_HARN_PATH),
+    RoutineEntry("vul_scipy", "scipy", "1.14.1", EXAMPLE_HARN_PATH),
+    RoutineEntry("vul_scipy", "scipy", "1.13.1", EXAMPLE_HARN_PATH),
 ]
 # container_list = [
 #     "yqy_atheris_pt",

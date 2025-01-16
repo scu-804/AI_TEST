@@ -237,11 +237,12 @@ class Enhance_MissionManager(MissionManager):
                 writer.writerow(row)
 
 class VulnDigMission:
-    def __init__(self, mission_id, container_id, lib_name, lib_version,mission_status):
+    def __init__(self, mission_id, container_id, lib_name, lib_version,harness_files,mission_status):
         self.mission_id = mission_id
         self.container_id = container_id
         self.status = mission_status
         self.lib_name = lib_name
+        self.harness_files = harness_files
         self.lib_version = lib_version
 
     def update_status(self, new_status):
@@ -266,6 +267,7 @@ class VulnDigMissionManager:
                         row['container_id'],
                         row['lib_name'],
                         row['lib_version'],
+                        row['harness_files'],
                         int(row['status'])
                     )
         except FileNotFoundError:
@@ -273,7 +275,7 @@ class VulnDigMissionManager:
 
     def save_missions_to_csv(self):
         with open(self.csv_file, mode='w', newline='') as file:
-            fieldnames = ['mission_id', 'container_id', 'lib_name', 'lib_version','status']
+            fieldnames = ['mission_id', 'container_id', 'lib_name', 'lib_version', 'harness_files','status']
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
             for mission in self.missions.values():
@@ -282,9 +284,34 @@ class VulnDigMissionManager:
                     'container_id': mission.container_id,
                     'lib_name': mission.lib_name,
                     'lib_version': mission.lib_version,
+                    'harness_files': mission.harness_files,
                     'status': str(mission.status)
                 }
                 writer.writerow(row)
+    
+    def update_status_in_csv(self, mission):
+            updated = False
+            updated_rows = []
+
+            with open(self.csv_file, mode='r', newline='') as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    if row.get('mission_id') == mission.mission_id:
+                        if int(row['status']) != mission.status:
+                            updated = True
+                            row['status'] = int(mission.status)
+                            updated_rows.append(row)
+                            break
+                    
+
+            if updated:
+                with open(self.csv_file, mode='w', newline='') as file:
+                    fieldnames = ['mission_id', 'container_id', 'lib_name', 'lib_version', 'status']
+                    writer = csv.DictWriter(file, fieldnames=fieldnames)
+                    writer.writeheader()
+                    writer.writerows(updated_rows)
+            else:
+                    pass
 
     def add_or_update_mission(self, mission):
         self.missions[mission.mission_id] = mission

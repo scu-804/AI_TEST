@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:414423e7a8f7680cbea834fe755e08f93bcc1d1e88eab41fa493d9114c45e0f2"
+content_hash = "sha256:3e3b4f75eef305cc61ce5bfdd9806bc1b16bc9429fa10c78239293c1cef82b2a"
 
 [[metadata.targets]]
 requires_python = "==3.10.*"
@@ -20,6 +20,16 @@ marker = "python_version > \"3.6\" and python_version < \"3.11\""
 files = [
     {file = "asttokens-3.0.0-py3-none-any.whl", hash = "sha256:e3078351a059199dd5138cb1c706e6430c05eff2ff136af5eb4790f9d28932e2"},
     {file = "asttokens-3.0.0.tar.gz", hash = "sha256:0dcd8baa8d62b0c1d118b399b2ddba3c4aff271d0d7a9e0d4c1681c79035bbc7"},
+]
+
+[[package]]
+name = "atheris"
+version = "2.3.0"
+summary = "A coverage-guided fuzzer for Python and Python extensions."
+groups = ["default"]
+files = [
+    {file = "atheris-2.3.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b91cb296d60915c3efa4f6db48f09c4678b574cddb7ca98035f1cb9d9fb96f64"},
+    {file = "atheris-2.3.0.tar.gz", hash = "sha256:cf1fdf5fa220a41a2f262b32363fc566549502b2cb0addf4e1baad5531c0e825"},
 ]
 
 [[package]]

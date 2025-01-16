@@ -2,6 +2,7 @@ import os
 import io
 import zipfile
 import csv
+from werkzeug.utils import secure_filename
 
 from flask import Flask, request, jsonify
 from functools import wraps
@@ -624,6 +625,37 @@ def vuln_dig_verify(lib_name:str) -> bool:
                 return False
         
         return True
+
+def harness_upload(files):
+    upload_path = "./upload/harness"
+
+    if not os.path.exists(upload_path):
+        os.makedirs(upload_path)
+    
+    file_paths = []
+
+    for file in files:
+        if file.filename == '' or not str(file.filename).endswith(".zip"):
+            continue
+
+        filename = secure_filename(file.filename)
+        zip_file_path = os.path.abspath(os.path.join(upload_path, filename))
+
+        file.save(zip_file_path)
+
+        with zipfile.ZipFile(zip_file_path, 'r') as zip_file:
+            zip_file.extractall(upload_path)
+        
+        extarcted_file = zip_file.namelist()
+        if len(extarcted_file) != 1:
+            continue
+
+        extarcted_file_path = os.path.abspath(os.path.join(upload_path, extarcted_file[0]))
+        file_paths.append(extarcted_file_path)
+    
+    harness_file_path = file_paths[-1]
+    
+    return harness_file_path
 
 if __name__ == "__main__":
     print(vuln_dig_verify("Pytorch"))
