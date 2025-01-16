@@ -98,6 +98,8 @@ def show_exit_reason(routine: RoutineEntry) -> None:
 def stop(routine: RoutineEntry) -> None:
     logger.info(f"Trying to stop routine {routine.get_name()}")
     status = check_exit_status(routine)
+
+    logger.info(f"The pre-stop state for routine {routine.get_name()} is {status}")
     if status == ExitStatus.CLN:
         logger.warning(f"Routine {routine.get_name()} already exited")
         # check exit reason

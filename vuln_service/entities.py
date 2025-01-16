@@ -33,6 +33,9 @@ class ExitStatus(Enum):
     PAR = 2
     RUN = 3
 
+    def __str__(self) -> str:
+        return self.name
+
 
 @dataclass
 class FuzzInfo:
