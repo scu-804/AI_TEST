@@ -231,7 +231,7 @@ def collect_routine_info(
 
 def info_read(routine: RoutineEntry) -> FuzzInfo | None:
     # read and logger.info
-    logger.info("start reading info...")
+    logger.info(f"start reading info for routine {routine.get_name()}")
 
     exited = False
     if is_cleaned_exit(routine):
