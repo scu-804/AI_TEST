@@ -167,11 +167,12 @@ def vuln_dig_query():
      container_info = info_read_json(entry)
 
      mission_status = container_info["status"]
-     print(mission_status)
-     mission.update_status(mission_status)
+
+     if mission.status != mission_status:
+         mission.update_status(mission_status)
+         mission_manager.update_status_in_csv(mission)
 
      #mission_manager.save_missions_to_csv()
-     mission_manager.update_status_in_csv(mission)
 
      return {
           "code": 200,
