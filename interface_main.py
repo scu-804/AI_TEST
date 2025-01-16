@@ -129,7 +129,8 @@ def vuln_dig_stop():
      stop(entry)
 
      mission.update_status(1)
-     mission_manager.save_missions_to_csv()
+     #mission_manager.save_missions_to_csv()
+     mission_manager.update_status_in_csv(mission)
 
      return {
           "code": 200,
@@ -169,7 +170,8 @@ def vuln_dig_query():
      print(mission_status)
      mission.update_status(mission_status)
 
-     mission_manager.save_missions_to_csv()
+     #mission_manager.save_missions_to_csv()
+     mission_manager.update_status_in_csv(mission)
 
      return {
           "code": 200,
