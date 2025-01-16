@@ -35,7 +35,7 @@ log
 - 利用 `stop.sh` 停止调度中心进程。`run.sh` 会将调度中心进程的 `pid` 写入文件中，`stop.sh` 读取该 `pid` 并停止调度中心进程。
 
 ```bash
-./stop
+./stop.sh
 ```
 
 ## Debug mode
