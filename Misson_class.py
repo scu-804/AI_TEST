@@ -285,6 +285,30 @@ class VulnDigMissionManager:
                     'status': str(mission.status)
                 }
                 writer.writerow(row)
+    
+    def update_status_in_csv(self, mission):
+            updated = False
+            updated_rows = []
+
+            with open(self.csv_file, mode='r', newline='') as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    if row.get('mission_id') == mission.mission_id:
+                        if int(row['status']) != mission.status:
+                            updated = True
+                            row['status'] = int(mission.status)
+                            updated_rows.append(row)
+                            break
+                    
+
+            if updated:
+                with open(self.csv_file, mode='w', newline='') as file:
+                    fieldnames = ['mission_id', 'container_id', 'lib_name', 'lib_version', 'status']
+                    writer = csv.DictWriter(file, fieldnames=fieldnames)
+                    writer.writeheader()
+                    writer.writerows(updated_rows)
+            else:
+                    pass
 
     def add_or_update_mission(self, mission):
         self.missions[mission.mission_id] = mission
