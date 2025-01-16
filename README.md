@@ -8,11 +8,14 @@ Now it implemented to Task 16, docker link and security-enhance modes have been 
 
 - setting with ip and port in gunicorn.conf.py, as follows:
 
-  workers = 5
+```python
 
-> worker_class = "gevent"
+workers = 5
 
-> bind = "127.0.0.1:5901" // ip and port
+worker_class = "gevent"
+
+bind = "127.0.0.1:5901" // ip and port
+```
 
 > [!CAUTION]
 > 为方便日志保存，`run.sh` 中的运行逻辑有所修改
