@@ -84,6 +84,19 @@ def get_data_dir() -> str:
     return dir_formalize("data")
 
 
+def create_ctn_dir_if_nonexist(dir_path: str, container: str) -> None:
+    # ensure dir path passed in is absolute path
+    assert dir_path.startswith(
+        "/"
+    ), f"dir_path {dir_path} passed in is not absolute path"
+    script = f"""
+if [[ ! -d {dir_path} ]]; then 
+mkdir -p {dir_path}
+fi
+    """
+    container_run_script(container, script, False)
+
+
 def container_run_script(
     container: str, script: str, output: bool
 ) -> subprocess.CompletedProcess[bytes]:
@@ -91,56 +104,6 @@ def container_run_script(
     return subprocess.run(
         docker_cmd.split(), input=script.encode(), capture_output=output
     )
-
-
-def get_log_name(routine_name: str) -> str:
-    return f"{routine_name}_{FUZZ_LOG}"
-
-
-def get_routine_fuzz_log_path(routine: RoutineEntry) -> str:
-    log_name = get_log_name(routine.get_name())
-    return os.path.join(FUZZ_DIR, log_name)
-
-
-def get_routine_backup_fuzz_log_path(routine: RoutineEntry) -> str:
-    log_name = get_log_name(routine.get_name())
-
-    # get fuzz log paths
-    script = f"""
-    find {FUZZ_DIR} -mindepth 1 -maxdepth 1 -type f -name '{log_name}_*'
-    """
-    proc = container_run_script(routine.container, script, True)
-    output = proc.stdout.decode()
-    lines = [line.strip() for line in output.splitlines()]
-    assert len(lines) > 0, f"No backup fuzz log for routine {routine.get_name()}"
-    lines.sort()
-
-    log_path = lines[-1]
-    return log_path
-
-
-def get_routine_crash_dir_name(routine_name: str) -> str:
-    return f"{routine_name}_crashes"
-
-
-def get_routine_crash_dir(routine_name: str) -> str:
-    """
-    base fuzz_dir with routine_name and tailing '/'
-    """
-    return os.path.join(FUZZ_DIR, get_routine_crash_dir_name(routine_name))
-
-
-def get_routine_corpus_dir(routine_name: str) -> str:
-    return os.path.join(FUZZ_DIR, f"{routine_name}_corpus")
-
-
-def get_pid_name(routine_name: str) -> str:
-    return f"{routine_name}_pid"
-
-
-def get_pid_path(routine: RoutineEntry) -> str:
-    pid_name = get_pid_name(routine.get_name())
-    return f"{FUZZ_DIR}/{pid_name}"
 
 
 def get_crash_zip_path(routine_name: str) -> str:
@@ -151,7 +114,17 @@ def check_exit_status(routine: RoutineEntry) -> ExitStatus:
     """
     1 finished, 2 running
     """
-    script = get_pid_check_script(routine)
+    pid_path = routine.get_pid_path()
+    script = f"""
+pid_path={pid_path}
+if [[ ! -f "$pid_path" ]]; then 
+    exit 2
+fi
+
+pid=$(cat "$pid_path")
+
+ps -p "$pid"
+    """
 
     proc = container_run_script(routine.container, script, False)
     # pid file is cleaned
@@ -163,74 +136,6 @@ def check_exit_status(routine: RoutineEntry) -> ExitStatus:
 
     # pid file exists and query fails
     return ExitStatus.PAR
-
-
-pid_check_script_template = """
-fuzz_dir='{fuzz_dir}'
-if [[ ! -d "$fuzz_dir" ]]; then
-  mkdir "$fuzz_dir"
-fi
-
-pid_path="$fuzz_dir"/{pid_name}
-if [[ ! -f "$pid_path" ]]; then 
-    exit 2
-fi
-
-pid=$(cat "$pid_path")
-
-ps -p "$pid"
-"""
-
-
-def get_pid_check_script(routine: RoutineEntry) -> str:
-    pid_name = get_pid_name(routine.get_name())
-    return pid_check_script_template.format(fuzz_dir=FUZZ_DIR, pid_name=pid_name)
-
-
-def get_new_comming_crash_name(routine: RoutineEntry) -> str | None:
-    """
-    returns filename of the new comming crash file
-    """
-    crash_dir = get_routine_crash_dir(routine_name=routine.get_name())
-    script = f"""
-    crash_dir='{crash_dir}'
-    time_thresh="$(date -d '{CRASH_FILE_TIMEOUT} seconds ago' '+%Y-%m-%d %H:%M:%S')"
-    find "$crash_dir" -type f -newermt "$time_thresh"
-    """
-    proc = container_run_script(routine.container, script, True)
-    output = proc.stdout.decode()
-    lines = output.splitlines()
-    cnt = 0
-
-    fpath = None
-    for line in lines:
-        line = line.strip()
-        if len(line) == 0:
-            continue
-        cnt += 1
-        if cnt > 1:
-            assert (
-                False
-            ), f"More than 1 new crash files occured for routine {routine.get_name()}, please adjust timeout threshold."
-        fpath = line
-    if fpath is None:
-        return None
-    else:
-        return os.path.basename(fpath)
-
-
-# def check_exit_reason(routine: RoutineEntry) -> ExitReason:
-#     fname = get_new_comming_crash_name(routine)
-#     if fname is None:
-#         logger.info(f"Routine {routine.get_name()} stopped: Unexpected error occured")
-#         return ExitReason.OTHER
-#     if fname.startswith("crash-"):
-#         logger.info(f"Routine {routine.get_name()} stopped: new crash occured")
-#         return ExitReason.SAN
-#     if fname.startswith("oom-"):
-#         logger.info(f"Routine {routine.get_name()} stopped: oom error occured")
-#         return ExitReason.OOM
-#     assert False, f"Unexpected crash file name: {fname} at routine {routine.get_name()}"
 
 
 def get_time_suffix() -> str:

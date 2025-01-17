@@ -2,18 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 
-@dataclass()
-class RoutineEntry:
-    container: str
-    lib_name: str
-    lib_version: str
-
-    def get_name(self) -> str:
-        return f"{self.lib_name}_{self.lib_version}"
-
-    def __hash__(self):
-        # Compute hash based on the unique attributes
-        return hash((self.container, self.lib_name, self.lib_version))
+from .routine import RoutineEntry
 
 
 @dataclass
