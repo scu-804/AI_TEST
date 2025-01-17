@@ -10,6 +10,17 @@ from vuln_service.utils import (
     get_time_suffix,
 )
 
+ctn_fuzz_cmd_template = {
+    "vul_pytorch": 'LD_PRELOAD="$(python -c "import atheris; print(atheris.path())")/asan_with_fuzzer.so" python {harn_path}',
+    "vul_tf": "python {harn_path}",
+    "vul_keras": "python {harn_path}",
+    "vul_np": 'LD_PRELOAD="$(python3 -c "import atheris; print(atheris.path())")/asan_with_fuzzer.so" python3 {harn_path}',
+    "vul_opencv": "./generateusergallerycollage_fuzzer",
+    "vul_pandas": "python3 {harn_path}",
+    "vul_pillow": 'LD_PRELOAD="$(python -c "import atheris; print(atheris.path())")/asan_with_fuzzer.so" python {harn_path}',
+    "vul_scipy": "python3 {harn_path}",
+}
+
 
 @dataclass()
 class Harness:
@@ -51,6 +62,17 @@ class RoutineEntry:
     def init_harness(self, loc_path: str) -> None:
         ctn_path = self.get_ctn_harn_path(loc_path)
         self.harn = Harness(loc_path, ctn_path)
+
+    def get_fuzz_cmd(self) -> str:
+        fc_temp = ctn_fuzz_cmd_template.get(self.container)
+        assert isinstance(
+            fc_temp, str
+        ), f"Failed to get fuzz cmd template for {self.container}"
+        if "python" not in fc_temp:
+            return fc_temp
+        return fc_temp.format(harn_path=self.get_harn_path())
+
+    ### directory part
 
     def get_fuzz_dir(self) -> str:
         self.create_dir(FUZZ_DIR)
