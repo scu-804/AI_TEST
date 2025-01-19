@@ -1,13 +1,13 @@
 from vuln_service.entities import RoutineEntry
-from vuln_service.info_read.utils import get_routine_backup_crash_dir
-from .utils import (
-    container_run_script,
-    get_routine_crash_dir,
-    get_crash_zip_path,
-)
 
 
-zip_script_template = """
+def collect_crashes(routine: RoutineEntry) -> str | None:
+    """
+    returns path of target zip file
+    """
+    crash_dir = routine.get_crash_dir()
+    crash_zip_path = routine.get_crash_zip_path()
+    script = f"""
 
 # Directory containing the crash files
 CRASH_DIR="{crash_dir}"
@@ -39,21 +39,7 @@ fi
 
 find "$CRASH_DIR" -mindepth 1 -maxdepth 1 -type f -name 'crash-*' -exec rm '{{}}' \\+
 """
-
-
-def get_zip_script(routine: RoutineEntry) -> str:
-    crash_dir = get_routine_backup_crash_dir(routine)
-    return zip_script_template.format(
-        crash_dir=crash_dir, crash_zip_path=get_crash_zip_path(routine.get_name())
-    )
-
-
-def collect_crashes(routine: RoutineEntry) -> str | None:
-    """
-    returns path of target zip file
-    """
-    script = get_zip_script(routine)
-    proc = container_run_script(routine.container, script, True)
+    proc = routine.run_ctn_script(script, False)
     if proc.returncode != 0:
         return None
-    return get_crash_zip_path(routine.get_name())
+    return routine.get_crash_zip_path()

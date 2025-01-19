@@ -2,6 +2,8 @@ import logging
 import ipdb
 import os
 
+from vuln_service.utils.container import start_container
+
 
 from .entities import RoutineEntry
 from .utils import container_run_script, FUZZ_DIR, FUZZ_LOG
@@ -145,8 +147,6 @@ def exec_routine(routine: RoutineEntry, fuzz_cmd: str) -> bool:
 
 
 def start_routine(routine: RoutineEntry) -> bool:
-    container = routine.container
-    os.system(f"docker start {container}")
     fuzz_cmd = routine.get_fuzz_cmd()
     flag = exec_routine(routine, fuzz_cmd)
     if not flag:

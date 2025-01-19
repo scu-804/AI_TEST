@@ -1,18 +1,13 @@
-import re
-
 import ipdb
 
 from vuln_service.entities import RoutineEntry, RoutineStatus
+from vuln_service.entities.routine.read import is_exit_code_line
 from vuln_service.info_read.entities import FuzzerStatus, LogStatus
-from vuln_service.stop import clean_after_stop
-from .utils import is_cleaned_exit, is_exit_code_line, is_partial_exit
 
 from ..entities import ExitStatus, FuzzInfo
-from ..utils import (
-    container_run_script,
+from vuln_service.utils import (
     logger,
 )
-from .utils import read_log
 from .patterns import (
     is_complete_rec,
     has_record_prefix,
@@ -120,7 +115,7 @@ def get_routine_crash_num(routine: RoutineEntry) -> int:
     script = f"""
     find {crash_dir} -mindepth 1 -maxdepth 1 -type f
     """
-    proc = container_run_script(routine.container, script, True)
+    proc = routine.run_ctn_script(script, True)
     if proc.returncode != 0:
         err_msg = proc.stderr.decode()
         assert (
@@ -224,14 +219,14 @@ def info_read(routine: RoutineEntry) -> FuzzInfo | None:
     logger.info(f"start reading info for routine {routine.get_name()}")
 
     # exited = False
-    if is_cleaned_exit(routine):
+    if routine.is_cleaned_exit():
         logger.warning(f"routine {routine.get_name()} has been cleaned")
         # exited = True
-    elif is_partial_exit(routine):
+    elif routine.is_partial_exit():
         logger.warning(f"routine {routine.get_name()} has exited")
-        clean_after_stop(routine)
+        routine.clean_after_stop()
         # exited = True
-    log_content = read_log(routine)
+    log_content = routine.read_log()
     if log_content is None:
         return None
 
