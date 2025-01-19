@@ -1,19 +1,13 @@
-import re
-
 import ipdb
 
 from vuln_service.entities import RoutineEntry, RoutineStatus
+from vuln_service.entities.routine.read import is_exit_code_line
 from vuln_service.info_read.entities import FuzzerStatus, LogStatus
-from vuln_service.stop import clean_after_stop
-from .utils import is_cleaned_exit, is_exit_code_line, is_partial_exit
 
 from ..entities import ExitStatus, FuzzInfo
-from ..utils import (
-    container_run_script,
-    get_routine_crash_dir,
+from vuln_service.utils import (
     logger,
 )
-from .utils import read_log, get_routine_backup_crash_dir, read_backup_log
 from .patterns import (
     is_complete_rec,
     has_record_prefix,
@@ -94,7 +88,7 @@ def get_recent_record(lines: list[str]) -> tuple[str, FuzzerStatus, LogStatus]:
     """
 
     # exit skip part: returns an index
-    log_stat = None
+    # log_stat = None
     fuz_stat = None
     rec = None
     exited = has_exit_code_line(lines)
@@ -112,23 +106,16 @@ def get_recent_record(lines: list[str]) -> tuple[str, FuzzerStatus, LogStatus]:
         return rec, fuz_stat, LogStatus.RUN
 
 
-# def is_target_running(log_content: str) -> bool:
-#     """
-#     Invoked when fuzzer is running
-#     """
-#     record, _ = get_recent_record(log_content)
-#     return is_complete_rec(record)
-
-
-def get_routine_crash_num(routine: RoutineEntry, exited: bool) -> int:
-    if exited:
-        crash_dir = get_routine_backup_crash_dir(routine)
-    else:
-        crash_dir = get_routine_crash_dir(routine.get_name())
+def get_routine_crash_num(routine: RoutineEntry) -> int:
+    crash_dir = routine.get_crash_dir()
+    # if exited:
+    #     crash_dir = get_routine_backup_crash_dir(routine)
+    # else:
+    #     crash_dir = get_routine_crash_dir(routine.get_name())
     script = f"""
     find {crash_dir} -mindepth 1 -maxdepth 1 -type f
     """
-    proc = container_run_script(routine.container, script, True)
+    proc = routine.run_ctn_script(script, True)
     if proc.returncode != 0:
         err_msg = proc.stderr.decode()
         assert (
@@ -214,10 +201,8 @@ def parse_log_info(log_content: str) -> FuzzInfo:
     )
 
 
-def collect_routine_info(
-    log_content: str, routine: RoutineEntry, exited: bool
-) -> FuzzInfo:
-    crash_num = get_routine_crash_num(routine, exited)
+def collect_routine_info(log_content: str, routine: RoutineEntry) -> FuzzInfo:
+    crash_num = get_routine_crash_num(routine)
 
     # if not exited and not is_target_running(log_content):
     #     logger.debug(f"routine {routine.get_name()} is initializing...")
@@ -233,18 +218,15 @@ def info_read(routine: RoutineEntry) -> FuzzInfo | None:
     # read and logger.info
     logger.info(f"start reading info for routine {routine.get_name()}")
 
-    exited = False
-    if is_cleaned_exit(routine):
+    # exited = False
+    if routine.is_cleaned_exit():
         logger.warning(f"routine {routine.get_name()} has been cleaned")
-        log_content = read_backup_log(routine)
-        exited = True
-    elif is_partial_exit(routine):
+        # exited = True
+    elif routine.is_partial_exit():
         logger.warning(f"routine {routine.get_name()} has exited")
-        clean_after_stop(routine)
-        log_content = read_backup_log(routine)
-        exited = True
-    else:
-        log_content = read_log(routine)
+        routine.clean_after_stop()
+        # exited = True
+    log_content = routine.read_log()
     if log_content is None:
         return None
 
@@ -259,7 +241,7 @@ def info_read(routine: RoutineEntry) -> FuzzInfo | None:
     else:
         logger.debug(f"log last line: {lines[-1]}")
 
-    info = collect_routine_info(log_content, routine, exited)
+    info = collect_routine_info(log_content, routine)
 
     return info
 

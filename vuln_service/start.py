@@ -1,42 +1,22 @@
 import logging
-from .utils import get_routine_corpus_dir
 import ipdb
 import os
+
+from vuln_service.utils.container import start_container
 
 
 from .entities import RoutineEntry
 from .utils import container_run_script, FUZZ_DIR, FUZZ_LOG
-from .utils import logger, get_log_name, get_routine_crash_dir, get_pid_name
+from .utils import logger
 
-container_fuzzcmd = {
-    "vul_pytorch": 'LD_PRELOAD="$(python -c "import atheris; print(atheris.path())")/asan_with_fuzzer.so" python ./my_fuzzer.py',
-    "vul_tf": "python fuzz_tensorflow.py",
-    "vul_keras": "python fuzz_keras.py",
-    "vul_np": 'LD_PRELOAD="$(python3 -c "import atheris; print(atheris.path())")/asan_with_fuzzer.so" python3 ./fuzz_numpy.py',
-    "vul_opencv": "./generateusergallerycollage_fuzzer",
-    "vul_pandas": "python3 fuzz_pandas.py",
-    "vul_pillow": 'LD_PRELOAD="$(python -c "import atheris; print(atheris.path())")/asan_with_fuzzer.so" python ./fuzz_pil.py',
-    "vul_scipy": "python3 fuzz_scipy.py",
-}
 
 # params needed: fuzz_dir, fuzz_cmd, fuzz_log
 start_script_template = """ 
-# directory setup
 fuzz_dir='{fuzz_dir}'
 
-if [[ ! -d "$fuzz_dir" ]]; then
-  mkdir "$fuzz_dir"
-fi
-
 corpus_dir='{corpus_dir}'
-if [[ ! -d "$corpus_dir" ]]; then
-  mkdir -p "$corpus_dir"
-fi
-
 crash_dir='{crash_dir}/'
-if [[ ! -d "$crash_dir" ]]; then
-    mkdir -p "$crash_dir"
-fi
+pid_path='{pid_path}'
 
 source /root/.bashrc
 
@@ -129,23 +109,27 @@ conda_manage() {{
 
 conda_manage
 
-{fuzz_cmd} "$corpus_dir" -artifact_prefix="$crash_dir" 2>"$fuzz_dir"/{fuzz_log} &
-echo "$!" > "$fuzz_dir"/{pid_name}
+{fuzz_cmd} "$corpus_dir" -artifact_prefix="$crash_dir" 2>{log_path} &
+echo "$!" > "$pid_path"
 """
 
 
 def get_start_script(routine: RoutineEntry, fuzz_cmd: str) -> str:
-    routine_name = routine.get_name()
-    crash_dir = get_routine_crash_dir(routine_name)
-    log_name = get_log_name(routine_name)
-    pid_name = get_pid_name(routine_name)
-    corpus_dir = get_routine_corpus_dir(routine_name)
+    crash_dir = routine.get_crash_dir()
+    log_path = routine.get_fuzz_log_path()
+    pid_path = routine.get_pid_path()
+    corpus_dir = routine.get_corpus_dir()
+
+    # crash_dir = get_routine_crash_dir(routine_name)
+    # log_name = get_log_name(routine_name)
+    # pid_name = get_pid_name(routine_name)
+    # corpus_dir = get_routine_corpus_dir(routine_name)
     return start_script_template.format(
         fuzz_dir=FUZZ_DIR,
         fuzz_cmd=fuzz_cmd,
-        fuzz_log=log_name,
+        log_path=log_path,
         crash_dir=crash_dir,
-        pid_name=pid_name,
+        pid_path=pid_path,
         lib_name=routine.lib_name,
         lib_version=routine.lib_version,
         corpus_dir=corpus_dir,
@@ -162,16 +146,8 @@ def exec_routine(routine: RoutineEntry, fuzz_cmd: str) -> bool:
     # add_container_cwd(container, cwd)
 
 
-def get_container_fuzzcmd(container: str) -> str:
-    fuzz_cmd = container_fuzzcmd.get(container)
-    assert fuzz_cmd
-    return fuzz_cmd
-
-
 def start_routine(routine: RoutineEntry) -> bool:
-    container = routine.container
-    os.system(f"docker start {container}")
-    fuzz_cmd = get_container_fuzzcmd(container)
+    fuzz_cmd = routine.get_fuzz_cmd()
     flag = exec_routine(routine, fuzz_cmd)
     if not flag:
         logger.error(f"{routine.get_name()} fails to start")
@@ -179,18 +155,3 @@ def start_routine(routine: RoutineEntry) -> bool:
 
     logger.info(f"{routine.get_name()} started successfully")
     return True
-
-
-# def start(container: str) -> None:
-#     """
-#     containener name
-#     script: path of the script to execute inside docker container
-#     """
-#     logger.info("starting docker container...")
-#     # start docker container
-#     os.system(f"docker start {container}")
-#
-#     # run service
-#     fuzz_cmd = container_fuzzcmd.get(container)
-#     assert fuzz_cmd
-#     exec_routine(container, fuzz_cmd)

@@ -6,6 +6,8 @@ Adver_gen_missions_DBSM.csv
 Enhance_missions_DBSM.csv
 Eval_missions_DBSM.csv
 Vuln_dig_missions_DBSM.csv
+.data/
+harn_run.sh
 
 target/
 !.mvn/wrapper/maven-wrapper.jar
