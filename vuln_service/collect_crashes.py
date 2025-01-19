@@ -1,10 +1,12 @@
 from vuln_service.entities import RoutineEntry
+from .utils import logger
 
 
 def collect_crashes(routine: RoutineEntry) -> str | None:
     """
     returns path of target zip file
     """
+    logger.info(f"Collecting crashes for routine {routine.get_name()}...")
     crash_dir = routine.get_crash_dir()
     crash_zip_path = routine.get_crash_zip_path()
     script = f"""
@@ -31,7 +33,7 @@ find "$CRASH_DIR" -mindepth 1 -maxdepth 1 -type f | zip -j "$OUTPUT_ZIP" -@
 
 # Check if the zip file was created successfully
 if [ $? -eq 0 ]; then
-    echo "$OUTPUT_ZIP"
+    echo "crahes written into $OUTPUT_ZIP"
 else
     echo "Error: Failed to create the zip file."
     exit 1
