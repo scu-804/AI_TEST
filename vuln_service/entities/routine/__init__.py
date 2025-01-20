@@ -58,16 +58,26 @@ class RoutineEntry:
     name: str
     fuzz_cmd: str
     work_dir: str
+    time_suffix: str
 
     inited: bool
 
     def __init__(
-        self, container: str, lib_name: str, lib_version: str, harn_path: str
+        self,
+        container: str,
+        lib_name: str,
+        lib_version: str,
+        harn_path: str,
+        time_suffix: None | str = None,
     ) -> None:
         self.container = container
         self.lib_name = lib_name
         self.lib_version = lib_version
         self.inited = False
+        if time_suffix is None:
+            self.time_suffix = get_time_suffix()
+        else:
+            self.time_suffix = time_suffix
 
         self.start_container()
         self.init_harness(harn_path)
@@ -75,6 +85,7 @@ class RoutineEntry:
         #
         self.inited = True
 
+    ### for initialization
     def start_container(self) -> None:
         start_container(self.container)
 
@@ -85,7 +96,6 @@ class RoutineEntry:
         ctn_path = self.get_ctn_harn_path(loc_path)
         self.harn = Harness(loc_path, ctn_path)
 
-    # for initialization
     def get_ctn_work_dir_by_locpath(self, loc_path: str) -> str:
         fuzz_dir = self.get_fuzz_dir()
         work_dir = os.path.join(fuzz_dir, self.get_name_by_locpath(loc_path))
@@ -94,8 +104,7 @@ class RoutineEntry:
         return work_dir
 
     def get_name_by_locpath(self, loc_path: str) -> str:
-        time_suffix = get_time_suffix()
-        name = f"{self.lib_name}_{self.lib_version}_{self.get_harn_name_by_locpath(loc_path)}_{time_suffix}"
+        name = f"{self.lib_name}_{self.lib_version}_{self.get_harn_name_by_locpath(loc_path)}_{self.get_time_suffix()}"
         self.name = name
         return name
 
@@ -125,6 +134,11 @@ fi
         ctn_path = os.path.join(work_dir, self.get_harn_name_by_locpath(loc_path))
         self.copy_to_ctn_harn(loc_path, ctn_path)
         return ctn_path
+
+    ### get attributes
+    def get_time_suffix(self) -> str:
+        assert self.time_suffix is not None
+        return self.time_suffix
 
     def get_fuzz_cmd(self) -> str:
         fc_temp = ctn_fuzz_cmd_template.get(self.container)

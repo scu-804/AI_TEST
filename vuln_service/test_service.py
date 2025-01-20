@@ -16,7 +16,7 @@ from .utils import logger, path_formalize
 
 # from .entities import vuln_engine_entry_list, routine_entry_list
 
-EXAMPLE_HARN_PATH = path_formalize(".data", "example.py")
+EXAMPLE_HARN_PATH = path_formalize("test_data", "example.py")
 
 status = os.system("docker context use server2")
 assert status == 0, "Failed to set docker context to server2"
