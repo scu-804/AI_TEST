@@ -1,7 +1,7 @@
 from functools import wraps
 from flask import request,jsonify
 from vuln_service.start import start_routine
-from utils import vuln_dig_verify
+from utils import vuln_dig_verify, harness_upload
 from vuln_service.entities import RoutineEntry
 import logging
 
@@ -17,6 +17,7 @@ def vulndig_start_decorator(yaml_reader):
             params = request.get_json()
             lib_name = params.get('lib_name')
             lib_verison = params.get('lib_version')
+            harness_file = request.files.getlist('harness_files')
             if vuln_dig_verify(lib_name) == False:
                 return jsonify({
                     "code": 400,
@@ -49,16 +50,18 @@ def vulndig_start_decorator(yaml_reader):
                     "message": "yaml文件参数读取失败",
                     "data": {"status": 2},
                 })
+            
+            harn_path = harness_upload(harness_file)
 
             # 调用 start 函数启动 Docker 容器
             logger.info(f"Starting Docker container '{docker_container}' with command '{shell_command}'")
 
-            entry = RoutineEntry(container=docker_container, lib_name=lib_name, lib_version=lib_verison)
+            entry = RoutineEntry(container=docker_container, lib_name=lib_name, lib_version=lib_verison, harn_path=harn_path)
             result = start_routine(entry)
 
             print(result)
 
             # 执行被装饰的接口逻辑
-            return func(*args, result=result,**kwargs)
+            return func(*args, result=result, harn_path=harn_path,**kwargs)
         return wrapper
     return decorator
