@@ -650,7 +650,7 @@ def harness_upload(files):
         if len(extarcted_file) != 1:
             continue
 
-        extarcted_file_path = os.path.abspath(os.join(upload_path, extarcted_file[0]))
+        extarcted_file_path = os.path.abspath(os.path.join(upload_path, extarcted_file[0]))
         file_paths.append(extarcted_file_path)
     
     harness_file_path = file_paths[-1]

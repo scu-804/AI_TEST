@@ -197,7 +197,8 @@ def vuln_dig_start(result:bool, harn_path:str):
              }
          }
 
-     params = request.get_json()
+     #params = request.get_json()
+     params = request_params()
 
      mission_id = params.get('mission_id')
      lib_name = params.get('lib_name')

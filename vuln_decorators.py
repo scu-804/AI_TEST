@@ -7,6 +7,31 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+def request_params():
+    params = {}
+    try:
+        for k, v in request.args.items():
+            params[k] = v
+    except BaseException as e:
+        pass
+    try:
+        for k, v in request.values.items():
+            params[k] = v
+    except BaseException as e:
+        pass
+    try:
+        r_json = request.get_json()
+        if r_json and isinstance(r_json, dict):
+            for k, v in r_json.items():
+                params[k] = v
+    except BaseException as e:
+        pass
+    return params
+
+
+def get_url():
+    return request.method, str(request.url_rule)
+
 def vulndig_start_decorator(yaml_reader):
     """
     :param yaml_reader: 用于读取 YAML 配置文件的函数
@@ -14,7 +39,10 @@ def vulndig_start_decorator(yaml_reader):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            params = request.get_json()
+            params = request_params()
+            get_url()
+            
+            #params = request.get_json()
             lib_name = params.get('lib_name')
             lib_verison = params.get('lib_version')
             harness_file = request.files.getlist('harness_files')
