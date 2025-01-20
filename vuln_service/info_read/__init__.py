@@ -247,6 +247,8 @@ def info_read(routine: RoutineEntry) -> FuzzInfo | None:
 
 
 def info_read_json(routine: RoutineEntry) -> dict:
-    json = vars(info_read(routine))
+    info = info_read(routine)
+    assert info, "info_read returns None"
+    json = vars(info)
     logger.debug(f"collected info: {json}")
     return json
