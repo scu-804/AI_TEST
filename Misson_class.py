@@ -237,11 +237,12 @@ class Enhance_MissionManager(MissionManager):
                 writer.writerow(row)
 
 class VulnDigMission:
-    def __init__(self, mission_id, container_id, lib_name, lib_version,harness_files,mission_status):
+    def __init__(self, mission_id, container_id, lib_name, lib_version,time_suffix,harness_files,mission_status):
         self.mission_id = mission_id
         self.container_id = container_id
         self.status = mission_status
         self.lib_name = lib_name
+        self.time_suffix = time_suffix
         self.harness_files = harness_files
         self.lib_version = lib_version
 
@@ -267,6 +268,7 @@ class VulnDigMissionManager:
                         row['container_id'],
                         row['lib_name'],
                         row['lib_version'],
+                        row['time_suffix'],
                         row['harness_files'],
                         int(row['status'])
                     )
@@ -275,7 +277,7 @@ class VulnDigMissionManager:
 
     def save_missions_to_csv(self):
         with open(self.csv_file, mode='w', newline='') as file:
-            fieldnames = ['mission_id', 'container_id', 'lib_name', 'lib_version', 'harness_files','status']
+            fieldnames = ['mission_id', 'container_id', 'lib_name', 'lib_version', 'time_suffix', 'harness_files', 'status']
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
             for mission in self.missions.values():
@@ -284,6 +286,7 @@ class VulnDigMissionManager:
                     'container_id': mission.container_id,
                     'lib_name': mission.lib_name,
                     'lib_version': mission.lib_version,
+                    'time_suffix': mission.time_suffix,
                     'harness_files': mission.harness_files,
                     'status': str(mission.status)
                 }
@@ -306,7 +309,7 @@ class VulnDigMissionManager:
 
             if updated:
                 with open(self.csv_file, mode='w', newline='') as file:
-                    fieldnames = ['mission_id', 'container_id', 'lib_name', 'lib_version', 'status']
+                    fieldnames = ['mission_id', 'container_id', 'lib_name', 'lib_version', 'time_suffix', 'harness_files', 'status']
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(updated_rows)

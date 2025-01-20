@@ -85,11 +85,13 @@ def vulndig_start_decorator(yaml_reader):
             logger.info(f"Starting Docker container '{docker_container}' with command '{shell_command}'")
 
             entry = RoutineEntry(container=docker_container, lib_name=lib_name, lib_version=lib_verison, harn_path=harn_path)
+            time_suffix = entry.time_suffix
+
             result = start_routine(entry)
 
             print(result)
 
             # 执行被装饰的接口逻辑
-            return func(*args, result=result, harn_path=harn_path,**kwargs)
+            return func(*args, result=result, harn_path=harn_path, time_suffix=time_suffix,**kwargs)
         return wrapper
     return decorator

@@ -82,9 +82,10 @@ def vuln_dig_download():
      docker_container = mission.container_id
      lib_name = mission.lib_name
      lib_version = mission.lib_version
+     time_suffix = mission.time_suffix
      harn_path= mission.harness_files
 
-     entry = RoutineEntry(container=docker_container, lib_name=lib_name, lib_version=lib_version, harn_path=harn_path)
+     entry = RoutineEntry(container=docker_container, lib_name=lib_name, lib_version=lib_version, time_suffix=time_suffix, harn_path=harn_path)
 
      download_path = collect_crashes(entry)
 
@@ -124,9 +125,10 @@ def vuln_dig_stop():
      docker_container = mission.container_id
      lib_name = mission.lib_name
      lib_version = mission.lib_version
+     time_suffix = mission.time_suffix
      harn_path = mission.harness_files
 
-     entry = RoutineEntry(container=docker_container, lib_name=lib_name, lib_version=lib_version, harn_path=harn_path)
+     entry = RoutineEntry(container=docker_container, lib_name=lib_name, lib_version=lib_version, time_suffix=time_suffix, harn_path=harn_path)
 
      stop(entry)
 
@@ -163,9 +165,10 @@ def vuln_dig_query():
      docker_container = mission.container_id
      lib_name = mission.lib_name
      lib_version = mission.lib_version
+     time_suffix = mission.time_suffix
      harn_path = mission.harness_files
 
-     entry = RoutineEntry(container=docker_container, lib_name=lib_name, lib_version=lib_version, harn_path=harn_path)
+     entry = RoutineEntry(container=docker_container, lib_name=lib_name, lib_version=lib_version, time_suffix=time_suffix, harn_path=harn_path)
 
      container_info = info_read_json(entry)
 
@@ -187,7 +190,7 @@ def vuln_dig_query():
 ## model17: 框架漏挖启动
 @app.route('/vul_dig', methods=['POST'])
 @vulndig_start_decorator(init_yaml_read_for_vulndig)
-def vuln_dig_start(result:bool, harn_path:str):
+def vuln_dig_start(result:bool, harn_path:str, time_suffix:str):
      if result == False:
          return{
              "code": 400,
@@ -210,7 +213,7 @@ def vuln_dig_start(result:bool, harn_path:str):
 
      mission_manager = VulnDigMissionManager('Vuln_dig_missions_DBSM.csv')
      mission_status = 2
-     mission = VulnDigMission(mission_id, docker_container,lib_name, lib_version, harn_path, mission_status)
+     mission = VulnDigMission(mission_id, docker_container,lib_name, lib_version, time_suffix, harn_path, mission_status)
      mission_manager.add_or_update_mission(mission)
 
      return {
