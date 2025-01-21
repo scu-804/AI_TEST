@@ -34,17 +34,32 @@ ctn_fuzz_cmd_template = {
     "vul_scipy": "python3 {harn_path}",
 }
 
+ctn_defautl_harn = {
+    "vul_pytorch": "./my_fuzzer.py",
+    "vul_tf": "fuzz_tensorflow.py",
+    "vul_keras": "fuzz_keras.py",
+    "vul_np": "./fuzz_numpy.py",
+    "vul_opencv": "./generateusergallerycollage_fuzzer",
+    "vul_pandas": "fuzz_pandas.py",
+    "vul_pillow": "./fuzz_pil.py",
+    "vul_scipy": "fuzz_scipy.py",
+}
+
+DEFAULT_HARN_NAME = "default"
+
 
 @dataclass()
 class Harness:
-    loc_path: str
+    loc_path: str | None
     ctn_path: str
 
-    def __init__(self, loc_path: str, ctn_path: str) -> None:
+    def __init__(self, loc_path: str | None, ctn_path: str) -> None:
         self.loc_path = loc_path
         self.ctn_path = ctn_path
 
     def get_name(self) -> str:
+        if self.loc_path is None:
+            return DEFAULT_HARN_NAME
         return basename(self.loc_path)
 
 
@@ -67,7 +82,7 @@ class RoutineEntry:
         container: str,
         lib_name: str,
         lib_version: str,
-        harn_path: str,
+        harn_path: str | None = None,
         time_suffix: None | str = None,
     ) -> None:
         self.container = container
@@ -92,13 +107,34 @@ class RoutineEntry:
     def create_ctn_dir(self, dir_path: str) -> None:
         create_ctn_dir_if_nonexist(dir_path, self.container)
 
-    def init_harness(self, loc_path: str) -> None:
+    def init_harness(self, loc_path: str | None) -> None:
         ctn_path = self.get_ctn_harn_path(loc_path)
         self.harn = Harness(loc_path, ctn_path)
 
-    def get_ctn_work_dir_by_locpath(self, loc_path: str) -> str:
+    def get_ctn_work_dir_wo_locpath(self) -> str:
+        # implement harness copy logic with getting wrapper
         fuzz_dir = self.get_fuzz_dir()
-        work_dir = os.path.join(fuzz_dir, self.get_name_by_locpath(loc_path))
+        routine_name = self.get_name_wo_locpath()
+        work_dir = os.path.join(fuzz_dir, routine_name)
+        logger.info(f"Initializing work dir for {routine_name}")
+        self.create_ctn_dir(work_dir)
+        self.work_dir = work_dir
+        return work_dir
+
+    def get_name_wo_locpath(self) -> str:
+        name = f"{self.lib_name}_{self.lib_version}_{self.get_harn_name_wo_locpath()}_{self.get_time_suffix()}"
+        self.name = name
+        return name
+
+    def get_harn_name_wo_locpath(self) -> str:
+        return DEFAULT_HARN_NAME
+
+    def get_ctn_work_dir_by_locpath(self, loc_path: str) -> str:
+        # implement harness copy logic with getting wrapper
+        fuzz_dir = self.get_fuzz_dir()
+        routine_name = self.get_name_by_locpath(loc_path)
+        work_dir = os.path.join(fuzz_dir, routine_name)
+        logger.info(f"Initializing work dir for {routine_name}")
         self.create_ctn_dir(work_dir)
         self.work_dir = work_dir
         return work_dir
@@ -128,11 +164,20 @@ fi
         if not flag:
             os.system(f"docker cp {loc_path} {self.container}:{ctn_path}")
 
-    def get_ctn_harn_path(self, loc_path: str) -> str:
+    def get_ctn_harn_path(self, loc_path: str | None) -> str:
         # copy logic
-        work_dir = self.get_ctn_work_dir_by_locpath(loc_path)
-        ctn_path = os.path.join(work_dir, self.get_harn_name_by_locpath(loc_path))
-        self.copy_to_ctn_harn(loc_path, ctn_path)
+
+        if loc_path is None:
+            ctn_path = ctn_defautl_harn.get(self.container)
+            assert isinstance(
+                ctn_path, str
+            ), f"Failed to get default harness container path for {self.container}"
+            _ = self.get_ctn_work_dir_wo_locpath()
+            # no copy
+        else:
+            work_dir = self.get_ctn_work_dir_by_locpath(loc_path)
+            ctn_path = os.path.join(work_dir, self.get_harn_name_by_locpath(loc_path))
+            self.copy_to_ctn_harn(loc_path, ctn_path)
         return ctn_path
 
     ### get attributes
