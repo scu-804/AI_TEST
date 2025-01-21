@@ -79,7 +79,10 @@ def vulndig_start_decorator(yaml_reader):
                     "data": {"status": 2},
                 })
             
-            harn_path = harness_upload(harness_file)
+            if len(harness_file) == 0:
+                harn_path = None
+            else:
+                harn_path = harness_upload(harness_file)
 
             # 调用 start 函数启动 Docker 容器
             logger.info(f"Starting Docker container '{docker_container}' with command '{shell_command}'")

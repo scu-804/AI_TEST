@@ -168,6 +168,9 @@ def vuln_dig_query():
      time_suffix = mission.time_suffix
      harn_path = mission.harness_files
 
+     if harn_path == '':
+         harn_path = None
+
      entry = RoutineEntry(container=docker_container, lib_name=lib_name, lib_version=lib_version, time_suffix=time_suffix, harn_path=harn_path)
 
      container_info = info_read_json(entry)
