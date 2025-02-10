@@ -85,6 +85,9 @@ def vuln_dig_download():
      time_suffix = mission.time_suffix
      harn_path= mission.harness_files
 
+     if harn_path == '':
+         harn_path = None
+
      entry = RoutineEntry(container=docker_container, lib_name=lib_name, lib_version=lib_version, time_suffix=time_suffix, harn_path=harn_path)
 
      download_path = collect_crashes(entry)
