@@ -356,7 +356,7 @@ def exec_docker_container_shell(shell_path: str) -> str:
 def download_zip_from_docker(download_addr: str) -> io.BytesIO:
     client = docker.from_env()
 
-    container_name, zip_path = download_addr.split(":")
+    container_name, zip_path = download_addr.split(":", maxsplit=1)
     container_id = get_container_id(container_name, client)
 
     container = client.containers.get(container_id)
