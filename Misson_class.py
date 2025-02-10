@@ -1,6 +1,7 @@
 import csv
 from flask import request
 import uuid
+import pandas as pd
 
 
 # 用一个类来保存任务。用一个csv文件充当数据库，来记录所有出现过的任务。
@@ -293,28 +294,15 @@ class VulnDigMissionManager:
                 writer.writerow(row)
     
     def update_status_in_csv(self, mission):
-            updated = False
-            updated_rows = []
+        df = pd.read_csv(self.csv_file)
 
-            with open(self.csv_file, mode='r', newline='') as file:
-                reader = csv.DictReader(file)
-                for row in reader:
-                    if row.get('mission_id') == mission.mission_id:
-                        if int(row['status']) != mission.status:
-                            updated = True
-                            row['status'] = int(mission.status)
-                            updated_rows.append(row)
-                            break
-                    
-
-            if updated:
-                with open(self.csv_file, mode='w', newline='') as file:
-                    fieldnames = ['mission_id', 'container_id', 'lib_name', 'lib_version', 'time_suffix', 'harness_files', 'status']
-                    writer = csv.DictWriter(file, fieldnames=fieldnames)
-                    writer.writeheader()
-                    writer.writerows(updated_rows)
-            else:
-                    pass
+        mask = df["mission_id"] == mission.mission_id
+        if mask.any() and (df.loc[mask, "status"].astype(int) != mission.status).any():
+            df.loc[mask, "status"] = mission.status
+            df.to_csv(self.csv_file, index=False)
+            print(f"Updated mission_id {mission.mission_id}")
+        else:
+            print(f"No update needed for mission_id: {mission.mission_id}")
 
     def add_or_update_mission(self, mission):
         self.missions[mission.mission_id] = mission
@@ -322,18 +310,23 @@ class VulnDigMissionManager:
 
 
 if __name__ == "__main__":
-    mission_id = str(5432123)
-    #eval_manager = Eval_MissionManager('Adver_gen_missions_DBSM.csv')
-    eval_manager = Eval_MissionManager('Eval_missions_DBSM.csv')
-    eval_mission = eval_manager.eval_missions[mission_id]
-    print(eval_mission)
-    eval_mission.update_status(2)
-    eval_manager.save_eval_missions_to_csv()
-    # enhance_manager = Enhance_MissionManager('Adver_gen_missions_DBSM.csv')
-    # print(enhance_manager.missions)
-    # enhance_manager.update_enhance_mission_dict(12, 777)
-    # enhance_manager.save_missions_to_csv()
-    # print_missions()
-    # print("\n")
-    # print_enhance_missions()
+    mission_id = 12345678
+    docker_container = "vul_pytorch"
+    lib_name = "Pytorch"
+    lib_version = "2.5.0"
+    time_suffix = "2025-02-10:15:52:39"
+    harn_path = '' 
+    mission_status = 3
+
+    mission_manager = VulnDigMissionManager('Vuln_dig_missions_DBSM.csv')
+    mission = VulnDigMission(mission_id, docker_container,lib_name, lib_version, time_suffix, harn_path, mission_status)
+    #mission_manager.add_or_update_mission(mission)
+
+    mission_status = 1
+
+    mission.update_status(mission_status)
+    mission_manager.update_status_in_csv(mission)
+
+
+
 
