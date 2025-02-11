@@ -296,7 +296,7 @@ class VulnDigMissionManager:
     def update_status_in_csv(self, mission):
         df = pd.read_csv(self.csv_file)
 
-        mask = df["mission_id"] == mission.mission_id
+        mask = df["mission_id"].astype(str) == str(mission.mission_id)
         if mask.any() and (df.loc[mask, "status"].astype(int) != mission.status).any():
             df.loc[mask, "status"] = mission.status
             df.to_csv(self.csv_file, index=False)
@@ -310,7 +310,7 @@ class VulnDigMissionManager:
 
 
 if __name__ == "__main__":
-    mission_id = 12345678
+    mission_id = 323456717
     docker_container = "vul_pytorch"
     lib_name = "Pytorch"
     lib_version = "2.5.0"
