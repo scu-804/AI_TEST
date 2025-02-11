@@ -39,7 +39,6 @@ else
     exit 1
 fi
 
-find "$CRASH_DIR" -mindepth 1 -maxdepth 1 -type f -name 'crash-*' -exec rm '{{}}' \\+
 """
     proc = routine.run_ctn_script(script, False)
     if proc.returncode != 0:

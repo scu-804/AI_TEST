@@ -71,13 +71,21 @@ routine_entry_list_wo_harn = [
 #
 
 
+def read_one_time(entry: RoutineEntry, tts: int) -> None:
+    time.sleep(tts)
+    _ = info_read_json(entry)
+
+
 def run_loop(entry: RoutineEntry, tts: int, read_loop: int) -> None:
     flag = start_routine(entry)
     if not flag:
         return
-    for _ in range(read_loop):
-        time.sleep(tts)
-        json = info_read_json(entry)
+    if read_loop > 0:
+        for _ in range(read_loop):
+            read_one_time(entry, tts)
+    else:
+        while True:
+            read_one_time(entry, tts)
 
     stop(entry)
     info_read_json(entry)
@@ -111,6 +119,21 @@ def test_rec_regex() -> None:
     print(f"2st group: {mat.group(2)}")
     print(f"3st group: {mat.group(3)}")
     print(f"4st group: {mat.group(4)}")
+
+
+def test_dup_crash_download() -> None:
+    for entry in routine_entry_list:
+        if entry.container != "vul_pytorch":
+            continue
+        run_one_routine(entry, 10, 5)
+        collect_crashes(entry)
+
+
+def test_opencv() -> None:
+    for entry in routine_entry_list_wo_harn:
+        if entry.container != "vul_opencv":
+            continue
+        run_one_routine(entry, 5, -1)
 
 
 def test_service() -> None:
