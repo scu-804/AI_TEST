@@ -126,7 +126,7 @@ def init_yaml_read_for_vulndig():
 
 def model_classify(data):
     categories = {
-        "Image_class": ["Alexnet_black_box", "Alexnet_GAN", "Vgg16", "Vgg16_fuzz", "Vgg19", "ResNet"],
+        "Image_class": ["Alexnet_black_box", "Alexnet_GAN", "Vgg16", "ResNet_fuzz", "Vgg19", "ResNet"],
         "Face_detect": ["Facenet", "Deepface", "InceptionResnet"],
         "Obj_detect": ["YoloV3", "Yolov5"],
         "Audio": ["Librispeech", "Wav2Vec2_black_box", "Wav2Vec2_white_box"],
